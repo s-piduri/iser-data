@@ -1,3 +1,12 @@
+###
+#try 
+
+#################
+filter_ay <- 2017
+
+
+#################
+
 
 #import packages, read in full csv file
 library(data.table); library(tidyverse)
@@ -6,6 +15,13 @@ full <- fread("ssm_sjcc.csv", header = "auto")
 #create table with only overall values
 overall <- filter(full, disagg == "Overall", academicYear > 2017)
 overall <- select(overall, academicYear, metricID, categoryID, value, perc)
+
+#alternative
+overall <- full %>% 
+  filter(disagg == "Overall", academicYear > 2017) %>% 
+  select(academicYear, metricID, categoryID, value, perc)
+
+
 
 #create row for actual course success metrics
 coursesuccess <- filter(overall, metricID == "SM 408SW") 
