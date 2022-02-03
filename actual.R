@@ -31,6 +31,12 @@ cslong <- overall %>%
 cswide <- cslong %>% 
   pivot_wider(names_from=academicYear, values_from = perc)
 
+temp <- cslong %>% 
+  mutate(yr1_before = lag(perc, n = 1),
+         yr2_before = lag(perc, n = 2),
+         yr3_avg = (perc + yr1_before + yr2_before) / 3)
+
+
 #vector of relevant category ids (603 = cert, 631 = degree, 608 = adt)
 catids <- c(603, 631, 608, 614)
 

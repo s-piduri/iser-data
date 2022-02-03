@@ -9,6 +9,7 @@ output: word_document
 knitr::opts_chunk$set(echo = FALSE)
 
 library(tidyverse)
+
 ```
 
 # Introduction
@@ -21,7 +22,7 @@ library(tidyverse)
 
 [Provide tables/charts summarizing enrollment trends. Disaggregate the data as appropriate for the institution’s mission and service area. Provide brief context if needed.] 
 
-##Labor Market Data 
+## Labor Market Data 
 
 [Provide summary-level labor market data for the service area. Disaggregate the data as appropriate for the institution’s mission and service area. Provide brief context if needed.] 
 
@@ -43,7 +44,9 @@ library(tidyverse)
 
 # Presentation of Student Achievement Data and Institution-Set Standards 
 
-[Provide charts or tables containing data for institution-set standards and other student achievement metrics relevant to the institution’s mission and goals. Additional analysis and context for these data and their use should be provided in Standards I.B.3 and I.B.6.  Data may be disaggregated for relevant subpopulations of students, as appropriate to the mission. See Section 3.4 of the Guide to Institutional Self- Evaluation, Improvement, and Peer Review for more information.] 
+## Course Success Rates
+
+
 
 # Examples below
 
