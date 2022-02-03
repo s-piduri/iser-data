@@ -1,0 +1,66 @@
+---
+title: "ISER Data Section"
+author: "Office of Reserach, Planning and Institutional Effectiveness"
+date: "`r Sys.Date()`"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(tidyverse)
+```
+
+# Introduction
+
+## College History
+
+[Provide a brief history of the institution, including year of establishment. Highlight major events or developments that have occurred since the last comprehensive review.]
+
+## Student Enrollment Data 
+
+[Provide tables/charts summarizing enrollment trends. Disaggregate the data as appropriate for the institution’s mission and service area. Provide brief context if needed.] 
+
+##Labor Market Data 
+
+[Provide summary-level labor market data for the service area. Disaggregate the data as appropriate for the institution’s mission and service area. Provide brief context if needed.] 
+
+## Demographic Data 
+
+[Provide summary-level demographic data for the service area. Disaggregate the data as appropriate for the institution’s mission and service area. Provide brief context if needed.] 
+
+## Socio-economic Data 
+
+[Provide summary-level socio-economic data for the service area. Disaggregate the data as appropriate for the institution’s mission and service area. Provide brief context if needed.] 
+
+## Sites 
+
+[List names and locations (including addresses) of sites where 50% or more of a program, certificate, or degree is available to students, and any other off-campus sites or centers.] 
+
+## Specialized or Programmatic Accreditation 
+
+[Provide a list of any specialized or programmatic accreditations held by the institution.] 
+
+# Presentation of Student Achievement Data and Institution-Set Standards 
+
+[Provide charts or tables containing data for institution-set standards and other student achievement metrics relevant to the institution’s mission and goals. Additional analysis and context for these data and their use should be provided in Standards I.B.3 and I.B.6.  Data may be disaggregated for relevant subpopulations of students, as appropriate to the mission. See Section 3.4 of the Guide to Institutional Self- Evaluation, Improvement, and Peer Review for more information.] 
+
+# Examples below
+
+## Including Table
+
+```{r cars}
+cars %>% 
+  slice_head(n=10) %>%
+  flextable::flextable()
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
