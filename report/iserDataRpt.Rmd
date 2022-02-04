@@ -9,7 +9,6 @@ output: word_document
 knitr::opts_chunk$set(echo = FALSE)
 
 library(tidyverse)
-
 ```
 
 # Introduction
@@ -45,6 +44,15 @@ library(tidyverse)
 # Presentation of Student Achievement Data and Institution-Set Standards 
 
 ## Course Success Rates
+
+```{r}
+flextable::flextable(cswide)
+```
+###Number of Certificate Earners
+```{r}
+grads603wide
+```
+
 
 
 
