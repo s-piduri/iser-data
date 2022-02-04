@@ -9,6 +9,8 @@ output: word_document
 knitr::opts_chunk$set(echo = FALSE)
 
 library(tidyverse)
+
+load("../finaltbl.RData")
 ```
 
 # Introduction
@@ -50,7 +52,7 @@ flextable::flextable(cswide)
 ```
 ###Number of Certificate Earners
 ```{r}
-grads603wide
+grads603wide %>% flextable::flextable()
 ```
 
 

@@ -9,6 +9,8 @@ goal_col <- "2015"
 #################
 
 #import packages, read in full csv file
+#if (!require("s2")) {install.packages("s2"); require("s2")}
+
 library(data.table); library(tidyverse); library(zoo); library(scales)
 library(janitor)
 full <- fread("ssm_sjcc.csv", header = "auto")
