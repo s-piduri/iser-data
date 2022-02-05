@@ -280,4 +280,7 @@ grads614 <- grads614 %>%
 ############
 #save(cswide, grads603wide, grads608wide, grads614wide, grads631wide, file = "finaltbl.RData")
 
-save(cslong, grads603, grads608, grads614, grads631, file = "finaltbl.R")
+save(cslong, grads603, grads608, grads614, grads631, 
+     rgrads608, csrace, rgrads603, rgrads614, rgrads631, 
+     ggrads608, csgender, ggrads603, ggrads614, ggrads631,
+     file = "finaltbl.RData")
