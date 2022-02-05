@@ -5,6 +5,8 @@
 filter_ay <- 2017
 filter_csu <- 2016
 filter_disagg <- "Overall"
+#vector of relevant category ids (603 = cert, 631 = degree, 608 = adt)
+catids <- c(603, 631, 608, 614)
 #################
 
 #import packages, read in full csv file
@@ -13,7 +15,6 @@ filter_disagg <- "Overall"
 library(data.table); library(tidyverse); library(zoo); library(scales)
 full <- fread("ssm_sjcc.csv", header = "auto")
 full$categoryID <- replace_na(full$categoryID, "")
-full$metricID
 
 #alternative
 overall <- full %>% 
@@ -69,9 +70,6 @@ cslong <- cslong %>%
 #   rownames_to_column(" ")
 
 #########grad/cert/degree tables###############
-
-#vector of relevant category ids (603 = cert, 631 = degree, 608 = adt)
-catids <- c(603, 631, 608, 614)
 
 #data for degree and cert earners
 gradslong <- overall %>% 
@@ -280,6 +278,6 @@ grads614 <- grads614 %>%
 # 
 
 ############
-save(cswide, grads603wide, grads608wide, grads614wide, grads631wide, file = "finaltbl.RData")
+#save(cswide, grads603wide, grads608wide, grads614wide, grads631wide, file = "finaltbl.RData")
 
-save(cslong, grads603, grads608, grads614, grads631, file = "finaltbl.RData")
+save(cslong, grads603, grads608, grads614, grads631, file = "finaltbl.R")
