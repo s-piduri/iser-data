@@ -16,11 +16,14 @@ library(data.table); library(tidyverse); library(zoo); library(scales)
 full <- fread("ssm_sjcc.csv", header = "auto")
 full$categoryID <- replace_na(full$categoryID, "")
 
-#alternative
-overall <- full %>% 
-  filter(disagg == filter_disagg) %>% 
+#create full datatable
+full <- full %>% 
   mutate(years=paste(as.character(academicYear-1), as.character(academicYear), sep="-")) %>% 
   mutate(ids=paste(metricID, categoryID, sep=" ")) %>% 
+  select(academicYear, years, ids, title, description, disagg, metricID, categoryID, value, perc)
+
+overall <- full %>% 
+  filter(disagg == filter_disagg) %>% 
   select(academicYear, years, ids, title, description, metricID, categoryID, value, perc)
 
 
