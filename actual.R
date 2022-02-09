@@ -237,7 +237,7 @@ grads608 <- grads608 %>%
 ####### grads614 = distinct uc/csu transfer = floor and aspirational data#######
 
 floor <- floor(rollmean(grads614$value, 3, align = "right")*.9)
-floor <- c(0, grads614$value[2], floor)
+floor <- c(0, floor(grads614$value[2]*.9), floor)
 grads614 <- grads614 %>% 
   add_column(floor, .before="value")
 
