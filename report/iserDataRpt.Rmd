@@ -48,7 +48,11 @@ load("../finaltbl.RData")
 ## Course Success Rates
 
 ```{r}
-flextable::flextable(cswide)
+cslong %>% 
+  ggplot() +
+  aes(x = years) +
+  aes(y = perc) +
+  geom_col()
 ```
 ###Number of Certificate Earners
 ```{r}
