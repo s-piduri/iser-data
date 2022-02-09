@@ -1,8 +1,17 @@
+##creates overall datasets with floor and aspirational data for the 5 standards
+##uses two functions to do this - percentfloor to create a dataset of percentages
+##                              - valuefloor to create a dataset of values
+##these datasets are not saved in finaltbl.Rdata - those are the ones from actual.R
+##the code in actual.R and floorasp.R should do the same thing
+
+#############
 beg_yr = 2017
 end_yr = 2020
 filter_disagg <- "Overall"
+############
 
-library(data.table); library(tidyverse); library(zoo); library(scales)
+if (!require("zoo")) {install.packages("zoo"); require("zoo")}
+library(data.table); library(tidyverse); library(zoo)
 full <- fread("ssm_sjcc.csv", header = "auto")
 full$categoryID <- replace_na(full$categoryID, "")
 
@@ -16,18 +25,7 @@ overall <- full %>%
   filter(disagg == filter_disagg) %>% 
   select(academicYear, years, ids, title, description, metricID, categoryID, value, perc)
 
-test614 <- overall %>% 
-  filter(grepl(614, ids, fixed=TRUE))
-floor <- floor(rollmean(test614$value, 3, align = "right")*.9)
-(length(test614[[1]])-1)-length(floor)
-if(length(floor) != (length(test614[[1]])-1)){
-  diff <- length((test614[[1]])) - length(floor)
-  floor <- c(floor(test614$value[diff]*.9), floor)
-  }
-test614 <- test614 %>% filter(academicYear >= 2016 & academicYear <= 2020)
-test614 <- test614 %>% add_column(floor, .before="value")
-
-
+#gets the floor and aspirational percentages for a certain category ID
 percentfloor <- function(table, id, beg_year, end_year, pincrease){
   #get the floor goals
   yrtable <- table %>% 
@@ -98,12 +96,25 @@ valuefloor <- function(table, id, beg_year, end_year, pincrease){
 }
 
 #gets course success rates
-overallcs <- percentfloor(overall, 408, 2017, 2020, .005)
+#aspirational percent increase of .5% per year
+overallcs <- percentfloor(overall, 408, beg_yr, end_yr, .005)
 
 
-overall603 <- valuefloor(overall, 603, 2017, 2020, 1.2)
-overall631 <- valuefloor(overall, 631, 2017, 2020, 1.2)
-overall608 <- valuefloor(overall, 608, 2017, 2020, 1.35)
+#gets number of certificate earners
+#aspirational percent increase of 20% from 16/17 to 21/22
+overall603 <- valuefloor(overall, 603, beg_yr, end_yr, 1.2)
+
+#gets number of degree earners (as, adt, aa)
+#aspirational percent increase of 20% from 16/17 to 21/22
+overall631 <- valuefloor(overall, 631, beg_yr, end_yr, 1.2)
+
+#gets number of adt earners
+#aspirational percent increase of 35% from 16/17 to 21/22
+overall608 <- valuefloor(overall, 608, beg_yr, end_yr, 1.35)
+
+#gets number of csu/uc earners
+#aspirational percent increase of 35% from 15/16 to 20/21
+#lagged by one year, so beg_yr-1 is the starting year
 overall614 <- valuefloor(overall, 614, beg_yr-1, end_yr, 1.35)
 
 
