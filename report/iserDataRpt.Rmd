@@ -45,7 +45,7 @@ load("../is_standards.RData")
 
 # Presentation of Student Achievement Data and Institution-Set Standards 
 
-### Course Success Rates
+## Course Success Rates
 
 ```{r}
 title <- overallcs$title[1]
@@ -63,7 +63,7 @@ overallcs %>%
   flextable::add_footer_lines(values = desc) %>% 
   flextable::width(width=1) 
 ```
-###Number of Certificate Earners
+##Number of Certificate Earners
 ```{r}
 title <- "Distinct number of CO-approved certificate earners (12+ units)"
 overall603 %>% 
@@ -75,7 +75,7 @@ overall603 %>%
   flextable::width(width=1)
 ```
 
-###Number of Degree Earners (ADT, AS, AA)
+##Number of Degree Earners (ADT, AS, AA)
 ```{r}
 title <- "Distinct number of degree earners (AA, AS, or ADT) "
 overall631 %>% 
@@ -86,7 +86,7 @@ overall631 %>%
   flextable::align(i=1, align="center", part="header") %>% 
   flextable::width(width = 1)
 ```
-###Number of transfer degree earners
+##Number of transfer degree earners
 ```{r}
 title <- "Distinct number of ADT earners"
 overall608 %>% 
@@ -98,7 +98,7 @@ overall608 %>%
   flextable::width(width = 1)
 ```
 
-###Transfers to CSU or UC
+##Transfers to CSU or UC
 ```{r}
 title <- "Distinct number of transfers to CSU or UC"
 overall614 %>% 
@@ -109,7 +109,170 @@ overall614 %>%
   flextable::align(i=1, align="center", part="header") %>% 
   flextable::width(width = 1)
 ```
+##Disaggregation by Gender
+###Course success
+```{r}
+title <- "Course Success Rates by Gender"
+desc <- "Note that \"All Masked Values\" contains Non-Binary and Unknown/Non-Respondent students."
+csgender %>% 
+  select(years, subgroup, perc) %>% 
+  drop_na() %>% 
+  pivot_wider(names_from = years, values_from = perc) %>% 
+  flextable::flextable() %>% 
+  flextable::add_header_lines(values = title) %>% 
+  flextable::align(i=1, align="center", part="header") %>% 
+  flextable::set_formatter("2016-2017" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::set_formatter("2017-2018" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::set_formatter("2018-2019" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::set_formatter("2019-2020" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::add_footer_lines(values = desc) %>% 
+  flextable::width(width=1.2) 
+  
+```
+###Certificate Earners by Gender
+```{r}
+title <- "Certificate Earners by Gender"
+desc <- "Note that \"All Masked Values\" contains Non-Binary and Unknown/Non-Respondent students."
+ggrads603 %>% 
+  select(years, subgroup, value) %>% 
+  drop_na() %>% 
+  pivot_wider(names_from = years, values_from = value) %>% 
+  flextable::flextable() %>% 
+  flextable::add_header_lines(values = title) %>% 
+  flextable::align(i=1, align="center", part="header") %>% 
+  flextable::width(width=1) %>% 
+  flextable::add_footer_lines(values = desc)
+```
 
+
+###Degree Earners by Gender
+```{r}
+title <- "Degree Earners by Gender"
+desc <- "Note that \"All Masked Values\" contains Non-Binary and Unknown/Non-Respondent students."
+ggrads631%>% 
+  select(years, subgroup, value) %>% 
+  drop_na() %>% 
+  pivot_wider(names_from = years, values_from = value) %>% 
+  flextable::flextable() %>% 
+  flextable::add_header_lines(values = title) %>% 
+  flextable::align(i=1, align="center", part="header") %>% 
+  flextable::add_footer_lines(values = desc) %>% 
+  flextable::width(width=1)
+```
+
+###Transfer Earners by Gender
+```{r}
+title <- "ADT Earners by Gender"
+desc <- "Note that \"All Masked Values\" contains Non-Binary and Unknown/Non-Respondent students."
+ggrads608%>% 
+  select(years, subgroup, value) %>% 
+  drop_na() %>% 
+  pivot_wider(names_from = years, values_from = value) %>% 
+  flextable::flextable() %>% 
+  flextable::add_header_lines(values = title) %>% 
+  flextable::align(i=1, align="center", part="header") %>% 
+  flextable::add_footer_lines(values = desc) %>% 
+  flextable::width(width=1)
+```
+
+###CSU/UC Transfers by Gender
+```{r}
+title <- "Distinct Number of Transfers to CSU or UC by Gender"
+desc <- "Note that \"All Masked Values\" contains Non-Binary and Unknown/Non-Respondent students."
+ggrads614 %>% 
+  select(years, subgroup, value) %>% 
+  filter(subgroup=="Female" | subgroup=="Male" | subgroup=="All Masked Values") %>% 
+  pivot_wider(names_from = years, values_from = value) %>% 
+  flextable::flextable() %>% 
+  flextable::add_header_lines(values = title) %>% 
+  flextable::align(i=1, align="center", part="header") %>% 
+  flextable::add_footer_lines(values = desc) %>% 
+  flextable::width(width=1)
+```
+
+
+
+
+##Disaggregation by Ethnicity
+###Course success
+```{r}
+title <- "Course Success Rates by Ethnicity"
+desc <- "Note that \"All Masked Values\" contains students who listed multiple values or did not respond."
+csrace %>% 
+  select(years, subgroup, perc) %>% 
+  pivot_wider(names_from = years, values_from = perc) %>% 
+  drop_na() %>% 
+  flextable::flextable() %>% 
+  flextable::add_header_lines(values = title) %>% 
+  flextable::align(i=1, align="center", part="header") %>% 
+  flextable::set_formatter("2016-2017" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::set_formatter("2017-2018" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::set_formatter("2018-2019" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::set_formatter("2019-2020" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::add_footer_lines(values = desc) %>% 
+  flextable::width(width=1.2) 
+  
+```
+###Certificate Earners by Ethnicity
+```{r}
+title <- "Certificate Earners by Ethnicity"
+desc <- "Note that \"All Masked Values\" contains students who listed multiple values or did not respond."
+rgrads603 %>% 
+  select(years, subgroup, value) %>% 
+  #drop_na() %>% 
+  pivot_wider(names_from = years, values_from = value) %>% 
+  flextable::flextable() %>% 
+  flextable::add_header_lines(values = title) %>% 
+  flextable::align(i=1, align="center", part="header") %>% 
+  flextable::width(width=1) %>% 
+  flextable::add_footer_lines(values = desc)
+```
+
+
+###Degree Earners by Ethnicity
+```{r}
+title <- "Degree Earners by Ethnicity"
+desc <- "Note that \"All Masked Values\" contains students who listed multiple values or did not respond."
+rgrads631%>% 
+  select(years, subgroup, value) %>% 
+  #drop_na() %>% 
+  pivot_wider(names_from = years, values_from = value) %>% 
+  flextable::flextable() %>% 
+  flextable::add_header_lines(values = title) %>% 
+  flextable::align(i=1, align="center", part="header") %>% 
+  flextable::add_footer_lines(values = desc) %>% 
+  flextable::width(width=1)
+```
+
+###Transfer Earners by Ethnicity
+```{r}
+title <- "ADT Earners by Ethnicity"
+desc <- "Note that \"All Masked Values\" contains students who listed multiple values or did not respond."
+rgrads608%>% 
+  select(years, subgroup, value) %>% 
+  #drop_na() %>% 
+  pivot_wider(names_from = years, values_from = value) %>% 
+  flextable::flextable() %>% 
+  flextable::add_header_lines(values = title) %>% 
+  flextable::align(i=1, align="center", part="header") %>% 
+  flextable::add_footer_lines(values = desc) %>% 
+  flextable::width(width=1)
+```
+
+###CSU/UC Transfers by Ethnicity
+```{r}
+title <- "Distinct Number of Transfers to CSU or UC by Ethnicity"
+desc <- "Note that \"All Masked Values\" contains students who listed multiple values or did not respond."
+rgrads614 %>% 
+  select(years, subgroup, value) %>% 
+  #drop_na() %>% 
+  pivot_wider(names_from = years, values_from = value) %>% 
+  flextable::flextable() %>% 
+  flextable::add_header_lines(values = title) %>% 
+  flextable::align(i=1, align="center", part="header") %>% 
+  flextable::add_footer_lines(values = desc) %>% 
+  flextable::width(width=1)
+```
 
 # Examples below
 

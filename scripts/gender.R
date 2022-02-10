@@ -14,26 +14,27 @@ full$categoryID <- replace_na(full$categoryID, "")
 gender <- full %>% 
   mutate(years=paste(as.character(academicYear-1), as.character(academicYear), sep="-")) %>% 
   mutate(ids=paste(metricID, categoryID, sep=" ")) %>% 
-  filter(disagg == "Gender", academicYear > filter_ay) %>% 
+  filter(disagg == "Gender") %>% 
   select(academicYear, years, ids, title, description, metricID, categoryID, subgroup, value, perc)
 
 #course success by gender
 csgender <- gender %>% 
-  filter(metricID == "SM 408SW") %>% 
+  filter(metricID == "SM 408SW", academicYear > filter_ay) %>% 
   select(years, ids, title, description, subgroup, perc)
 
 #graduation/certificates by gender
 ggrads <- gender %>% 
-  filter(categoryID %in% catids) %>% 
+  filter(academicYear > filter_ay) %>% 
   select(years, ids, title, description, categoryID, subgroup, value)
 
 #put each metric into a separate tibble
 #each metric is now disaggregated by gender
 ggrads603 <- ggrads %>% 
   filter(categoryID == 603)
-ggrads614 <- ggrads %>% 
-  filter(categoryID == 614)
-ggrads608 <- ggrads %>% 
-  filter(categoryID == 608)
 ggrads631 <- ggrads %>% 
   filter(categoryID == 631)
+ggrads608 <- ggrads %>% 
+  filter(categoryID == 608)
+ggrads614 <- gender %>% 
+  filter(categoryID == 614, academicYear > filter_ay-1) %>% 
+  select(years, ids, title, description, categoryID, subgroup, value)
