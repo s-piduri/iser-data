@@ -33,5 +33,3 @@ rgrads608 <- rgrads %>%
   filter(categoryID == 608)
 rgrads631 <- rgrads %>% 
   filter(categoryID == 631)
-
-save(rgrads608, csrace, rgrads603, rgrads614, rgrads631, file="finaltbl.RData")

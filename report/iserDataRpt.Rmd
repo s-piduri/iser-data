@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 library(tidyverse)
 
-load("../finaltbl.RData")
+load("../is_standards.RData")
 ```
 
 # Introduction
@@ -45,21 +45,70 @@ load("../finaltbl.RData")
 
 # Presentation of Student Achievement Data and Institution-Set Standards 
 
-## Course Success Rates
+### Course Success Rates
 
 ```{r}
-cslong %>% 
-  ggplot() +
-  aes(x = years) +
-  aes(y = perc) +
-  geom_col()
+title <- overallcs$title[1]
+desc <- overallcs$description[1]
+overallcs %>% 
+  select(years, type, percentage) %>% 
+  pivot_wider(names_from = years, values_from = percentage) %>% 
+  flextable::flextable() %>% 
+  flextable::add_header_lines(values = title) %>% 
+  flextable::align(i=1, align="center", part="header") %>% 
+  flextable::set_formatter("2016-2017" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::set_formatter("2017-2018" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::set_formatter("2018-2019" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::set_formatter("2019-2020" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::add_footer_lines(values = desc) %>% 
+  flextable::width(width=1) 
 ```
 ###Number of Certificate Earners
 ```{r}
-grads603wide %>% flextable::flextable()
+title <- "Distinct number of CO-approved certificate earners (12+ units)"
+overall603 %>% 
+  select(years, type, value) %>% 
+  pivot_wider(names_from = years, values_from = value) %>% 
+  flextable::flextable() %>% 
+  flextable::add_header_lines(values = title) %>% 
+  flextable::align(i=1, align="center", part="header") %>% 
+  flextable::width(width=1)
 ```
 
+###Number of Degree Earners (ADT, AS, AA)
+```{r}
+title <- "Distinct number of degree earners (AA, AS, or ADT) "
+overall631 %>% 
+  select(years, type, value) %>% 
+  pivot_wider(names_from = years, values_from = value) %>% 
+  flextable::flextable() %>% 
+  flextable::add_header_lines(values = title) %>% 
+  flextable::align(i=1, align="center", part="header") %>% 
+  flextable::width(width = 1)
+```
+###Number of transfer degree earners
+```{r}
+title <- "Distinct number of ADT earners"
+overall608 %>% 
+  select(years, type, value) %>% 
+  pivot_wider(names_from = years, values_from = value) %>% 
+  flextable::flextable() %>% 
+  flextable::add_header_lines(values = title) %>% 
+  flextable::align(i=1, align="center", part="header") %>% 
+  flextable::width(width = 1)
+```
 
+###Transfers to CSU or UC
+```{r}
+title <- "Distinct number of transfers to CSU or UC"
+overall614 %>% 
+  select(years, type, value) %>% 
+  pivot_wider(names_from = years, values_from = value) %>% 
+  flextable::flextable() %>% 
+  flextable::add_header_lines(values = title) %>% 
+  flextable::align(i=1, align="center", part="header") %>% 
+  flextable::width(width = 1)
+```
 
 
 # Examples below

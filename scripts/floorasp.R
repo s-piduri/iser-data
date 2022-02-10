@@ -88,7 +88,7 @@ valuefloor <- function(table, id, beg_year, end_year, pincrease){
   #add aspirational goal to table
   yrtable %>% add_column(aspirational, .before="value") %>% 
     select(years, ids, title, description, floor, aspirational, value) %>% 
-    pivot_longer(cols=c("floor", "value", "aspirational"), names_to = "type", values_to = "value")
+    pivot_longer(cols=c("floor", "aspirational", "value"), names_to = "type", values_to = "value")
   
 }
 
@@ -128,7 +128,7 @@ lagfloor <- function(table, id, beg_year, end_year, pincrease){
   #add aspirational goal to table
   yrtable %>% add_column(aspirational, .before="value") %>% 
     select(years, ids, title, description, floor, aspirational, value) %>% 
-    pivot_longer(cols=c("floor", "value", "aspirational"), names_to = "type", values_to = "value")
+    pivot_longer(cols=c("floor", "aspirational", "value"), names_to = "type", values_to = "value")
   
 }
 
@@ -138,7 +138,7 @@ lagfloor <- function(table, id, beg_year, end_year, pincrease){
 overallcs <- percentfloor(overall, 408, beg_yr, end_yr, .005)
 #percentfloor returns a data table that is not fully long so pivot longer
 overallcs <- overallcs %>%  
-  pivot_longer(cols=c("floor", "perc", "aspirational"), names_to = "type", values_to = "percentage")
+  pivot_longer(cols=c("floor", "aspirational", "perc"), names_to = "type", values_to = "percentage")
 
 
 #gets number of certificate earners
@@ -158,4 +158,7 @@ overall608 <- valuefloor(overall, 608, beg_yr, end_yr, 1.35)
 #lagged by one year, so beg_yr-1 is the starting year
 overall614 <- lagfloor(overall, 614, beg_yr-1, end_yr, 1.35)
 
-
+save(overallcs, overall603, overall631, overall608, overall614, 
+     csrace, rgrads603, rgrads608, rgrads614, rgrads631,
+     csgender, ggrads603, ggrads608, ggrads614, ggrads631,
+     file = "is_standards.RData")
