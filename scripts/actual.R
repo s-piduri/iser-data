@@ -63,6 +63,11 @@ cslong <- cslong %>%
   add_column(aspirational, .before="perc") %>% 
   select(years, ids, title, description, floor, aspirational, perc)
 
+cslong[[5]]
+
+cslong2 <- cslong %>% 
+  pivot_longer(cols=c("floor", "perc", "aspirational"), names_to = "type", values_to = "percentage")
+
 ##transpose table and add academic years as column names
 # cslong1 <- cslong %>% 
 #   column_to_rownames("academicYear")

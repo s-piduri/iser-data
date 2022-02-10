@@ -6,7 +6,7 @@
 
 #############
 beg_yr = 2017
-end_yr = 2020
+end_yr = 2021
 filter_disagg <- "Overall"
 ############
 
@@ -61,6 +61,41 @@ valuefloor <- function(table, id, beg_year, end_year, pincrease){
   yrtable <- table %>% 
   filter(grepl(id, ids, fixed=TRUE))
   floor <- floor(rollmean(yrtable$value, 3, align = "right")*.9)
+  yrtable <- yrtable %>% filter(academicYear >= beg_year & academicYear <= end_year)
+  yrtable <- yrtable %>% add_column(floor, .before="value")
+  
+  #get the aspirational goals
+  #find the actual percentage corresponding to the first year being looked at
+  #take the whole row
+  cert_ay <- yrtable %>% 
+    filter(academicYear == beg_year)
+  #grab the base value
+  cert_base <- cert_ay$value
+  #set percent increase needed
+  pinc = pincrease
+  #calculate aspirational goal by multiplying by base
+  aspir = floor(pinc*cert_base)
+  
+  #get the number of years being looked at in total (from set starting year to end of data)
+  yrlngth = length(yrtable$academicYear)-1
+  
+  #get the percent increase per year across 5 years
+  cert_incr <- (aspir/cert_base)^(1/5)
+  
+  #create vector with aspirational goals
+  aspirational = round(cumprod(c(cert_base, rep(cert_incr,yrlngth))))
+  
+  #add aspirational goal to table
+  yrtable %>% add_column(aspirational, .before="value") %>% 
+    select(years, ids, title, description, floor, aspirational, value) %>% 
+    pivot_longer(cols=c("floor", "value", "aspirational"), names_to = "type", values_to = "value")
+  
+}
+
+lagfloor <- function(table, id, beg_year, end_year, pincrease){
+  yrtable <- table %>% 
+    filter(grepl(id, ids, fixed=TRUE))
+  floor <- floor(rollmean(yrtable$value, 3, align = "right")*.9)
   #add if statement so that 614/other lagged categories can have correct floors
   if(length(floor) != (length(yrtable[[1]])-1)){
     diff <- length((yrtable[[1]])) - length(floor)
@@ -92,12 +127,18 @@ valuefloor <- function(table, id, beg_year, end_year, pincrease){
   
   #add aspirational goal to table
   yrtable %>% add_column(aspirational, .before="value") %>% 
-    select(years, ids, title, description, floor, aspirational, value)
+    select(years, ids, title, description, floor, aspirational, value) %>% 
+    pivot_longer(cols=c("floor", "value", "aspirational"), names_to = "type", values_to = "value")
+  
 }
+
 
 #gets course success rates
 #aspirational percent increase of .5% per year
 overallcs <- percentfloor(overall, 408, beg_yr, end_yr, .005)
+#percentfloor returns a data table that is not fully long so pivot longer
+overallcs <- overallcs %>%  
+  pivot_longer(cols=c("floor", "perc", "aspirational"), names_to = "type", values_to = "percentage")
 
 
 #gets number of certificate earners
@@ -115,6 +156,6 @@ overall608 <- valuefloor(overall, 608, beg_yr, end_yr, 1.35)
 #gets number of csu/uc earners
 #aspirational percent increase of 35% from 15/16 to 20/21
 #lagged by one year, so beg_yr-1 is the starting year
-overall614 <- valuefloor(overall, 614, beg_yr-1, end_yr, 1.35)
+overall614 <- lagfloor(overall, 614, beg_yr-1, end_yr, 1.35)
 
 

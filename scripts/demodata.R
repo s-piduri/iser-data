@@ -9,3 +9,4 @@ pop_proj <- read_excel(path=pop, sheet = 2, skip =2)
 projections <- pop_proj %>% 
   filter(Geography == pop_proj$Geography[2] | Geography == pop_proj$Geography[45]) %>% 
   select("Geography", "2020", "2030", "2040", "2050", "2060")
+
