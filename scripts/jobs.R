@@ -1,4 +1,4 @@
-library(tidyverse);
+library(tidyverse); library(readxl)
 
 path <- "C:\\Users\\spiduri\\San Jose-Evergreen Community College District\\SJCC RPIE - Documents\\ACCJC Annual Reports\\CTE Licence and Job Placement Data\\Licensing Exam Pass Rates For Ann Rpt2022.xlsx"
 licensure <- read_excel(path=path, sheet = 1)
