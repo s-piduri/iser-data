@@ -23,9 +23,10 @@ cen_total <- subset(cen_raw, select = -c(4:17, 20:25))
 
 colnames(cen_total) <- c(1, 'Bay Area: Estimate', 'Bay Area: Percent', 'SC County: Estimate', 'SC County: Percent')
 
-
 cen_total = cen_total[-1,]
 i <- c(2:5)
 x <- cen_total[ ,i] <- apply(cen_total[ , i], 2, function(x) as.numeric(as.character(x)))
 
-ethnicity <- cen_total[68:73,]
+ethnicity <- cen_total[66:71,] %>%
+  mutate(across(where(is.numeric), round, 4)) 
+

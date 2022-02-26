@@ -11,6 +11,7 @@ knitr::opts_chunk$set(echo = FALSE)
 library(tidyverse)
 
 load("../is_standards.RData")
+load("../jobs.RData")
 ```
 
 # Introduction
@@ -30,6 +31,20 @@ load("../is_standards.RData")
 ## Demographic Data 
 
 [Provide summary-level demographic data for the service area. Disaggregate the data as appropriate for the institution’s mission and service area. Provide brief context if needed.] 
+
+```{r}
+projections %>% 
+  pivot_wider(names_from = years, values_from = population) %>% 
+  flextable::flextable()
+```
+
+
+```{r}
+ethnicity %>% flextable::flextable() %>% 
+    flextable::set_formatter("Bay Area: Percent" = function(x) sprintf("%.001f%%", x*100)) %>% 
+    flextable::set_formatter("SC County: Percent" = function(x) sprintf("%.001f%%", x*100))  
+
+```
 
 ## Socio-economic Data 
 
@@ -273,6 +288,19 @@ rgrads614 %>%
   flextable::add_footer_lines(values = desc) %>% 
   flextable::width(width=1)
 ```
+
+##Licensure Pass and Job Placement Rates
+```{r licensure}
+  licensure %>% 
+  flextable::flextable()
+
+```
+
+```{r job placement}
+  jobplace %>% flextable::flextable()
+```
+
+
 
 # Examples below
 

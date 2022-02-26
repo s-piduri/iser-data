@@ -60,7 +60,7 @@ percentfloor <- function(table, id, beg_year, end_year, pincrease){
 valuefloor <- function(table, id, beg_year, end_year, pincrease){
   yrtable <- table %>% 
   filter(grepl(id, ids, fixed=TRUE))
-  floor <- floor(rollmean(yrtable$value, 3, align = "right")*.9)
+  floor <- round(rollmean(yrtable$value, 3, align = "right")*.9)
   yrtable <- yrtable %>% filter(academicYear >= beg_year & academicYear <= end_year)
   yrtable <- yrtable %>% add_column(floor, .before="value")
   
