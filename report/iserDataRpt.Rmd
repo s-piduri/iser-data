@@ -38,13 +38,44 @@ projections %>%
   flextable::flextable()
 ```
 
-
 ```{r}
-ethnicity %>% flextable::flextable() %>% 
-    flextable::set_formatter("Bay Area: Percent" = function(x) sprintf("%.001f%%", x*100)) %>% 
-    flextable::set_formatter("SC County: Percent" = function(x) sprintf("%.001f%%", x*100))  
+raceproj %>% 
+  flextable::flextable() %>% 
+  flextable::add_header_lines(values = "Bay Area Population Projections by Race/Ethnicity") %>% 
+  flextable::align(i=1, align="center", part="header") %>% 
+  flextable::set_formatter("2020" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::set_formatter("2060" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::set_formatter("Change" = function(x) sprintf("%.001f%%", x*100))
 
 ```
+
+
+
+```{r}
+race %>% flextable::flextable() %>% 
+    flextable::add_header_lines(values = "Service Area Racial Breakdown") %>% 
+    flextable::align(i=1, align="center", part="header") %>%
+    flextable::set_formatter("Bay Area: Percent" = function(x) sprintf("%.001f%%", x*100)) %>% 
+    flextable::set_formatter("SC County: Percent" = function(x) sprintf("%.001f%%", x*100))  
+```
+
+```{r}
+  ethnicity %>% flextable::flextable() %>% 
+    flextable::add_header_lines(values = "Service Area Ethnicity Breakdown") %>% 
+    flextable::align(i=1, align="center", part="header") %>%
+    flextable::set_formatter("Bay Area: Percent" = function(x) sprintf("%.001f%%", x*100)) %>% 
+    flextable::set_formatter("SC County: Percent" = function(x) sprintf("%.001f%%", x*100))
+     
+```
+
+```{r}
+education %>% flextable::flextable() %>% 
+    flextable::add_header_lines(values = "Educational Attainment for Population 25+") %>% 
+    flextable::align(i=1, align="center", part="header") %>%
+    flextable::set_formatter("Bay Area: Percent" = function(x) sprintf("%.001f%%", x*100)) %>% 
+    flextable::set_formatter("SC County: Percent" = function(x) sprintf("%.001f%%", x*100))
+```
+
 
 ## Socio-economic Data 
 
