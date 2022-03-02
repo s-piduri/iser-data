@@ -33,7 +33,6 @@ baylang <- baylang %>%
 education <- educ[c(8:17), c(1:3, 18:19)] %>%
   mutate(across(where(is.numeric), round, 2)) 
 e <- education[ ,i] <- apply(education[ , i], 2, function(x) as.numeric(as.character(x)))
-education
 
 colnames(education) <- c(" ", 'Bay Area: Estimate', 'Bay Area: Percent', 'SC County: Estimate', 'SC County: Percent')
 
@@ -56,4 +55,7 @@ race <- cen_total[67:72,] %>%
 
 ethnicity <- rbind(cen_total[75,], cen_total[81:87,])
 
+
+
+save(projections, baylang, raceproj, race, education, ethnicity, file="demo.RData")
 

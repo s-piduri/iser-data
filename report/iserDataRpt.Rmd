@@ -12,6 +12,7 @@ library(tidyverse)
 
 load("../is_standards.RData")
 load("../jobs.RData")
+load("../demo.RData")
 ```
 
 # Introduction
@@ -32,11 +33,15 @@ load("../jobs.RData")
 
 [Provide summary-level demographic data for the service area. Disaggregate the data as appropriate for the institution’s mission and service area. Provide brief context if needed.] 
 
+### Population Projections
+
 ```{r}
 projections %>% 
   pivot_wider(names_from = years, values_from = population) %>% 
   flextable::flextable()
 ```
+
+### Population Projections by Race
 
 ```{r}
 raceproj %>% 
@@ -45,35 +50,41 @@ raceproj %>%
   flextable::align(i=1, align="center", part="header") %>% 
   flextable::set_formatter("2020" = function(x) sprintf("%.001f%%", x*100)) %>% 
   flextable::set_formatter("2060" = function(x) sprintf("%.001f%%", x*100)) %>% 
-  flextable::set_formatter("Change" = function(x) sprintf("%.001f%%", x*100))
-
+  flextable::set_formatter("Change" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::autofit()
 ```
 
-
+### Ethnicity
 
 ```{r}
 race %>% flextable::flextable() %>% 
     flextable::add_header_lines(values = "Service Area Racial Breakdown") %>% 
     flextable::align(i=1, align="center", part="header") %>%
     flextable::set_formatter("Bay Area: Percent" = function(x) sprintf("%.001f%%", x*100)) %>% 
-    flextable::set_formatter("SC County: Percent" = function(x) sprintf("%.001f%%", x*100))  
+    flextable::set_formatter("SC County: Percent" = function(x) sprintf("%.001f%%", x*100))%>% 
+  flextable::autofit() 
 ```
+
 
 ```{r}
   ethnicity %>% flextable::flextable() %>% 
     flextable::add_header_lines(values = "Service Area Ethnicity Breakdown") %>% 
     flextable::align(i=1, align="center", part="header") %>%
     flextable::set_formatter("Bay Area: Percent" = function(x) sprintf("%.001f%%", x*100)) %>% 
-    flextable::set_formatter("SC County: Percent" = function(x) sprintf("%.001f%%", x*100))
-     
+    flextable::set_formatter("SC County: Percent" = function(x) sprintf("%.001f%%", x*100))%>% 
+    flextable::autofit()
 ```
 
+### Educational Attainment
+
 ```{r}
-education %>% flextable::flextable() %>% 
-    flextable::add_header_lines(values = "Educational Attainment for Population 25+") %>% 
+education %>% 
+  flextable::flextable() %>% 
+    flextable::add_header_lines(values = "Educational Attainment for Population Age 25+") %>% 
     flextable::align(i=1, align="center", part="header") %>%
     flextable::set_formatter("Bay Area: Percent" = function(x) sprintf("%.001f%%", x*100)) %>% 
-    flextable::set_formatter("SC County: Percent" = function(x) sprintf("%.001f%%", x*100))
+    flextable::set_formatter("SC County: Percent" = function(x) sprintf("%.001f%%", x*100))%>% 
+    flextable::autofit()
 ```
 
 
@@ -109,7 +120,8 @@ overallcs %>%
   flextable::add_footer_lines(values = desc) %>% 
   flextable::width(width=1) 
 ```
-##Number of Certificate Earners
+## Number of Certificate Earners
+
 ```{r}
 title <- "Distinct number of CO-approved certificate earners (12+ units)"
 overall603 %>% 
@@ -121,7 +133,8 @@ overall603 %>%
   flextable::width(width=1)
 ```
 
-##Number of Degree Earners (ADT, AS, AA)
+## Number of Degree Earners (ADT, AS, AA)
+
 ```{r}
 title <- "Distinct number of degree earners (AA, AS, or ADT) "
 overall631 %>% 
@@ -132,7 +145,8 @@ overall631 %>%
   flextable::align(i=1, align="center", part="header") %>% 
   flextable::width(width = 1)
 ```
-##Number of transfer degree earners
+## Number of transfer degree earners
+
 ```{r}
 title <- "Distinct number of ADT earners"
 overall608 %>% 
@@ -144,7 +158,8 @@ overall608 %>%
   flextable::width(width = 1)
 ```
 
-##Transfers to CSU or UC
+## Transfers to CSU or UC
+
 ```{r}
 title <- "Distinct number of transfers to CSU or UC"
 overall614 %>% 
@@ -155,8 +170,10 @@ overall614 %>%
   flextable::align(i=1, align="center", part="header") %>% 
   flextable::width(width = 1)
 ```
-##Disaggregation by Gender
-###Course success
+## Disaggregation by Gender
+
+### Course success
+
 ```{r}
 title <- "Course Success Rates by Gender"
 desc <- "Note that \"All Masked Values\" contains Non-Binary and Unknown/Non-Respondent students."
@@ -175,7 +192,8 @@ csgender %>%
   flextable::width(width=1.2) 
   
 ```
-###Certificate Earners by Gender
+### Certificate Earners by Gender
+
 ```{r}
 title <- "Certificate Earners by Gender"
 desc <- "Note that \"All Masked Values\" contains Non-Binary and Unknown/Non-Respondent students."
@@ -191,7 +209,8 @@ ggrads603 %>%
 ```
 
 
-###Degree Earners by Gender
+### Degree Earners by Gender
+
 ```{r}
 title <- "Degree Earners by Gender"
 desc <- "Note that \"All Masked Values\" contains Non-Binary and Unknown/Non-Respondent students."
@@ -206,7 +225,8 @@ ggrads631%>%
   flextable::width(width=1)
 ```
 
-###Transfer Earners by Gender
+### Transfer Earners by Gender
+
 ```{r}
 title <- "ADT Earners by Gender"
 desc <- "Note that \"All Masked Values\" contains Non-Binary and Unknown/Non-Respondent students."
@@ -221,7 +241,8 @@ ggrads608%>%
   flextable::width(width=1)
 ```
 
-###CSU/UC Transfers by Gender
+### CSU/UC Transfers by Gender
+
 ```{r}
 title <- "Distinct Number of Transfers to CSU or UC by Gender"
 desc <- "Note that \"All Masked Values\" contains Non-Binary and Unknown/Non-Respondent students."
@@ -239,8 +260,10 @@ ggrads614 %>%
 
 
 
-##Disaggregation by Ethnicity
-###Course success
+## Disaggregation by Ethnicity
+
+### Course success
+
 ```{r}
 title <- "Course Success Rates by Ethnicity"
 desc <- "Note that \"All Masked Values\" contains students who listed multiple values or did not respond."
@@ -259,7 +282,9 @@ csrace %>%
   flextable::width(width=1.2) 
   
 ```
-###Certificate Earners by Ethnicity
+
+### Certificate Earners by Ethnicity
+
 ```{r}
 title <- "Certificate Earners by Ethnicity"
 desc <- "Note that \"All Masked Values\" contains students who listed multiple values or did not respond."
@@ -275,7 +300,8 @@ rgrads603 %>%
 ```
 
 
-###Degree Earners by Ethnicity
+### Degree Earners by Ethnicity
+
 ```{r}
 title <- "Degree Earners by Ethnicity"
 desc <- "Note that \"All Masked Values\" contains students who listed multiple values or did not respond."
@@ -290,7 +316,8 @@ rgrads631%>%
   flextable::width(width=1)
 ```
 
-###Transfer Earners by Ethnicity
+### Transfer Earners by Ethnicity
+
 ```{r}
 title <- "ADT Earners by Ethnicity"
 desc <- "Note that \"All Masked Values\" contains students who listed multiple values or did not respond."
@@ -305,7 +332,8 @@ rgrads608%>%
   flextable::width(width=1)
 ```
 
-###CSU/UC Transfers by Ethnicity
+### CSU/UC Transfers by Ethnicity
+
 ```{r}
 title <- "Distinct Number of Transfers to CSU or UC by Ethnicity"
 desc <- "Note that \"All Masked Values\" contains students who listed multiple values or did not respond."
@@ -320,35 +348,15 @@ rgrads614 %>%
   flextable::width(width=1)
 ```
 
-##Licensure Pass and Job Placement Rates
+## Licensure Pass and Job Placement Rates
+
+### Licensure Pass Rates
 ```{r licensure}
   licensure %>% 
   flextable::flextable()
 
 ```
-
+### Job Placement Rates
 ```{r job placement}
   jobplace %>% flextable::flextable()
 ```
-
-
-
-# Examples below
-
-## Including Table
-
-```{r cars}
-cars %>% 
-  slice_head(n=10) %>%
-  flextable::flextable()
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
