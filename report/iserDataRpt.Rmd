@@ -29,6 +29,43 @@ load("../demo.RData")
 
 [Provide summary-level labor market data for the service area. Disaggregate the data as appropriate for the institution’s mission and service area. Provide brief context if needed.] 
 
+### Industries by Employment
+```{r}
+topten %>% flextable::flextable() %>% 
+  flextable::add_header_lines(values= "Top Bay Area Industries by Employment, 2020") %>% 
+  flextable::align(i=1, align="center", part="header") %>% 
+  flextable::autofit() %>% 
+  flextable::set_formatter("Share of Total Employment" = function(x) sprintf("%.001f%%", x*100))
+```
+```{r}
+toptech %>% flextable::flextable() %>% 
+  flextable::add_header_lines(values= "Top Bay Area Tech Industries, 2020") %>% 
+  flextable::align(i=1, align="center", part="header") %>% 
+  flextable::autofit() %>% 
+  flextable::set_formatter("Projected Growth, 2020-2030" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::set_formatter("Share of Total Employment" = function(x) sprintf("%.001f%%", x*100))
+```
+### Growth
+```{r}
+most_openings %>% select(-"Unemployment") %>% 
+  flextable::flextable() %>% 
+  flextable::autofit() %>% 
+  flextable::add_header_lines(values= "Occupations with the Most Job Openings") %>% 
+  flextable::align(i=1, align="center", part="header")
+
+```
+
+```{r}
+most_growth %>% select(-"Unemployment") %>% 
+  flextable::flextable() %>% 
+  flextable::autofit() %>% 
+  flextable::set_formatter("% Change" = function(x) sprintf("%.001f%%", x*100)) %>%
+  flextable::add_header_lines(values= "Fastest Growing Occupations") %>% 
+  flextable::align(i=1, align="center", part="header")
+
+```
+
+
 ## Demographic Data 
 
 [Provide summary-level demographic data for the service area. Disaggregate the data as appropriate for the institution’s mission and service area. Provide brief context if needed.] 
@@ -38,7 +75,9 @@ load("../demo.RData")
 ```{r}
 projections %>% 
   pivot_wider(names_from = years, values_from = population) %>% 
-  flextable::flextable()
+  flextable::flextable() %>% 
+  flextable::add_header_lines(values = "Bay Area Population Projections") %>% 
+  flextable::align(i=1, align="center", part="header")
 ```
 
 ### Population Projections by Race
@@ -50,12 +89,12 @@ raceproj %>%
   flextable::align(i=1, align="center", part="header") %>% 
   flextable::set_formatter("2020" = function(x) sprintf("%.001f%%", x*100)) %>% 
   flextable::set_formatter("2060" = function(x) sprintf("%.001f%%", x*100)) %>% 
-  flextable::set_formatter("Change" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::set_formatter("Percent Change" = function(x) sprintf("%.001f%%", x*100)) %>% 
   flextable::autofit()
 ```
 
-### Ethnicity
-
+### Race and Ethnicity In the Service Area
+#### Racial Breakdown
 ```{r}
 race %>% flextable::flextable() %>% 
     flextable::add_header_lines(values = "Service Area Racial Breakdown") %>% 
@@ -65,7 +104,7 @@ race %>% flextable::flextable() %>%
   flextable::autofit() 
 ```
 
-
+#### Ethnicity Breakdown 
 ```{r}
   ethnicity %>% flextable::flextable() %>% 
     flextable::add_header_lines(values = "Service Area Ethnicity Breakdown") %>% 
@@ -80,11 +119,12 @@ race %>% flextable::flextable() %>%
 ```{r}
 education %>% 
   flextable::flextable() %>% 
-    flextable::add_header_lines(values = "Educational Attainment for Population Age 25+") %>% 
-    flextable::align(i=1, align="center", part="header") %>%
-    flextable::set_formatter("Bay Area: Percent" = function(x) sprintf("%.001f%%", x*100)) %>% 
-    flextable::set_formatter("SC County: Percent" = function(x) sprintf("%.001f%%", x*100))%>% 
-    flextable::autofit()
+  flextable::add_header_lines(values = "Educational Attainment for Population Age 25+") %>% 
+  flextable::align(i=1, align="center", part="header") %>%
+  flextable::set_formatter("Bay Area: Percent" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::set_formatter("SC County: Percent" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::autofit() 
+
 ```
 
 

@@ -21,7 +21,7 @@ projections <- pop_proj %>%
 years <- c("2020","2060")
 raceproj <- race_proj[418:424,] %>% 
   select("Race/Ethnicity Recode", "2020", "2060") %>% 
-  mutate(Change = .data[[years[[2]]]]-.data[[years[[1]]]])
+  mutate("Percent Change" = .data[[years[[2]]]]-.data[[years[[1]]]])
 
 baylang <- lang[c(2,5:20), c(1,3,5,7)]
 
@@ -45,7 +45,8 @@ cen_raw <- read_excel(path=census, sheet = 2)
 cen_total <- subset(cen_raw, select = -c(4:17, 20:25))
 
 colnames(cen_total) <- c(" ", 'Bay Area: Estimate', 'Bay Area: Percent', 'SC County: Estimate', 'SC County: Percent')
-
+i <- 0
+  
 cen_total = cen_total[-1,]
 i <- c(2:5)
 x <- cen_total[ ,i] <- apply(cen_total[ , i], 2, function(x) as.numeric(as.character(x)))
@@ -54,8 +55,6 @@ race <- cen_total[67:72,] %>%
   mutate(across(where(is.numeric), round, 4)) 
 
 ethnicity <- rbind(cen_total[75,], cen_total[81:87,])
-
-
 
 save(projections, baylang, raceproj, race, education, ethnicity, file="demo.RData")
 
