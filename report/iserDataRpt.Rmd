@@ -9,10 +9,12 @@ output: word_document
 knitr::opts_chunk$set(echo = FALSE)
 
 library(tidyverse)
+library(flextable)
 
 load("../is_standards.RData")
 load("../jobs.RData")
 load("../demo.RData")
+load("../labor_data.RData")
 ```
 
 # Introduction

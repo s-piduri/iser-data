@@ -30,6 +30,8 @@ colnames(baylang) <- c("Age/Language spoken at home","Total", "Only or Very Well
 baylang <- baylang %>% 
   replace_with_na(replace = list("Only or Very Well" = 0, "Less than Very Well" =0))
 
+i <- c(2:5)
+
 education <- educ[c(8:17), c(1:3, 18:19)] %>%
   mutate(across(where(is.numeric), round, 2)) 
 e <- education[ ,i] <- apply(education[ , i], 2, function(x) as.numeric(as.character(x)))
@@ -45,10 +47,9 @@ cen_raw <- read_excel(path=census, sheet = 2)
 cen_total <- subset(cen_raw, select = -c(4:17, 20:25))
 
 colnames(cen_total) <- c(" ", 'Bay Area: Estimate', 'Bay Area: Percent', 'SC County: Estimate', 'SC County: Percent')
-i <- 0
-  
+
 cen_total = cen_total[-1,]
-i <- c(2:5)
+
 x <- cen_total[ ,i] <- apply(cen_total[ , i], 2, function(x) as.numeric(as.character(x)))
 
 race <- cen_total[67:72,] %>%

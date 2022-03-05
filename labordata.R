@@ -6,8 +6,6 @@ occupations <- "C:\\Users\\spiduri\\San Jose-Evergreen Community College Distric
 
 topten <- read_excel(path=labor, sheet = 3, skip =2, n_max=10)
 toptech <- read_excel(path=labor, sheet = 5, skip =2, n_max=10)
-colnames(topten) <- c("Industry", "Share of Total Employment")
-colnames(toptech) <- c("Industry", "Share of Total Employment", "Projected Growth, 2020-2030")
 
 some_college <- read_excel(path=occupations, sheet = 1, skip = 2, n_max=6)
 nondegree <- read_excel(path=occupations, sheet = 2, skip = 2, n_max=46)
@@ -35,5 +33,9 @@ topten <- topten %>%
 
 toptech <- toptech %>% 
   select("Industry", "% Empl", "% Growth")
+
+colnames(topten) <- c("Industry", "Share of Total Employment")
+colnames(toptech) <- c("Industry", "Share of Total Employment", "Projected Growth, 2020-2030")
+
 
 save(topten, toptech, most_openings, most_growth, file="labor_data.RData")
