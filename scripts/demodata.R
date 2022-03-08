@@ -62,5 +62,8 @@ race <- cen_total[67:72,] %>%
 
 ethnicity <- rbind(cen_total[75,], cen_total[81:87,])
 
+##socioeconomic data
+
+
 save(projections, baylang, raceproj, race, education, ethnicity, file="demo.RData")
 
