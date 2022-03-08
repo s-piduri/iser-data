@@ -32,6 +32,7 @@ load("../labor_data.RData")
 [Provide summary-level labor market data for the service area. Disaggregate the data as appropriate for the institution’s mission and service area. Provide brief context if needed.] 
 
 ### Industries by Employment
+#### Top Industries by Employment
 ```{r}
 topten %>% flextable::flextable() %>% 
   flextable::add_header_lines(values= "Top Bay Area Industries by Employment, 2020") %>% 
@@ -39,6 +40,7 @@ topten %>% flextable::flextable() %>%
   flextable::autofit() %>% 
   flextable::set_formatter("Share of Total Employment" = function(x) sprintf("%.001f%%", x*100))
 ```
+### Top Tech Industries
 ```{r}
 toptech %>% flextable::flextable() %>% 
   flextable::add_header_lines(values= "Top Bay Area Tech Industries, 2020") %>% 
