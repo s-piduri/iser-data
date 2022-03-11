@@ -63,7 +63,13 @@ race <- cen_total[67:72,] %>%
 ethnicity <- rbind(cen_total[75,], cen_total[81:87,])
 
 ##socioeconomic data
+income <- "C:\\Users\\spiduri\\San Jose-Evergreen Community College District\\Accreditation ISER 2023 - env_scan_data\\Census - Income by County.xlsx"
+inc <- read_excel(path=income, sheet =2, skip=2)
+median <- inc[c(13:14),c(1, 5:7)]
+colnames(median) <- c("Income Level", 'Greater Bay Area', 'Santa Clara County', 'USA')
+inc_per <- inc[c(3:12),c(1:4)]
+colnames(inc_per) <- c("Income Level", 'Greater Bay Area', 'Santa Clara County', 'USA')
 
 
-save(projections, baylang, raceproj, race, education, ethnicity, file="demo.RData")
+save(projections, baylang, raceproj, race, education, ethnicity, median, inc_per, file="demo.RData")
 

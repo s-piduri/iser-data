@@ -37,35 +37,36 @@ load("../labor_data.RData")
 topten %>% flextable::flextable() %>% 
   flextable::add_header_lines(values= "Top Bay Area Industries by Employment, 2020") %>% 
   flextable::align(i=1, align="center", part="header") %>% 
-  flextable::autofit() %>% 
-  flextable::set_formatter("Share of Total Employment" = function(x) sprintf("%.001f%%", x*100))
+  flextable::set_formatter("Share of Total Employment" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::set_table_properties(width = .5, layout='autofit')
 ```
 ### Top Tech Industries
 ```{r}
 toptech %>% flextable::flextable() %>% 
   flextable::add_header_lines(values= "Top Bay Area Tech Industries, 2020") %>% 
   flextable::align(i=1, align="center", part="header") %>% 
-  flextable::autofit() %>% 
   flextable::set_formatter("Projected Growth, 2020-2030" = function(x) sprintf("%.001f%%", x*100)) %>% 
-  flextable::set_formatter("Share of Total Employment" = function(x) sprintf("%.001f%%", x*100))
+  flextable::set_formatter("Share of Total Employment" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::set_table_properties(width = .5, layout='autofit')
+
 ```
 ### Growth
 ```{r}
 most_openings %>% select(-"Unemployment") %>% 
   flextable::flextable() %>% 
-  flextable::autofit() %>% 
   flextable::add_header_lines(values= "Occupations with the Most Job Openings") %>% 
-  flextable::align(i=1, align="center", part="header")
-
+  flextable::align(i=1, align="center", part="header") %>% 
+  flextable::set_table_properties(width = .5, layout='autofit')
 ```
 
 ```{r}
 most_growth %>% select(-"Unemployment") %>% 
   flextable::flextable() %>% 
-  flextable::autofit() %>% 
   flextable::set_formatter("% Change" = function(x) sprintf("%.001f%%", x*100)) %>%
   flextable::add_header_lines(values= "Fastest Growing Occupations") %>% 
-  flextable::align(i=1, align="center", part="header")
+  flextable::align(i=1, align="center", part="header") %>% 
+  flextable::set_table_properties(width = .5, layout='autofit')
+
 
 ```
 
@@ -81,7 +82,8 @@ projections %>%
   pivot_wider(names_from = years, values_from = population) %>% 
   flextable::flextable() %>% 
   flextable::add_header_lines(values = "Bay Area Population Projections") %>% 
-  flextable::align(i=1, align="center", part="header")
+  flextable::align(i=1, align="center", part="header") %>% 
+    flextable::set_table_properties(width = .6, layout='autofit')
 ```
 
 ### Population Projections by Race
@@ -94,7 +96,7 @@ raceproj %>%
   flextable::set_formatter("2020" = function(x) sprintf("%.001f%%", x*100)) %>% 
   flextable::set_formatter("2060" = function(x) sprintf("%.001f%%", x*100)) %>% 
   flextable::set_formatter("Percent Change" = function(x) sprintf("%.001f%%", x*100)) %>% 
-  flextable::autofit()
+  flextable::set_table_properties(width = .7, layout='autofit')
 ```
 
 ### Race and Ethnicity In the Service Area
@@ -105,7 +107,7 @@ race %>% flextable::flextable() %>%
     flextable::align(i=1, align="center", part="header") %>%
     flextable::set_formatter("Bay Area: Percent" = function(x) sprintf("%.001f%%", x*100)) %>% 
     flextable::set_formatter("SC County: Percent" = function(x) sprintf("%.001f%%", x*100))%>% 
-  flextable::autofit() 
+  flextable::set_table_properties(width = .5, layout='autofit')
 ```
 
 #### Ethnicity Breakdown 
@@ -115,7 +117,7 @@ race %>% flextable::flextable() %>%
     flextable::align(i=1, align="center", part="header") %>%
     flextable::set_formatter("Bay Area: Percent" = function(x) sprintf("%.001f%%", x*100)) %>% 
     flextable::set_formatter("SC County: Percent" = function(x) sprintf("%.001f%%", x*100))%>% 
-    flextable::autofit()
+    flextable::set_table_properties(width = .5, layout='autofit')
 ```
 
 ### Educational Attainment
@@ -127,7 +129,7 @@ education %>%
   flextable::align(i=1, align="center", part="header") %>%
   flextable::set_formatter("Bay Area: Percent" = function(x) sprintf("%.001f%%", x*100)) %>% 
   flextable::set_formatter("SC County: Percent" = function(x) sprintf("%.001f%%", x*100)) %>% 
-  flextable::autofit() 
+  flextable::set_table_properties(width = .5, layout='autofit')
 
 ```
 
