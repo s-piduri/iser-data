@@ -15,7 +15,12 @@ licensure <- licensure %>%
   add_column('FY16/17' = lic1618$`FY16/17`, .before = "FY18/19") %>% 
   add_column('FY17/18' = lic1618$`FY17/18`, .before = "FY18/19")
 
-licensure[5,8] <- "N/A**"
-licensure[5, 10] <- "**No one took the exam this year due to covid"
+licensure[5,8] <- NA
+licensure[4,8] <- NA
+
+licensure[ ,c(3:9)] <- apply(licensure[ , c(3:9)], 2, function(x) as.numeric(as.character(x)))
+
+licensure[4,10] <- "No campus specific data on this item."
+licensure[5, 10] <- "No one took the exam this year due to covid"
 
 save(licensure, jobplace, file="jobs.RData")
