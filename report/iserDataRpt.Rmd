@@ -83,7 +83,7 @@ projections %>%
   flextable::flextable() %>% 
   flextable::add_header_lines(values = "Bay Area Population Projections") %>% 
   flextable::align(i=1, align="center", part="header") %>% 
-    flextable::set_table_properties(width = .6, layout='autofit')
+    autofit() %>% flextable::set_table_properties(width = .4, layout='autofit')
 ```
 
 ### Population Projections by Race
@@ -96,7 +96,7 @@ raceproj %>%
   flextable::set_formatter("2020" = function(x) sprintf("%.001f%%", x*100)) %>% 
   flextable::set_formatter("2060" = function(x) sprintf("%.001f%%", x*100)) %>% 
   flextable::set_formatter("Percent Change" = function(x) sprintf("%.001f%%", x*100)) %>% 
-  flextable::set_table_properties(width = .7, layout='autofit')
+  flextable::set_table_properties(width = .6, layout='autofit')
 ```
 
 ### Race and Ethnicity In the Service Area
@@ -137,6 +137,28 @@ education %>%
 ## Socio-economic Data 
 
 [Provide summary-level socio-economic data for the service area. Disaggregate the data as appropriate for the institution’s mission and service area. Provide brief context if needed.] 
+
+### Income
+
+```{r}
+median[1,1] <- "Median Income (dollars)"
+median %>% 
+  flextable::flextable() %>% 
+  add_header_lines(values="Income in the Service Area") %>% 
+    flextable::align(i=1, align="center", part="header") %>% 
+  flextable::set_table_properties(width = .5, layout='autofit')
+
+```
+### Poverty
+```{r}
+poverty %>% flextable() %>%
+    flextable::set_formatter("Greater Bay Area" = function(x) sprintf("%.001f%%", x*100)) %>% 
+    flextable::set_formatter("Santa Clara County" = function(x) sprintf("%.001f%%", x*100)) %>% 
+    add_header_lines(values="Poverty Level in the Service Area") %>% 
+    flextable::align(i=1, align="center", part="header") %>% 
+    flextable::set_table_properties(width = .4, layout='autofit')
+```
+
 
 ## Sites 
 
@@ -391,7 +413,7 @@ rgrads614 %>%
   flextable::add_header_lines(values = title) %>% 
   flextable::align(i=1, align="center", part="header") %>% 
   flextable::add_footer_lines(values = desc) %>% 
-    flextable::set_table_properties(width = .5, layout='autofit') %>% 
+    flextable::set_table_properties(width = .5, layout='autofit') 
 ```
 
 ## Licensure Pass and Job Placement Rates
@@ -400,11 +422,26 @@ rgrads614 %>%
 ```{r licensure}
 hvac_note <- licensure[4,10]
 med_note <- licensure[5, 10]
+colnames(licensure) <- c("Program", "Exam Type",  "Institution Set Standard", 
+                         "Stretch Goal", "2016-2017", "2017-2018", "2018-2019", 
+                         "2019-2020", "2020-2021", "Note")
 
-  licensure %>% select('Program', `Exam Type (National, State or Other)`, `Stretch/Aspirational Goal`, `FY16/17`, `FY17/18`, `FY18/19`, `FY19/20`, `FY20/21`) %>% 
+licensure %>% 
+  select("Program", "Exam Type", "Institution Set Standard", "Stretch Goal", 
+         "2016-2017", "2017-2018", "2018-2019", "2019-2020", "2020-2021") %>% 
   flextable::flextable() %>% 
   flextable::set_table_properties(width = .5, layout='autofit') %>% 
-    add_footer_lines(values =c(hvac_note,med_note))
+  add_footer_lines(values =c(hvac_note,med_note)) %>% 
+  flextable::add_header_lines(values = "Licensure Pass Rates") %>% 
+  flextable::align(i=1, align="center", part="header") %>% 
+  flextable::set_formatter("Institution Set Standard" = function(x) sprintf("%.001f%%", x*100)) %>%
+  flextable::set_formatter("Stretch Goal" = function(x) sprintf("%.001f%%", x*100)) %>%
+  flextable::set_formatter("2016-2017" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::set_formatter("2017-2018" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::set_formatter("2018-2019" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::set_formatter("2019-2020" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::set_formatter("2020-2021" = function(x) sprintf("%.001f%%", x*100))
+
 ```
 ### Job Placement Rates
 ```{r job placement}
