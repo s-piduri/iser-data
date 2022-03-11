@@ -70,6 +70,11 @@ colnames(median) <- c("Income Level", 'Greater Bay Area', 'Santa Clara County', 
 inc_per <- inc[c(3:12),c(1:4)]
 colnames(inc_per) <- c("Income Level", 'Greater Bay Area', 'Santa Clara County', 'USA')
 
+pov <- "C:\\Users\\spiduri\\San Jose-Evergreen Community College District\\Accreditation ISER 2023 - env_scan_data\\Census - Poverty Level.xlsx"
+poverty <- read_excel(path=pov, skip=1, n_max=1)
+poverty <- poverty[,c(4,28)]
+colnames(poverty) <- c("Greater Bay Area", "Santa Clara County")
 
-save(projections, baylang, raceproj, race, education, ethnicity, median, inc_per, file="demo.RData")
+save(projections, baylang, raceproj, race, education, ethnicity, 
+     median, inc_per, poverty, file="demo.RData")
 

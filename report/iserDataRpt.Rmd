@@ -312,7 +312,7 @@ ggrads614 %>%
 
 ```{r}
 title <- "Course Success Rates by Ethnicity"
-desc <- "Note that \"All Masked Values\" contains students who listed multiple values or did not respond."
+desc <- "Note that \"All Masked Values\" contains students who listed another ethnicity or did not respond."
 csrace %>% 
   select(years, subgroup, perc) %>% 
   pivot_wider(names_from = years, values_from = perc) %>% 
@@ -333,7 +333,7 @@ csrace %>%
 
 ```{r}
 title <- "Certificate Earners by Ethnicity"
-desc <- "Note that \"All Masked Values\" contains students who listed multiple values or did not respond."
+desc <- "Note that \"All Masked Values\" contains students who listed another ethnicity or did not respond."
 rgrads603 %>% 
   select(years, subgroup, value) %>% 
   #drop_na() %>% 
@@ -350,7 +350,7 @@ rgrads603 %>%
 
 ```{r}
 title <- "Degree Earners by Ethnicity"
-desc <- "Note that \"All Masked Values\" contains students who listed multiple values or did not respond."
+desc <- "Note that \"All Masked Values\" contains students who listed another ethnicity or did not respond."
 rgrads631%>% 
   select(years, subgroup, value) %>% 
   #drop_na() %>% 
@@ -366,7 +366,7 @@ rgrads631%>%
 
 ```{r}
 title <- "ADT Earners by Ethnicity"
-desc <- "Note that \"All Masked Values\" contains students who listed multiple values or did not respond."
+desc <- "Note that \"All Masked Values\" contains students who listed another ethnicity or did not respond."
 rgrads608%>% 
   select(years, subgroup, value) %>% 
   #drop_na() %>% 
@@ -382,7 +382,7 @@ rgrads608%>%
 
 ```{r}
 title <- "Distinct Number of Transfers to CSU or UC by Ethnicity"
-desc <- "Note that \"All Masked Values\" contains students who listed multiple values or did not respond."
+desc <- "Note that \"All Masked Values\" contains students who listed another ethnicity or not respond."
 rgrads614 %>% 
   select(years, subgroup, value) %>% 
   #drop_na() %>% 
@@ -391,16 +391,20 @@ rgrads614 %>%
   flextable::add_header_lines(values = title) %>% 
   flextable::align(i=1, align="center", part="header") %>% 
   flextable::add_footer_lines(values = desc) %>% 
-  flextable::width(width=1)
+    flextable::set_table_properties(width = .5, layout='autofit') %>% 
 ```
 
 ## Licensure Pass and Job Placement Rates
 
 ### Licensure Pass Rates
 ```{r licensure}
-  licensure %>% 
-  flextable::flextable()
+hvac_note <- licensure[4,10]
+med_note <- licensure[5, 10]
 
+  licensure %>% select('Program', `Exam Type (National, State or Other)`, `Stretch/Aspirational Goal`, `FY16/17`, `FY17/18`, `FY18/19`, `FY19/20`, `FY20/21`) %>% 
+  flextable::flextable() %>% 
+  flextable::set_table_properties(width = .5, layout='autofit') %>% 
+    add_footer_lines(values =c(hvac_note,med_note))
 ```
 ### Job Placement Rates
 ```{r job placement}
