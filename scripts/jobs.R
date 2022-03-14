@@ -23,4 +23,12 @@ licensure[ ,c(3:9)] <- apply(licensure[ , c(3:9)], 2, function(x) as.numeric(as.
 licensure[4,10] <- "No campus specific data on this item."
 licensure[5, 10] <- "No one took the exam this year due to covid"
 
+colnames(licensure) <- c("Program", "Exam Type",  "Institution Set Standard", 
+                         "Stretch Goal", "2016-2017", "2017-2018", "2018-2019", 
+                         "2019-2020", "2020-2021", "Note")
+
+colnames(jobplace) <- c("Program", "Institution Set Standard", "Stretch Goal",
+                        "2018-2019", "2019-2020", "2020-2021")
+
+
 save(licensure, jobplace, file="jobs.RData")

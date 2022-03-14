@@ -420,30 +420,33 @@ rgrads614 %>%
 
 ### Licensure Pass Rates
 ```{r licensure}
-hvac_note <- licensure[4,10]
-med_note <- licensure[5, 10]
-colnames(licensure) <- c("Program", "Exam Type",  "Institution Set Standard", 
-                         "Stretch Goal", "2016-2017", "2017-2018", "2018-2019", 
-                         "2019-2020", "2020-2021", "Note")
-
 licensure %>% 
   select("Program", "Exam Type", "Institution Set Standard", "Stretch Goal", 
          "2016-2017", "2017-2018", "2018-2019", "2019-2020", "2020-2021") %>% 
   flextable::flextable() %>% 
   flextable::set_table_properties(width = .5, layout='autofit') %>% 
-  add_footer_lines(values =c(hvac_note,med_note)) %>% 
   flextable::add_header_lines(values = "Licensure Pass Rates") %>% 
   flextable::align(i=1, align="center", part="header") %>% 
   flextable::set_formatter("Institution Set Standard" = function(x) sprintf("%.001f%%", x*100)) %>%
-  flextable::set_formatter("Stretch Goal" = function(x) sprintf("%.001f%%", x*100)) %>%
-  flextable::set_formatter("2016-2017" = function(x) sprintf("%.001f%%", x*100)) %>% 
-  flextable::set_formatter("2017-2018" = function(x) sprintf("%.001f%%", x*100)) %>% 
-  flextable::set_formatter("2018-2019" = function(x) sprintf("%.001f%%", x*100)) %>% 
-  flextable::set_formatter("2019-2020" = function(x) sprintf("%.001f%%", x*100)) %>% 
-  flextable::set_formatter("2020-2021" = function(x) sprintf("%.001f%%", x*100))
-
+  flextable::set_formatter("Stretch Goal" = function(x) sprintf("%.000f%%", x*100)) %>%
+  flextable::set_formatter("2016-2017" = function(x) sprintf("%.000f%%", x*100)) %>% 
+  flextable::set_formatter("2017-2018" = function(x) sprintf("%.000f%%", x*100)) %>% 
+  flextable::set_formatter("2018-2019" = function(x) sprintf("%.000f%%", x*100)) %>% 
+  flextable::set_formatter("2019-2020" = function(x) sprintf("%.000f%%", x*100)) %>% 
+  flextable::set_formatter("2020-2021" = function(x) sprintf("%.000f%%", x*100)) %>% 
+  footnote(i=4, j=8, value = as_paragraph("No campus specific data on this item."), ref_symbols = c("a"), part = "body") %>%  
+  footnote(i=5, j=8, value = as_paragraph("No one took the exam this year due to Covid"), ref_symbols = c("b"), part = "body")
 ```
 ### Job Placement Rates
 ```{r job placement}
-  jobplace %>% flextable::flextable()
+  jobplace %>% 
+    flextable::flextable() %>%
+    flextable::set_formatter("Institution Set Standard" = function(x) sprintf("%.001f%%", x*100)) %>%
+  flextable::set_formatter("Stretch Goal" = function(x) sprintf("%.000f%%", x*100)) %>%
+  flextable::set_formatter("2018-2019" = function(x) sprintf("%.000f%%", x*100)) %>% 
+  flextable::set_formatter("2019-2020" = function(x) sprintf("%.000f%%", x*100)) %>% 
+  flextable::set_formatter("2020-2021" = function(x) sprintf("%.000f%%", x*100)) %>% 
+  flextable::add_header_lines(values = "Job Placement Rates") %>% 
+  flextable::align(i=1, align="center", part="header")
+
 ```
