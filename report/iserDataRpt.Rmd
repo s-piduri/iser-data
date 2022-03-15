@@ -2,7 +2,9 @@
 title: "ISER Data Section"
 author: "Office of Reserach, Planning and Institutional Effectiveness"
 date: "`r Sys.Date()`"
-output: word_document
+output: 
+  word_document
+    
 ---
 
 ```{r setup, include=FALSE}
@@ -38,7 +40,7 @@ topten %>% flextable::flextable() %>%
   flextable::add_header_lines(values= "Top Bay Area Industries by Employment, 2020") %>% 
   flextable::align(i=1, align="center", part="header") %>% 
   flextable::set_formatter("Share of Total Employment" = function(x) sprintf("%.001f%%", x*100)) %>% 
-  flextable::set_table_properties(width = .5, layout='autofit')
+  flextable::set_table_properties(width = .6, layout='autofit')
 ```
 ### Top Tech Industries
 ```{r}
@@ -244,7 +246,7 @@ overall614 %>%
 
 ```{r}
 title <- "Course Success Rates by Gender"
-desc <- "Note that \"All Masked Values\" contains Non-Binary and Unknown/Non-Respondent students."
+desc <- "Note: \"All Masked Values\" contains Non-Binary and Unknown/Non-Respondent students."
 csgender %>% 
   select(years, subgroup, perc) %>% 
   drop_na() %>% 
@@ -264,7 +266,7 @@ csgender %>%
 
 ```{r}
 title <- "Certificate Earners by Gender"
-desc <- "Note that \"All Masked Values\" contains Non-Binary and Unknown/Non-Respondent students."
+desc <- "Note: \"All Masked Values\" contains Non-Binary and Unknown/Non-Respondent students."
 ggrads603 %>% 
   select(years, subgroup, value) %>% 
   drop_na() %>% 
@@ -281,7 +283,7 @@ ggrads603 %>%
 
 ```{r}
 title <- "Degree Earners by Gender"
-desc <- "Note that \"All Masked Values\" contains Non-Binary and Unknown/Non-Respondent students."
+desc <- "Note: \"All Masked Values\" contains Non-Binary and Unknown/Non-Respondent students."
 ggrads631%>% 
   select(years, subgroup, value) %>% 
   drop_na() %>% 
@@ -297,7 +299,7 @@ ggrads631%>%
 
 ```{r}
 title <- "ADT Earners by Gender"
-desc <- "Note that \"All Masked Values\" contains Non-Binary and Unknown/Non-Respondent students."
+desc <- "Note: \"All Masked Values\" contains Non-Binary and Unknown/Non-Respondent students."
 ggrads608%>% 
   select(years, subgroup, value) %>% 
   drop_na() %>% 
@@ -313,7 +315,7 @@ ggrads608%>%
 
 ```{r}
 title <- "Distinct Number of Transfers to CSU or UC by Gender"
-desc <- "Note that \"All Masked Values\" contains Non-Binary and Unknown/Non-Respondent students."
+desc <- "Note: \"All Masked Values\" contains Non-Binary and Unknown/Non-Respondent students."
 ggrads614 %>% 
   select(years, subgroup, value) %>% 
   filter(subgroup=="Female" | subgroup=="Male" | subgroup=="All Masked Values") %>% 
@@ -334,7 +336,7 @@ ggrads614 %>%
 
 ```{r}
 title <- "Course Success Rates by Ethnicity"
-desc <- "Note that \"All Masked Values\" contains students who listed another ethnicity or did not respond."
+desc <- "Note: \"All Masked Values\" contains students who listed another ethnicity or did not respond."
 csrace %>% 
   select(years, subgroup, perc) %>% 
   pivot_wider(names_from = years, values_from = perc) %>% 
@@ -355,7 +357,7 @@ csrace %>%
 
 ```{r}
 title <- "Certificate Earners by Ethnicity"
-desc <- "Note that \"All Masked Values\" contains students who listed another ethnicity or did not respond."
+desc <- "Note: \"All Masked Values\" contains students who listed another ethnicity or did not respond."
 rgrads603 %>% 
   select(years, subgroup, value) %>% 
   #drop_na() %>% 
@@ -372,7 +374,7 @@ rgrads603 %>%
 
 ```{r}
 title <- "Degree Earners by Ethnicity"
-desc <- "Note that \"All Masked Values\" contains students who listed another ethnicity or did not respond."
+desc <- "Note: \"All Masked Values\" contains students who listed another ethnicity or did not respond."
 rgrads631%>% 
   select(years, subgroup, value) %>% 
   #drop_na() %>% 
@@ -388,7 +390,7 @@ rgrads631%>%
 
 ```{r}
 title <- "ADT Earners by Ethnicity"
-desc <- "Note that \"All Masked Values\" contains students who listed another ethnicity or did not respond."
+desc <- "Note: \"All Masked Values\" contains students who listed another ethnicity or did not respond."
 rgrads608%>% 
   select(years, subgroup, value) %>% 
   #drop_na() %>% 
@@ -404,7 +406,7 @@ rgrads608%>%
 
 ```{r}
 title <- "Distinct Number of Transfers to CSU or UC by Ethnicity"
-desc <- "Note that \"All Masked Values\" contains students who listed another ethnicity or not respond."
+desc <- "Note: \"All Masked Values\" contains students who listed another ethnicity or not respond."
 rgrads614 %>% 
   select(years, subgroup, value) %>% 
   #drop_na() %>% 
@@ -435,8 +437,8 @@ licensure %>%
   flextable::set_formatter("2018-2019" = function(x) sprintf("%.000f%%", x*100)) %>% 
   flextable::set_formatter("2019-2020" = function(x) sprintf("%.000f%%", x*100)) %>% 
   flextable::set_formatter("2020-2021" = function(x) sprintf("%.000f%%", x*100)) %>% 
-  footnote(i=4, j=8, value = as_paragraph("No campus specific data on this item."), ref_symbols = c("a"), part = "body") %>%  
-  footnote(i=5, j=8, value = as_paragraph("No one took the exam this year due to Covid"), ref_symbols = c("b"), part = "body")
+  footnote(i=4, j=8, value = as_paragraph("No campus specific data on this item."), ref_symbols = c("A"), part = "body") %>%  
+  footnote(i=5, j=8, value = as_paragraph("No one took the exam this year due to Covid"), ref_symbols = c("B"), part = "body")
 ```
 ### Job Placement Rates
 ```{r job placement}

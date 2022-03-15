@@ -1,10 +1,14 @@
 ---
 title: "reference"
-output: word_document
+output: 
+  word_document
+
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(flextable)
 ```
 
 ## R Markdown
@@ -26,3 +30,8 @@ plot(pressure)
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r}
+pressure %>% flextable()
+```
+
