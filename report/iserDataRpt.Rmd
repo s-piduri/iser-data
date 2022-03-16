@@ -12,12 +12,18 @@ knitr::opts_chunk$set(echo = FALSE)
 
 library(tidyverse)
 library(flextable)
+library(officer)
 
 load("../is_standards.RData")
 load("../jobs.RData")
 load("../demo.RData")
 load("../labor_data.RData")
 ```
+
+```{r}
+knitr::opts_chunk$set(tab.topcaption = FALSE)
+```
+
 
 # Introduction
 
@@ -35,7 +41,7 @@ load("../labor_data.RData")
 
 ### Industries by Employment
 #### Top Industries by Employment
-```{r}
+```{r, ft.align="center", tab.id='tab1', tab.cap="Source: JobsEQ, via Hanover Research"}
 topten %>% flextable::flextable() %>% 
   flextable::add_header_lines(values= "Top Bay Area Industries by Employment, 2020") %>% 
   flextable::align(i=1, align="center", part="header") %>% 
