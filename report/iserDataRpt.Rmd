@@ -135,7 +135,8 @@ median %>%
   flextable::set_table_properties(width = .5, layout='autofit')
 
 ```
-### Poverty
+
+
 ```{r, ft.align='left'}
 poverty %>% flextable() %>%
     flextable::set_formatter("Greater Bay Area" = function(x) sprintf("%.001f%%", x*100)) %>% 
