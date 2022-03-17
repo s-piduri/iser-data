@@ -51,8 +51,9 @@ percentfloor <- function(table, id, beg_year, end_year, pincrease){
   aspirational = seq(cs_base, csceil, by=pincrease)
 
   #add aspirational goal to table
-  yrtable %>% add_column(aspirational, .before="perc") %>%
+  yrtable <- yrtable %>% add_column(aspirational, .before="perc") %>%
     select(years, ids, title, description, floor, aspirational, perc)
+  
 }
 
 #gets the floor and aspirational values for a certain category ID
@@ -86,9 +87,15 @@ valuefloor <- function(table, id, beg_year, end_year, pincrease){
   aspirational = round(cumprod(c(cert_base, rep(cert_incr,yrlngth))))
   
   #add aspirational goal to table
-  yrtable %>% add_column(aspirational, .before="value") %>% 
-    select(years, ids, title, description, floor, aspirational, value) %>% 
-    pivot_longer(cols=c("floor", "aspirational", "value"), names_to = "type", values_to = "value")
+  yrtable <- yrtable %>% add_column(aspirational, .before="value") %>% 
+    select(years, ids, title, description, floor, aspirational, value)
+  
+ colnames(yrtable) <- c("years", "ids", "title", "description", "Floor value", "Aspirational value",
+                        "Actual value")
+   
+  yrtable %>%  
+     pivot_longer(cols=c("Floor value", "Aspirational value",
+                         "Actual value"), names_to = "type", values_to = "value")
   
 }
 
@@ -126,19 +133,27 @@ lagfloor <- function(table, id, beg_year, end_year, pincrease){
   aspirational = round(cumprod(c(cert_base, rep(cert_incr,yrlngth))))
   
   #add aspirational goal to table
-  yrtable %>% add_column(aspirational, .before="value") %>% 
-    select(years, ids, title, description, floor, aspirational, value) %>% 
-    pivot_longer(cols=c("floor", "aspirational", "value"), names_to = "type", values_to = "value")
+  yrtable <- yrtable %>% add_column(aspirational, .before="value") %>% 
+    select(years, ids, title, description, floor, aspirational, value)
   
+  colnames(yrtable) <- c("years", "ids", "title", "description", "Floor value", "Aspirational value",
+                         "Actual value")
+  
+  yrtable %>%  
+    pivot_longer(cols=c("Floor value", "Aspirational value",
+                        "Actual value"), names_to = "type", values_to = "value")
 }
 
 
 #gets course success rates
 #aspirational percent increase of .5% per year
 overallcs <- percentfloor(overall, 408, beg_yr, end_yr, .005)
+colnames(overallcs) <- c("years", "ids", "title", "description", "Floor value", "Aspirational value",
+                       "Actual value")
 #percentfloor returns a data table that is not fully long so pivot longer
 overallcs <- overallcs %>%  
-  pivot_longer(cols=c("floor", "aspirational", "perc"), names_to = "type", values_to = "percentage")
+  pivot_longer(cols=c("Floor value", "Aspirational value",
+                      "Actual value"), names_to = "type", values_to = "percentage")
 
 
 #gets number of certificate earners
