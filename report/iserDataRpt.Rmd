@@ -20,7 +20,7 @@ load("../labor_data.RData")
 ```
 
 ```{r}
-knitr::opts_chunk$set(tab.topcaption = TRUE)
+set_flextable_defaults(font.size = 9)
 ```
 
 
@@ -44,21 +44,25 @@ topten %>% flextable::flextable() %>%
   flextable::set_formatter("Share of Total Employment" = function(x) sprintf("%.001f%%", x*100)) %>% 
   width(j=1, width = 4) %>% 
   width(j=2, width=2) %>% 
-  set_caption("Top Industries by Employment", autonum = run_autonum(seq_id='tab', bkm='topten'))
+  set_caption("Top Industries by Employment", autonum = run_autonum(seq_id='tab', bkm='topten')) %>% 
+  footnote(j=1, value = as_paragraph("Source: JobsEQ, via Hanover Research"), ref_symbols=c(""), part = "header")
 ```
 ```{r, ft.align="left"}
 toptech %>% flextable::flextable() %>% 
   set_caption("Top Bay Area Tech Industries, 2020", autonum = run_autonum(seq_id='tab', bkm='toptech')) %>% 
   flextable::set_formatter("Projected Growth, 2020-2030" = function(x) sprintf("%.001f%%", x*100)) %>% 
   flextable::set_formatter("Share of Total Employment" = function(x) sprintf("%.001f%%", x*100)) %>% 
-  flextable::set_table_properties(width = .5, layout='autofit')
+  flextable::set_table_properties(width = .5, layout='autofit') %>% 
+  footnote(j=1, value = as_paragraph("Source: JobsEQ, via Hanover Research"), ref_symbols=c(""), part = "header")
 
 ```
 ```{r, ft.align="left"}
 most_openings %>% select(-"Unemployment") %>% 
   flextable::flextable() %>% 
   set_caption("Occupations with the Most Job Openings", autonum = run_autonum(seq_id='tab', bkm='openings')) %>% 
-  flextable::set_table_properties(width = .5, layout='autofit')
+  flextable::set_table_properties(width = .5, layout='autofit') %>% 
+  footnote(j=1, value = as_paragraph("Source: JobsEQ, via Hanover Research"), ref_symbols=c(""), part = "header")
+
 ```
 
 ```{r, ft.align="left"}
@@ -66,7 +70,8 @@ most_growth %>% select(-"Unemployment") %>%
   flextable::flextable() %>% 
   flextable::set_formatter("% Change" = function(x) sprintf("%.001f%%", x*100)) %>%
   set_caption("Fastest Growing Occupations",autonum = run_autonum(seq_id='tab', bkm='topten')) %>% 
-  flextable::set_table_properties(width = .5, layout='autofit')
+  flextable::set_table_properties(width = .5, layout='autofit') %>% 
+  footnote(j=1, value = as_paragraph("Source: JobsEQ, via Hanover Research"), ref_symbols=c(""), part = "header")
 
 
 ```
@@ -82,7 +87,8 @@ projections %>%
   pivot_wider(names_from = years, values_from = population) %>% 
   flextable::flextable() %>% 
   set_caption("Bay Area Population Projections", autonum = run_autonum(seq_id='tab', bkm='popproj')) %>% 
-  width(width=1)
+  width(width=1) %>% 
+  footnote(j=1, value = as_paragraph("Source: State of California Department of Finance, via Hanover Research"), ref_symbols=c(""), part = "header")
 ```
 
 
@@ -93,14 +99,18 @@ raceproj %>%
   flextable::set_formatter("2020" = function(x) sprintf("%.001f%%", x*100)) %>% 
   flextable::set_formatter("2060" = function(x) sprintf("%.001f%%", x*100)) %>% 
   flextable::set_formatter("Percent Change" = function(x) sprintf("%.001f%%", x*100)) %>% 
-  width(width=1.6)
+  width(width=1.6) %>% 
+  footnote(j=1, value = as_paragraph("Source: State of California Department of Finance, via Hanover Research"), ref_symbols=c(""), part = "header")
+
 ```
 
 ```{r, ft.align="left"}
 race %>% flextable::flextable() %>% 
     flextable::set_caption("Service Area Racial Breakdown",autonum = run_autonum(seq_id='tab', bkm='race')) %>%     flextable::set_formatter("Bay Area: Percent" = function(x) sprintf("%.001f%%", x*100)) %>% 
     flextable::set_formatter("SC County: Percent" = function(x) sprintf("%.001f%%", x*100))%>% 
-  flextable::set_table_properties(width = .5, layout='autofit')
+  flextable::set_table_properties(width = .5, layout='autofit') %>% 
+  footnote(j=1, value = as_paragraph("Source: US Census Bureau, via Hanover Research"), ref_symbols=c(""), part = "header")
+
 ```
 
 ```{r, ft.align="left"}
@@ -108,7 +118,9 @@ race %>% flextable::flextable() %>%
     set_caption("Service Area Ethnicity Breakdown",autonum = run_autonum(seq_id='tab', bkm='ethn')) %>% 
     flextable::set_formatter("Bay Area: Percent" = function(x) sprintf("%.001f%%", x*100)) %>% 
     flextable::set_formatter("SC County: Percent" = function(x) sprintf("%.001f%%", x*100))%>% 
-    flextable::set_table_properties(width = .5, layout='autofit')
+    flextable::set_table_properties(width = .5, layout='autofit') %>% 
+    footnote(j=1, value = as_paragraph("Source: US Census Bureau, via Hanover Research"), ref_symbols=c(""), part = "header")
+
 ```
 
 
@@ -124,7 +136,10 @@ education %>%
   set_caption("Educational Attainment for Population Age 25+",autonum = run_autonum(seq_id='tab', bkm='edatt')) %>% 
   flextable::set_formatter("Bay Area: Percent" = function(x) sprintf("%.001f%%", x*100)) %>% 
   flextable::set_formatter("SC County: Percent" = function(x) sprintf("%.001f%%", x*100)) %>% 
-  flextable::set_table_properties(width = .5, layout='autofit')
+  flextable::set_table_properties(width = .5, layout='autofit') %>% 
+  footnote(j=1, value = as_paragraph("Source: US Census Bureau, via Hanover Research"), ref_symbols=c(""), part = "header")
+
+
 ```
 
 
@@ -133,7 +148,8 @@ median[1,1] <- "Median Income (dollars)"
 median %>% 
   flextable::flextable() %>% 
   set_caption("Income in the Service Area",autonum = run_autonum(seq_id='tab', bkm='income')) %>% 
-  width(width=1.4)
+  width(width=1.4) %>% 
+    footnote(j=1, value = as_paragraph("Source: US Census Bureau, via Hanover Research"), ref_symbols=c(""), part = "header")
 
 ```
 
@@ -143,7 +159,9 @@ poverty %>% flextable() %>%
     flextable::set_formatter("Greater Bay Area" = function(x) sprintf("%.001f%%", x*100)) %>% 
     flextable::set_formatter("Santa Clara County" = function(x) sprintf("%.001f%%", x*100)) %>% 
     set_caption("Poverty Level in the Service Area",autonum = run_autonum(seq_id='tab', bkm='poverty')) %>% 
-  width(width=3)
+  width(width=3) %>% 
+  footnote(j=1, value = as_paragraph("Source: US Census Bureau, via Hanover Research"), ref_symbols=c(""), part = "header")
+
 ```
 
 
@@ -233,9 +251,9 @@ overall614 %>%
 title <- "Course Success Rates by Gender"
 desc <- "Note: \"All Masked Values\" contains Non-Binary and Unknown/Non-Respondent students."
 csgender %>% 
-  select(years, subgroup, perc) %>% 
+  select(years, Gender, value) %>% 
   drop_na() %>% 
-  pivot_wider(names_from = years, values_from = perc) %>% 
+  pivot_wider(names_from = years, values_from = value) %>% 
   flextable::flextable() %>% 
   flextable::add_header_lines(values = title) %>% 
   flextable::align(i=1, align="center", part="header") %>% 
@@ -253,7 +271,7 @@ csgender %>%
 title <- "Certificate Earners by Gender"
 desc <- "Note: \"All Masked Values\" contains Non-Binary and Unknown/Non-Respondent students."
 ggrads603 %>% 
-  select(years, subgroup, value) %>% 
+  select(years, Gender, value) %>% 
   drop_na() %>% 
   pivot_wider(names_from = years, values_from = value) %>% 
   flextable::flextable() %>% 
@@ -270,7 +288,7 @@ ggrads603 %>%
 title <- "Degree Earners by Gender"
 desc <- "Note: \"All Masked Values\" contains Non-Binary and Unknown/Non-Respondent students."
 ggrads631%>% 
-  select(years, subgroup, value) %>% 
+  select(years, Gender, value) %>% 
   drop_na() %>% 
   pivot_wider(names_from = years, values_from = value) %>% 
   flextable::flextable() %>% 
@@ -286,7 +304,7 @@ ggrads631%>%
 title <- "ADT Earners by Gender"
 desc <- "Note: \"All Masked Values\" contains Non-Binary and Unknown/Non-Respondent students."
 ggrads608%>% 
-  select(years, subgroup, value) %>% 
+  select(years, Gender, value) %>% 
   drop_na() %>% 
   pivot_wider(names_from = years, values_from = value) %>% 
   flextable::flextable() %>% 
@@ -302,8 +320,8 @@ ggrads608%>%
 title <- "Distinct Number of Transfers to CSU or UC by Gender"
 desc <- "Note: \"All Masked Values\" contains Non-Binary and Unknown/Non-Respondent students."
 ggrads614 %>% 
-  select(years, subgroup, value) %>% 
-  filter(subgroup=="Female" | subgroup=="Male" | subgroup=="All Masked Values") %>% 
+  select(years, Gender, value) %>% 
+  filter(Gender=="Female" | Gender=="Male" | Gender=="All Masked Values") %>% 
   pivot_wider(names_from = years, values_from = value) %>% 
   flextable::flextable() %>% 
   flextable::add_header_lines(values = title) %>% 
@@ -317,14 +335,13 @@ ggrads614 %>%
 
 ## Disaggregation by Ethnicity
 
-### Course success
 
 ```{r}
 title <- "Course Success Rates by Ethnicity"
 desc <- "Note: \"All Masked Values\" contains students who listed another ethnicity or did not respond."
 csrace %>% 
-  select(years, subgroup, perc) %>% 
-  pivot_wider(names_from = years, values_from = perc) %>% 
+  select(years, Ethnicity, value) %>% 
+  pivot_wider(names_from = years, values_from = value) %>% 
   drop_na() %>% 
   flextable::flextable() %>% 
   flextable::add_header_lines(values = title) %>% 
@@ -344,7 +361,7 @@ csrace %>%
 title <- "Certificate Earners by Ethnicity"
 desc <- "Note: \"All Masked Values\" contains students who listed another ethnicity or did not respond."
 rgrads603 %>% 
-  select(years, subgroup, value) %>% 
+  select(years, Ethnicity, value) %>% 
   #drop_na() %>% 
   pivot_wider(names_from = years, values_from = value) %>% 
   flextable::flextable() %>% 
@@ -361,7 +378,7 @@ rgrads603 %>%
 title <- "Degree Earners by Ethnicity"
 desc <- "Note: \"All Masked Values\" contains students who listed another ethnicity or did not respond."
 rgrads631%>% 
-  select(years, subgroup, value) %>% 
+  select(years, Ethnicity, value) %>% 
   #drop_na() %>% 
   pivot_wider(names_from = years, values_from = value) %>% 
   flextable::flextable() %>% 
@@ -377,7 +394,7 @@ rgrads631%>%
 title <- "ADT Earners by Ethnicity"
 desc <- "Note: \"All Masked Values\" contains students who listed another ethnicity or did not respond."
 rgrads608%>% 
-  select(years, subgroup, value) %>% 
+  select(years, Ethnicity, value) %>% 
   #drop_na() %>% 
   pivot_wider(names_from = years, values_from = value) %>% 
   flextable::flextable() %>% 
@@ -393,8 +410,7 @@ rgrads608%>%
 title <- "Distinct Number of Transfers to CSU or UC by Ethnicity"
 desc <- "Note: \"All Masked Values\" contains students who listed another ethnicity or not respond."
 rgrads614 %>% 
-  select(years, subgroup, value) %>% 
-  #drop_na() %>% 
+  select(years, Ethnicity, value) %>% 
   pivot_wider(names_from = years, values_from = value) %>% 
   flextable::flextable() %>% 
   flextable::add_header_lines(values = title) %>% 

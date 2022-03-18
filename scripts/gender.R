@@ -22,10 +22,18 @@ csgender <- gender %>%
   filter(metricID == "SM 408SW", academicYear > filter_ay) %>% 
   select(years, ids, title, description, subgroup, perc)
 
+colnames(csgender) <- c('years', 'ids', 'title', 'description', 'categoryID',
+                      'Gender', "value")
+
+
 #graduation/certificates by gender
 ggrads <- gender %>% 
   filter(academicYear > filter_ay) %>% 
   select(years, ids, title, description, categoryID, subgroup, value)
+
+colnames(ggrads) <- c('years', 'ids', 'title', 'description', 'categoryID',
+                        'Gender', "value")
+
 
 #put each metric into a separate tibble
 #each metric is now disaggregated by gender
@@ -38,3 +46,6 @@ ggrads608 <- ggrads %>%
 ggrads614 <- gender %>% 
   filter(categoryID == 614, academicYear > filter_ay-1) %>% 
   select(years, ids, title, description, categoryID, subgroup, value)
+
+colnames(ggrads614) <- c('years', 'ids', 'title', 'description', 'categoryID',
+                        'Gender', "value")

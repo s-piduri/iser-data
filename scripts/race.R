@@ -17,12 +17,18 @@ csrace <- race %>%
   filter(metricID == "SM 408SW", academicYear > filter_ay) %>% 
   select(years, ids, title, description, subgroup, perc)
 
+colnames(csrace) <- c('years', 'ids', 'title', 'description',
+                      'Ethnicity', "value")
+
 catids <- c(603, 631, 608, 614)
 
 #table for grad/certs 
 rgrads <- race %>% 
   filter(academicYear > filter_ay) %>% 
   select(years, ids, title, description, categoryID, subgroup, value)
+
+colnames(rgrads) <- c('years', 'ids', 'title', 'description', 'categoryID',
+                      'Ethnicity', "value")
 
 #disaggregation by ethnicity for each metric
 rgrads603 <- rgrads %>% 
@@ -34,3 +40,6 @@ rgrads608 <- rgrads %>%
 rgrads614 <- race %>% 
   filter(categoryID == 614, academicYear > filter_ay-1) %>% 
   select(years, ids, title, description, categoryID, subgroup, value)
+
+colnames(rgrads614) <- c('years', 'ids', 'title', 'description', 'categoryID',
+                      'Ethnicity', "value")
