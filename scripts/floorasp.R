@@ -95,7 +95,7 @@ valuefloor <- function(table, id, beg_year, end_year, pincrease){
    
   yrtable %>%  
      pivot_longer(cols=c("Floor value", "Aspirational value",
-                         "Actual value"), names_to = "type", values_to = "value")
+                         "Actual value"), names_to = "Type", values_to = "value")
   
 }
 
@@ -141,7 +141,7 @@ lagfloor <- function(table, id, beg_year, end_year, pincrease){
   
   yrtable %>%  
     pivot_longer(cols=c("Floor value", "Aspirational value",
-                        "Actual value"), names_to = "type", values_to = "value")
+                        "Actual value"), names_to = "Type", values_to = "value")
 }
 
 
@@ -153,7 +153,7 @@ colnames(overallcs) <- c("years", "ids", "title", "description", "Floor value", 
 #percentfloor returns a data table that is not fully long so pivot longer
 overallcs <- overallcs %>%  
   pivot_longer(cols=c("Floor value", "Aspirational value",
-                      "Actual value"), names_to = "type", values_to = "percentage")
+                      "Actual value"), names_to = "Type", values_to = "percentage")
 
 
 #gets number of certificate earners

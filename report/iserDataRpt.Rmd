@@ -42,7 +42,8 @@ knitr::opts_chunk$set(tab.topcaption = TRUE)
 ```{r, ft.align="left"}
 topten %>% flextable::flextable() %>% 
   flextable::set_formatter("Share of Total Employment" = function(x) sprintf("%.001f%%", x*100)) %>% 
-  flextable::set_table_properties(width = 1, layout='autofit') %>% 
+  width(j=1, width = 4) %>% 
+  width(j=2, width=2) %>% 
   set_caption("Top Industries by Employment", autonum = run_autonum(seq_id='tab', bkm='topten'))
 ```
 ```{r, ft.align="left"}
@@ -81,7 +82,7 @@ projections %>%
   pivot_wider(names_from = years, values_from = population) %>% 
   flextable::flextable() %>% 
   set_caption("Bay Area Population Projections", autonum = run_autonum(seq_id='tab', bkm='popproj')) %>% 
-  flextable::set_table_properties(width = .4, layout='autofit')
+  width(width=1)
 ```
 
 
@@ -92,7 +93,7 @@ raceproj %>%
   flextable::set_formatter("2020" = function(x) sprintf("%.001f%%", x*100)) %>% 
   flextable::set_formatter("2060" = function(x) sprintf("%.001f%%", x*100)) %>% 
   flextable::set_formatter("Percent Change" = function(x) sprintf("%.001f%%", x*100)) %>% 
-  flextable::set_table_properties(width = .6, layout='autofit')
+  width(width=1.6)
 ```
 
 ```{r, ft.align="left"}
@@ -132,7 +133,7 @@ median[1,1] <- "Median Income (dollars)"
 median %>% 
   flextable::flextable() %>% 
   set_caption("Income in the Service Area",autonum = run_autonum(seq_id='tab', bkm='income')) %>% 
-  flextable::set_table_properties(width = .5, layout='autofit')
+  width(width=1.4)
 
 ```
 
@@ -142,7 +143,7 @@ poverty %>% flextable() %>%
     flextable::set_formatter("Greater Bay Area" = function(x) sprintf("%.001f%%", x*100)) %>% 
     flextable::set_formatter("Santa Clara County" = function(x) sprintf("%.001f%%", x*100)) %>% 
     set_caption("Poverty Level in the Service Area",autonum = run_autonum(seq_id='tab', bkm='poverty')) %>% 
-    flextable::set_table_properties(width = .4, layout='autofit')
+  width(width=3)
 ```
 
 
@@ -162,7 +163,7 @@ poverty %>% flextable() %>%
 title <- overallcs$title[1]
 desc <- overallcs$description[1]
 overallcs %>% 
-  select(years, type, percentage) %>% 
+  select(years, Type, percentage) %>% 
   pivot_wider(names_from = years, values_from = percentage) %>% 
   flextable::flextable() %>% 
   flextable::add_header_lines(values = title) %>% 
@@ -179,7 +180,7 @@ overallcs %>%
 ```{r}
 title <- "Distinct number of CO-approved certificate earners (12+ units)"
 overall603 %>% 
-  select(years, type, value) %>% 
+  select(years, Type, value) %>% 
   pivot_wider(names_from = years, values_from = value) %>% 
   flextable::flextable() %>% 
   flextable::add_header_lines(values = title) %>% 
@@ -192,7 +193,7 @@ overall603 %>%
 ```{r}
 title <- "Distinct number of degree earners (AA, AS, or ADT) "
 overall631 %>% 
-  select(years, type, value) %>% 
+  select(years, Type, value) %>% 
   pivot_wider(names_from = years, values_from = value) %>% 
   flextable::flextable() %>% 
   flextable::add_header_lines(values = title) %>% 
@@ -204,7 +205,7 @@ overall631 %>%
 ```{r}
 title <- "Distinct number of ADT earners"
 overall608 %>% 
-  select(years, type, value) %>% 
+  select(years, Type, value) %>% 
   pivot_wider(names_from = years, values_from = value) %>% 
   flextable::flextable() %>% 
   flextable::add_header_lines(values = title) %>% 
@@ -217,7 +218,7 @@ overall608 %>%
 ```{r}
 title <- "Distinct number of transfers to CSU or UC"
 overall614 %>% 
-  select(years, type, value) %>% 
+  select(years, Type, value) %>% 
   pivot_wider(names_from = years, values_from = value) %>% 
   flextable::flextable() %>% 
   flextable::add_header_lines(values = title) %>% 
