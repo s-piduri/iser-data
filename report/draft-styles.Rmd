@@ -32,6 +32,7 @@ plot(pressure)
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
 ```{r}
-pressure %>% flextable()
+pressure %>% flextable() %>% 
+  fontsize(size = 9)
 ```
 
