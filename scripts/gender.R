@@ -22,7 +22,7 @@ csgender <- gender %>%
   filter(metricID == "SM 408SW", academicYear > filter_ay) %>% 
   select(years, ids, title, description, subgroup, perc)
 
-colnames(csgender) <- c('years', 'ids', 'title', 'description', 'categoryID',
+colnames(csgender) <- c('years', 'ids', 'title', 'description',
                       'Gender', "value")
 
 
