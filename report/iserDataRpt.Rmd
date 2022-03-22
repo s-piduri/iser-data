@@ -14,13 +14,12 @@ library(flextable)
 library(officer)
 
 load("../is_standards.RData")
+load("../entable.RData")
 load("../jobs.RData")
 load("../demo.RData")
 load("../labor_data.RData")
-```
-
-```{r}
 set_flextable_defaults(font.size = 9)
+
 ```
 
 
@@ -33,6 +32,16 @@ set_flextable_defaults(font.size = 9)
 ## Student Enrollment Data 
 
 [Provide tables/charts summarizing enrollment trends. Disaggregate the data as appropriate for the institution’s mission and service area. Provide brief context if needed.] 
+
+```{r, ft.align='left'}
+sp_hc %>% flextable() %>% 
+  set_caption("Unduplicated Headcount of Special Populations, Fall Terms", 
+              autonum = run_autonum(seq_id='tab', bkm='special')) %>% 
+  footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
+           ref_symbols=c(""), part = "header") %>% 
+  width(j=1, width=2.75)
+```
+
 
 ## Labor Market Data 
 
