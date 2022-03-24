@@ -47,18 +47,36 @@ sp_hc %>% flextable() %>%
 
 [Provide summary-level labor market data for the service area. Disaggregate the data as appropriate for the institution’s mission and service area. Provide brief context if needed.] 
 
+At a broad level, the top industries in the Greater Bay Area are Health Care and Social Assistance and Professional, Scientific, and Technical Services (Reference table).
+
+```{r}
+broad_ten %>% flextable() %>% 
+  flextable::set_formatter("Share of Total Employment" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  set_caption("Top Industries by Employment (Greater Bay Area, 2020 Q3)", autonum = run_autonum(seq_id='tab', bkm='broadten')) %>% 
+  footnote(j=1, value = as_paragraph("Source: JobsEQ, via Hanover Research"), ref_symbols=c(""), part = "header") %>% 
+  width(j=1, width = 4.5) %>% 
+  width(j=2, width=2)
+```
+
+More than 10 percent of workers are employed in each of these two broad industries. At a more detailed level, employment after restaurants is concentrated in several high tech industries, schools, and hospitals (reference the top industries by employment table). 
 
 ```{r, ft.align="left"}
 topten %>% flextable::flextable() %>% 
   flextable::set_formatter("Share of Total Employment" = function(x) sprintf("%.001f%%", x*100)) %>% 
   width(j=1, width = 4.5) %>% 
   width(j=2, width=2) %>% 
-  set_caption("Top Industries by Employment", autonum = run_autonum(seq_id='tab', bkm='topten')) %>% 
+  set_caption("Top Industries by Employment  (Greater Bay Area, 2020 Q3)", autonum = run_autonum(seq_id='tab', bkm='topten')) %>% 
   footnote(j=1, value = as_paragraph("Source: JobsEQ, via Hanover Research"), ref_symbols=c(""), part = "header")
 ```
+
+All top 10 Bay Area tech industries by share of employment have positive 10-year projected growth (reference table). Also, the Greater Bay Area is projected to have an employment undersupply for occupations in business, technology, and healthcare including software developers, nurses, and managers while it is also projected to have a slight oversupply for teaching related occupations and paralegals/legal assistants. 
+
+<!-- please add another table from pg 16 regarding top bay area occupation gaps 2020-2030. Can you also figure out what "Two-Year Degree or higher only" means here? My guess is that the data is among those with two year degree or higher? Also, are these referring to the numbers of persons with the necessary credentials to work in these positions?    -->
+
+
 ```{r, ft.align="left"}
 toptech %>% flextable::flextable() %>% 
-  set_caption("Top Bay Area Tech Industries, 2020", autonum = run_autonum(seq_id='tab', bkm='toptech')) %>% 
+  set_caption("Top Bay Area Tech Industries  (Greater Bay Area, 2020 Q3)", autonum = run_autonum(seq_id='tab', bkm='toptech')) %>% 
   flextable::set_formatter("Projected Growth, 2020-2030" = function(x) sprintf("%.001f%%", x*100)) %>% 
   flextable::set_formatter("Share of Total Employment" = function(x) sprintf("%.001f%%", x*100)) %>% 
   flextable::set_table_properties(width = .5, layout='autofit') %>% 
