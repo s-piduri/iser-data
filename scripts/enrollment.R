@@ -13,5 +13,14 @@ colnames(sp_hc) <- c("Special Characteristic", "2017", "2018", "2019",
                      "2020", "2021")
 sp_hc <- sp_hc %>% 
   replace(is.na(.), 0)
+
+
+total_hc <- enrlmnt_raw %>% 
+  mutate(student_term = paste(student_id, term_id, sep="_")) %>% 
+  group_by(student_term) %>% 
+  arrange(student_term, term_reporting_year) %>% 
+  mutate(row_n = row_number())
+
+
 save(sp_hc, file="entable.RData")
 

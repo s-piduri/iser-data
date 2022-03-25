@@ -2,11 +2,13 @@ library(tidyverse); library(readxl);
 
 labor <- "C:\\Users\\spiduri\\San Jose-Evergreen Community College District\\Accreditation ISER 2023 - env_scan_data\\Industry Snapshot Aggregate.xlsx"
 occupations <- "C:\\Users\\spiduri\\San Jose-Evergreen Community College District\\Accreditation ISER 2023 - env_scan_data\\Occupation Snapshot.xlsx"
-
+occ_gaps <- "C:\\Users\\spiduri\\San Jose-Evergreen Community College District\\Accreditation ISER 2023 - env_scan_data\\Occupation Gaps 2-yr degree and up.xlsx"
 
 topten <- read_excel(path=labor, sheet = 3, skip =2, n_max=10)
 broad_ten <- read_excel(path=labor, sheet=1, skip=2, n_max=10)
 toptech <- read_excel(path=labor, sheet = 5, skip =2, n_max=10)
+
+gaps <- read_excel(path=occ_gaps, skip=1, n_max=15)
 
 some_college <- read_excel(path=occupations, sheet = 1, skip = 2, n_max=6)
 nondegree <- read_excel(path=occupations, sheet = 2, skip = 2, n_max=46)
@@ -28,7 +30,6 @@ most_openings$`Annual Openings` <- round(most_openings$'Annual Openings', 0)
 most_openings <- most_openings[c(1:10),]
 colnames(most_openings) <- c("Occupation", "Annual Job Openings", "Median Ann. Wage", "Unemployment")
 
-
 topten <- topten %>% 
   select("Industry", "Empl %")
 
@@ -43,5 +44,7 @@ colnames(broad_ten) <- c("Industry", "Share of Total Employment")
 colnames(topten) <- c("Industry", "Share of Total Employment")
 colnames(toptech) <- c("Industry", "Share of Total Employment", "Projected Growth, 2020-2030")
 
+colnames(gaps) <- c("Occupation (Average Salary)", "Gap")
 
-save(topten, toptech, broad_ten, most_openings, most_growth, file="labor_data.RData")
+save(topten, toptech, broad_ten, most_openings, 
+     gaps, most_growth, file="labor_data.RData")

@@ -73,6 +73,16 @@ All top 10 Bay Area tech industries by share of employment have positive 10-year
 
 <!-- please add another table from pg 16 regarding top bay area occupation gaps 2020-2030. Can you also figure out what "Two-Year Degree or higher only" means here? My guess is that the data is among those with two year degree or higher? Also, are these referring to the numbers of persons with the necessary credentials to work in these positions?    -->
 
+```{r}
+gaps %>% flextable() %>% 
+  width(j=1, width = 5) %>% 
+  set_caption("Occupation Gaps over 10 Years in Greater Bay Area, Two-Year Degree or Higher Only", autonum = run_autonum(seq_id='tab', bkm='gaps')) %>% 
+  footnote(j=1, value = as_paragraph("Source: JobsEQ, via Hanover Research"), ref_symbols=c(""), part = "header") %>% 
+  footnote(j=1, value = as_paragraph("Note that this list only includes occupations that require at minimum a two-year (Associate's) degree."), ref_symbols=c(""), part = "header")
+
+```
+
+
 
 ```{r, ft.align="left"}
 toptech %>% flextable::flextable() %>% 
