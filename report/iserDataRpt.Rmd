@@ -33,6 +33,13 @@ set_flextable_defaults(font.size = 9)
 
 [Provide tables/charts summarizing enrollment trends. Disaggregate the data as appropriate for the institution’s mission and service area. Provide brief context if needed.] 
 
+
+```{r, ft.align='left'}
+
+```
+
+
+
 ```{r, ft.align='left'}
 sp_hc %>% flextable() %>% 
   set_caption("Unduplicated Headcount of Special Populations, Fall Terms", 
