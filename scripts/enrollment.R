@@ -214,6 +214,6 @@ colnames(fall_gender_hc) <- c("Fall Term", "Gender", "Headcount")
 ##save####
 save(sp_hc, annual_hc, annual_c_hc, annual_nc_hc,
      annual_sc, annual_c_sc, annual_nc_sc, 
-     fall_age_hc, fall_cred_hc, fall_gender_hc, fall_goal_hc,
+     fall_age_hc, fall_cred_hc, fall_gender_hc, fall_goal_hc, fall_goal_hc1,
      fall_hc, fall_race_hc, fall_type_hc, 
      file="entable.RData")
