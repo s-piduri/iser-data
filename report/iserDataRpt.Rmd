@@ -13,11 +13,11 @@ library(tidyverse)
 library(flextable)
 library(officer)
 
-load("../is_standards.RData")
-load("../entable.RData")
-load("../jobs.RData")
-load("../demo.RData")
-load("../labor_data.RData")
+load("../rdata/is_standards.RData")
+load("../rdata/entable.RData")
+load("../rdata/jobs.RData")
+load("../rdata/demo.RData")
+load("../rdata/labor_data.RData")
 set_flextable_defaults(font.size = 9)
 
 ```
@@ -35,7 +35,162 @@ set_flextable_defaults(font.size = 9)
 
 
 ```{r, ft.align='left'}
+annual_hc %>% 
+  #pivot_wider(names_from="Academic Year", values_from = "Headcount") %>% 
+  flextable() %>% 
+  set_caption("Unduplicated Annual Headcount, All Students", 
+              autonum = run_autonum(seq_id='tab', bkm='hc')) %>% 
+  footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
+           ref_symbols=c(""), part = "header") %>% 
+  width(width=3.2)
+```
+```{r, ft.align='left'}
+annual_c_hc %>% 
+  #pivot_wider(names_from="Academic Year", values_from = "Headcount") %>% 
+  flextable() %>% 
+  set_caption("Unduplicated Annual Credit Headcount", 
+              autonum = run_autonum(seq_id='tab', bkm='chc')) %>% 
+  footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
+           ref_symbols=c(""), part = "header") %>% 
+  width(width=3.2)
 
+```
+
+```{r, ft.align='left'}
+annual_nc_hc %>% 
+  #pivot_wider(names_from="Academic Year", values_from = "Headcount") %>% 
+  flextable() %>% 
+  set_caption("Unduplicated Annual Non-Credit Headcount", 
+              autonum = run_autonum(seq_id='tab', bkm='nchc')) %>% 
+  footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
+           ref_symbols=c(""), part = "header") %>% 
+  width(width=3.2)
+```
+
+```{r, ft.align='left'}
+annual_sc %>% 
+  #pivot_wider(names_from="Academic Year", values_from = "Headcount") %>% 
+  flextable() %>% 
+  set_caption("Annual Seatcount, All Students", 
+              autonum = run_autonum(seq_id='tab', bkm='sc')) %>% 
+  footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
+           ref_symbols=c(""), part = "header") %>% 
+  width(width=3.2)
+
+```
+
+
+```{r, ft.align='left'}
+annual_c_sc %>% 
+  #pivot_wider(names_from="Academic Year", values_from = "Headcount") %>% 
+  flextable() %>% 
+  set_caption("Annual Credit Seatcount", 
+              autonum = run_autonum(seq_id='tab', bkm='csc')) %>% 
+  footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
+           ref_symbols=c(""), part = "header") %>% 
+  width(width=3.2)
+
+```
+
+
+```{r, ft.align='left'}
+annual_nc_sc %>% 
+  #pivot_wider(names_from="Academic Year", values_from = "Headcount") %>% 
+  flextable() %>% 
+  set_caption("Annual Noncredit Seatcount", 
+              autonum = run_autonum(seq_id='tab', bkm='ncsc')) %>% 
+  footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
+           ref_symbols=c(""), part = "header") %>% 
+  width(width=3.2)
+
+```
+
+
+```{r, ft.align='left'}
+##code block for ftes overall annual
+```
+
+
+```{r, ft.align='left'}
+fall_hc %>% 
+  #pivot_wider(names_from="Academic Year", values_from = "Headcount") %>% 
+  flextable() %>% 
+  set_caption("Unduplicated Overall Headcount, Fall Terms", 
+              autonum = run_autonum(seq_id='tab', bkm='fhc')) %>% 
+  footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
+           ref_symbols=c(""), part = "header") %>% 
+  width(width=3.2)
+```
+
+```{r, ft.align='left'}
+fall_cred_hc %>% 
+  #pivot_wider(names_from="Academic Year", values_from = "Headcount") %>% 
+  flextable() %>% 
+  set_caption("Unduplicated Credit Headcount, Fall Terms", 
+              autonum = run_autonum(seq_id='tab', bkm='fchc')) %>% 
+  footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
+           ref_symbols=c(""), part = "header") %>% 
+  width(width=3.2)
+
+```
+
+```{r, ft.align='left'}
+fall_type_hc %>% 
+  pivot_wider(names_from="Fall Term", values_from = "Headcount") %>% 
+  flextable() %>% 
+  set_caption("Unduplicated Credit Headcount by Student Type, Fall Terms", 
+              autonum = run_autonum(seq_id='tab', bkm='fthc')) %>% 
+  footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
+           ref_symbols=c(""), part = "header") %>% 
+  width(width=1)
+
+```
+
+```{r, ft.align='left'}
+fall_goal_hc %>% 
+  pivot_wider(names_from="Fall Term", values_from = "Headcount") %>% 
+  flextable() %>% 
+  set_caption("Unduplicated Credit Headcount by Student Goal, Fall Terms", 
+              autonum = run_autonum(seq_id='tab', bkm='fghc')) %>% 
+  footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
+           ref_symbols=c(""), part = "header") %>% 
+  width(width=1)
+
+```
+
+```{r, ft.align='left'}
+fall_gender_hc %>% 
+  pivot_wider(names_from="Fall Term", values_from = "Headcount") %>% 
+  flextable() %>% 
+  set_caption("Unduplicated Credit Headcount by Gender, Fall Terms", 
+              autonum = run_autonum(seq_id='tab', bkm='fgehc')) %>% 
+  footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
+           ref_symbols=c(""), part = "header") %>% 
+  width(width=1)
+```
+
+
+```{r, ft.align='left'}
+fall_race_hc %>% 
+  pivot_wider(names_from="Fall Term", values_from = "Headcount") %>% 
+  flextable() %>% 
+  set_caption("Unduplicated Credit Headcount by Race/Ethnicity, Fall Terms", 
+              autonum = run_autonum(seq_id='tab', bkm='frhc')) %>% 
+  footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
+           ref_symbols=c(""), part = "header") %>% 
+  width(width=1)
+
+```
+
+```{r, ft.align='left'}
+fall_age_hc %>% 
+  pivot_wider(names_from="Fall Term", values_from = "Headcount") %>% 
+  flextable() %>% 
+  set_caption("Unduplicated Credit Headcount by Age, Fall Terms", 
+              autonum = run_autonum(seq_id='tab', bkm='fahc')) %>% 
+  footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
+           ref_symbols=c(""), part = "header") %>% 
+  width(width=1)
 ```
 
 
@@ -56,7 +211,7 @@ sp_hc %>% flextable() %>%
 
 At a broad level, the top industries in the Greater Bay Area are Health Care and Social Assistance and Professional, Scientific, and Technical Services (Reference table).
 
-```{r}
+```{r, ft.align='left'}
 broad_ten %>% flextable() %>% 
   flextable::set_formatter("Share of Total Employment" = function(x) sprintf("%.001f%%", x*100)) %>% 
   set_caption("Top Industries by Employment (Greater Bay Area, 2020 Q3)", autonum = run_autonum(seq_id='tab', bkm='broadten')) %>% 
@@ -80,7 +235,7 @@ All top 10 Bay Area tech industries by share of employment have positive 10-year
 
 <!-- please add another table from pg 16 regarding top bay area occupation gaps 2020-2030. Can you also figure out what "Two-Year Degree or higher only" means here? My guess is that the data is among those with two year degree or higher? Also, are these referring to the numbers of persons with the necessary credentials to work in these positions?    -->
 
-```{r}
+```{r, ft.align='left'}
 gaps %>% flextable() %>% 
   width(j=1, width = 5) %>% 
   set_caption("Occupation Gaps over 10 Years in Greater Bay Area, Two-Year Degree or Higher Only", autonum = run_autonum(seq_id='tab', bkm='gaps')) %>% 
