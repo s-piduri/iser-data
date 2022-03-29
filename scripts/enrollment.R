@@ -63,7 +63,7 @@ annual_sc <- enrlmnt_raw %>%
   summarize(seatcount = n())
 colnames(annual_sc) <- c("Academic Year", "Seatcount")
 
-#overall seatcount by year
+#credit seatcount by year
 annual_c_sc <- enrlmnt_raw %>% 
   mutate(annual = paste(term_reporting_year, (term_reporting_year+1), sep="-")) %>%
   filter(!(grepl("-5", crs_name,fixed=TRUE))) %>% 
@@ -71,7 +71,7 @@ annual_c_sc <- enrlmnt_raw %>%
   summarize(seatcount = n())
 colnames(annual_c_sc) <- c("Academic Year", "Seatcount")
 
-#overall seatcount by year
+#noncredit seatcount by year
 annual_nc_sc <- enrlmnt_raw %>% 
   mutate(annual = paste(term_reporting_year, (term_reporting_year+1), sep="-")) %>%
   filter(grepl("-5", crs_name,fixed=TRUE)) %>% 
@@ -197,4 +197,8 @@ colnames(fall_gender_hc) <- c("Fall Term", "Gender", "Headcount")
 
 
 ##save####
-save(sp_hc, term_hc, annual_hc, fall_hc, file="entable.RData")
+save(sp_hc, annual_hc, annual_c_hc, annual_nc_hc,
+     annual_sc, annual_c_sc, annual_nc_sc, 
+     fall_age_hc, fall_cred_hc, fall_gender_hc, fall_goal_hc,
+     fall_hc, fall_race_hc, fall_type_hc, 
+     file="entable.RData")
