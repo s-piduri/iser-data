@@ -130,13 +130,23 @@ fall_type_hc <- enrlmnt_raw %>%
   filter(grepl("FA", term_id)) %>% 
   filter(!grepl("-5", crs_name,fixed=TRUE)) %>% 
   mutate(student_term = paste(student_id, term_id, sep="_")) %>% 
+  mutate(term_status = case_when(
+    sb15_term_status=="CONT" ~ "Continuing",
+    sb15_term_status=="K12" ~ "K-12 (Special Admit)",
+    sb15_term_status=="NEW" ~ "New",
+    sb15_term_status=="RET" ~ "Returning",
+    sb15_term_status=="TRAN" ~ "First-time Transfer",
+    TRUE ~ as.character(sb15_term_status))) %>% 
+  replace(is.na(.), 'Unknown') %>% 
   group_by(student_term) %>% 
   arrange(student_term, term_reporting_year) %>% 
   mutate(fall_unique = row_number()) %>% 
   filter(fall_unique == 1) %>%
   ungroup() %>% 
-  group_by(term_id, sb15_term_status) %>% 
-  summarize(headcount = n())
+  group_by(term_id, term_status) %>% 
+  summarize(headcount = n()) %>% 
+  ungroup() %>% 
+  add_row(term_id = '2021FA', term_status = 'Unknown', headcount=0)
 colnames(fall_type_hc) <- c("Fall Term", "Student Type", "Headcount")
 
 #credit headcounts by goal
@@ -149,9 +159,13 @@ fall_goal_hc <- enrlmnt_raw %>%
   mutate(fall_unique = row_number()) %>% 
   filter(fall_unique == 1) %>%
   ungroup() %>% 
-  group_by(term_id, educ_goal_desc) %>% 
-  summarize(headcount = n())
-colnames(fall_goal_hc) <- c("Fall Term", "Educational Goal", "Headcount")
+  group_by(term_id, educ_goal_id, educ_goal_desc) %>% 
+  summarize(headcount = n()) %>% 
+  ungroup()
+colnames(fall_goal_hc) <- c("Fall Term", "id", "Educational Goal", "Headcount")
+fall_goal_hc1 <- fall_goal_hc %>% 
+  pivot_wider(names_from="Fall Term", values_from = "Headcount") %>% 
+  select("Educational Goal", "2017FA", "2018FA", "2019FA", "2020FA", "2021FA")
 
 #credit headcounts by age
 fall_age_hc <- enrlmnt_raw %>% 
@@ -192,7 +206,8 @@ fall_gender_hc <- enrlmnt_raw %>%
   filter(fall_unique == 1) %>%
   ungroup() %>% 
   group_by(term_id, gender) %>% 
-  summarize(headcount = n())
+  summarize(headcount = n()) %>% 
+  replace(is.na(.), 'Unknown')
 colnames(fall_gender_hc) <- c("Fall Term", "Gender", "Headcount")
 
 

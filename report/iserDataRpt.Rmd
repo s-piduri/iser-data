@@ -142,19 +142,19 @@ fall_type_hc %>%
               autonum = run_autonum(seq_id='tab', bkm='fthc')) %>% 
   footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
            ref_symbols=c(""), part = "header") %>% 
-  width(width=1)
+  width(j=1, width=2)
 
 ```
 
 ```{r, ft.align='left'}
-fall_goal_hc %>% 
-  pivot_wider(names_from="Fall Term", values_from = "Headcount") %>% 
+fall_goal_hc1 %>% 
+  #pivot_wider(names_from="Fall Term", values_from = "Headcount") %>% 
   flextable() %>% 
   set_caption("Unduplicated Credit Headcount by Student Goal, Fall Terms", 
               autonum = run_autonum(seq_id='tab', bkm='fghc')) %>% 
   footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
            ref_symbols=c(""), part = "header") %>% 
-  width(width=1)
+  width(j=1, width=2)
 
 ```
 
