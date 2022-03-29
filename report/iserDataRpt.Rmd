@@ -13,11 +13,11 @@ library(tidyverse)
 library(flextable)
 library(officer)
 
-load("../rdata/is_standards.RData")
-load("../rdata/entable.RData")
-load("../rdata/jobs.RData")
-load("../rdata/demo.RData")
-load("../rdata/labor_data.RData")
+load("../is_standards.RData")
+load("../entable.RData")
+load("../jobs.RData")
+load("../demo.RData")
+load("../labor_data.RData")
 set_flextable_defaults(font.size = 9)
 
 ```
