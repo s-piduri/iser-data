@@ -13,6 +13,22 @@ sp_hc <- sp_hc %>%
 
 # length(unique(fa2018$student_id))
 
+goals <- enrlmnt_raw %>% 
+  select(student_id, term_reporting_year, term_id, educ_goal_id, 
+         educ_goal_desc, crs_name) %>% 
+  mutate(location = "San Jose City College")
+
+enr <- "C:\\Users\\spiduri\\Downloads\\2022-03-08enrollment_data_ISER_[1] (1).csv"
+enroll <- read_csv(enr)
+
+#join enroll with goals so that goals data (educ_goal_id, educ_goal_desc) is 
+#appended onto enroll
+enroll_goals <- enroll %>% 
+  left_join(goals, by=c("student_id", "term_id", "crs_name")) %>% 
+  mutate(max_cred = pmax(attempted_credit, section_min_creds)) %>% 
+  group_by(student_id, term_id) %>% 
+  mutate(total_att_units = sum(max_cred))
+  
 ####overall headcounts#####
 #headcount by year
 annual_hc <- enrlmnt_raw %>% 
