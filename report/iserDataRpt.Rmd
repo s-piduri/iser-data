@@ -35,79 +35,13 @@ set_flextable_defaults(font.size = 9)
 
 
 ```{r, ft.align='left'}
-annual_hc %>% 
-  #pivot_wider(names_from="Academic Year", values_from = "Headcount") %>% 
+annual %>% 
   flextable() %>% 
-  set_caption("Unduplicated Annual Headcount, All Students", 
+  set_caption("Annual Student Metrics", 
               autonum = run_autonum(seq_id='tab', bkm='hc')) %>% 
   footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
            ref_symbols=c(""), part = "header") %>% 
-  width(width=3.2)
-```
-```{r, ft.align='left'}
-annual_c_hc %>% 
-  #pivot_wider(names_from="Academic Year", values_from = "Headcount") %>% 
-  flextable() %>% 
-  set_caption("Unduplicated Annual Credit Headcount", 
-              autonum = run_autonum(seq_id='tab', bkm='chc')) %>% 
-  footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
-           ref_symbols=c(""), part = "header") %>% 
-  width(width=3.2)
-
-```
-
-```{r, ft.align='left'}
-annual_nc_hc %>% 
-  #pivot_wider(names_from="Academic Year", values_from = "Headcount") %>% 
-  flextable() %>% 
-  set_caption("Unduplicated Annual Non-Credit Headcount", 
-              autonum = run_autonum(seq_id='tab', bkm='nchc')) %>% 
-  footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
-           ref_symbols=c(""), part = "header") %>% 
-  width(width=3.2)
-```
-
-```{r, ft.align='left'}
-annual_sc %>% 
-  #pivot_wider(names_from="Academic Year", values_from = "Headcount") %>% 
-  flextable() %>% 
-  set_caption("Annual Seatcount, All Students", 
-              autonum = run_autonum(seq_id='tab', bkm='sc')) %>% 
-  footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
-           ref_symbols=c(""), part = "header") %>% 
-  width(width=3.2)
-
-```
-
-
-```{r, ft.align='left'}
-annual_c_sc %>% 
-  #pivot_wider(names_from="Academic Year", values_from = "Headcount") %>% 
-  flextable() %>% 
-  set_caption("Annual Credit Seatcount", 
-              autonum = run_autonum(seq_id='tab', bkm='csc')) %>% 
-  footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
-           ref_symbols=c(""), part = "header") %>% 
-  width(width=3.2)
-
-```
-
-
-```{r, ft.align='left'}
-annual_nc_sc %>% 
-  #pivot_wider(names_from="Academic Year", values_from = "Headcount") %>% 
-  flextable() %>% 
-  set_caption("Annual Noncredit Seatcount", 
-              autonum = run_autonum(seq_id='tab', bkm='ncsc')) %>% 
-  footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
-           ref_symbols=c(""), part = "header") %>% 
-  width(width=3.2)
-
-```
-
-
-```{r, ft.align='left'}
-##code block for ftes overall annual
+  width(j=1, width=2)
 ```
 
 
