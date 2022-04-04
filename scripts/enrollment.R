@@ -120,8 +120,23 @@ fall_type_hc <- enroll_cred %>%
   group_by(term_id, term_status) %>% 
   summarize(headcount = n()) %>% 
   ungroup() %>% 
-  add_row(term_id = '2021FA', term_status = 'Unknown', headcount=0)
-colnames(fall_type_hc) <- c("Fall Term", "Student Type", "Headcount")
+  group_by(term_id) %>% 
+  mutate(perc = headcount/sum(headcount))
+fthc <- fall_type_hc %>% 
+  group_by(term_id) %>% 
+  mutate(total = sum(headcount)) %>% 
+  select(term_id, term_status, total) %>% 
+  unique() %>% 
+  pivot_wider(names_from=term_id, values_from=total) %>% 
+  filter(term_status == "New")
+fthc[1] <- "Total (N)"
+names(fthc)[names(fthc) == 'term_status'] <- 'Student Type'
+colnames(fall_type_hc) <- c("Fall Term", "Student Type", "Headcount", "Percentage")
+fall_type_hc <- fall_type_hc %>% 
+  select("Fall Term", "Student Type", "Percentage") %>% 
+  pivot_wider(names_from = "Fall Term", values_from = "Percentage") %>% 
+  rbind(fthc)
+
 
 #credit headcounts by goal
 fall_goal_hc <- enroll_cred %>% 
@@ -135,11 +150,13 @@ fall_goal_hc <- enroll_cred %>%
   ungroup() %>% 
   group_by(term_id, educ_goal_id, educ_goal_desc) %>% 
   summarize(headcount = n()) %>% 
-  ungroup()
+  ungroup() %>% 
+  arrange(desc(headcount, educ_goal_id))
 colnames(fall_goal_hc) <- c("Fall Term", "id", "Educational Goal", "Headcount")
 fall_goal_hc1 <- fall_goal_hc %>% 
   pivot_wider(names_from="Fall Term", values_from = "Headcount") %>% 
-  select("Educational Goal", "2017FA", "2018FA", "2019FA", "2020FA", "2021FA")
+  select("Educational Goal", "2017FA", "2018FA", "2019FA", "2020FA", "2021FA") %>% 
+  arrange(desc("2018FA"))
 
 #credit headcounts by age
 fall_age_hc <- enroll_cred %>% 
