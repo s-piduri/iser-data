@@ -29,7 +29,10 @@ colnames(csgender) <- c('years', 'ids', 'title', 'description',
 #graduation/certificates by gender
 ggrads <- gender %>% 
   filter(academicYear > filter_ay) %>% 
-  select(years, ids, title, description, categoryID, subgroup, value)
+  select(years, ids, title, description, categoryID, subgroup, value) %>% 
+  filter(subgroup == "Female" | subgroup == "Male" | subgroup == "All Masked Values") %>% 
+  mutate_if(is.numeric, as.character) %>% 
+  mutate_if(is.character, ~replace_na(., "--"))
 
 colnames(ggrads) <- c('years', 'ids', 'title', 'description', 'categoryID',
                         'Gender', "value")
@@ -45,7 +48,9 @@ ggrads608 <- ggrads %>%
   filter(categoryID == 608)
 ggrads614 <- gender %>% 
   filter(categoryID == 614, academicYear > filter_ay-1) %>% 
-  select(years, ids, title, description, categoryID, subgroup, value)
+  select(years, ids, title, description, categoryID, subgroup, value) %>% 
+  mutate_if(is.numeric, as.character) %>% 
+  mutate_if(is.character, ~replace_na(., "--"))
 
 colnames(ggrads614) <- c('years', 'ids', 'title', 'description', 'categoryID',
                         'Gender', "value")

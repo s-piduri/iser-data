@@ -25,7 +25,9 @@ catids <- c(603, 631, 608, 614)
 #table for grad/certs 
 rgrads <- race %>% 
   filter(academicYear > filter_ay) %>% 
-  select(years, ids, title, description, categoryID, subgroup, value)
+  select(years, ids, title, description, categoryID, subgroup, value) %>% 
+  mutate_if(is.numeric, as.character) %>% 
+  mutate_if(is.character, ~replace_na(., "--"))
 
 colnames(rgrads) <- c('years', 'ids', 'title', 'description', 'categoryID',
                       'Ethnicity', "value")
@@ -39,7 +41,9 @@ rgrads608 <- rgrads %>%
   filter(categoryID == 608)
 rgrads614 <- race %>% 
   filter(categoryID == 614, academicYear > filter_ay-1) %>% 
-  select(years, ids, title, description, categoryID, subgroup, value)
+  select(years, ids, title, description, categoryID, subgroup, value) %>% 
+  mutate_if(is.numeric, as.character) %>% 
+  mutate_if(is.character, ~replace_na(., "--"))
 
 colnames(rgrads614) <- c('years', 'ids', 'title', 'description', 'categoryID',
                       'Ethnicity', "value")

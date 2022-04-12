@@ -1,4 +1,5 @@
 library(tidyverse); library(readxl)
+library(scales)
 
 #head count by special populations
 sp <- "C:\\Users\\spiduri\\Downloads\\SPStudentCountSumm.csv"
@@ -100,7 +101,16 @@ fall_hc <- enroll_cred %>%
   summarize(headcount = n())
 colnames(fall_hc) <- c("Fall Term", "Headcount")
 
+percentage <- function(y) {
+  paste0(y, "%")
+} 
+
+
 #credit headcounts by student type
+#the steps are as follows: 
+      #get credit headcounts by type, 
+      #take type %, 
+      #add row of N
 fall_type_hc <- enroll_cred %>% 
   filter(grepl("FA", term_id)) %>% 
   filter(location == "San Jose City College") %>% 
@@ -121,21 +131,31 @@ fall_type_hc <- enroll_cred %>%
   summarize(headcount = n()) %>% 
   ungroup() %>% 
   group_by(term_id) %>% 
-  mutate(perc = headcount/sum(headcount))
+  #percentage column is formatted as a percentage without %, not a decimal
+  mutate(perc = (round((headcount/sum(headcount)), digits = 4))*100)
+fall_type_p <- fall_type_hc %>% 
+  select(term_status, perc, term_id) %>% 
+  pivot_wider(names_from=term_id, values_from=perc) %>% 
+  #take five year mean of percentages
+  mutate(mean = (round(rowMeans(fall_type_p[ , c(2:6)]), digits = 2))) %>% 
+  mutate_if(is.numeric, as.character) %>% 
+  mutate(across(c(2:7), ~percentage))
+
 fthc <- fall_type_hc %>% 
   group_by(term_id) %>% 
   mutate(total = sum(headcount)) %>% 
   select(term_id, term_status, total) %>% 
   unique() %>% 
-  pivot_wider(names_from=term_id, values_from=total) %>% 
-  filter(term_status == "New")
+  pivot_wider(names_from=term_id, values_from=total) %>%
+  mutate(mean = floor(rowMeans(fthc[ , c(2:6)]))) %>% 
+  filter(term_status == "New") %>% 
+  mutate_at(is.numeric, as.character)
+
 fthc[1] <- "Total (N)"
-names(fthc)[names(fthc) == 'term_status'] <- 'Student Type'
-colnames(fall_type_hc) <- c("Fall Term", "Student Type", "Headcount", "Percentage")
-fall_type_hc <- fall_type_hc %>% 
-  select("Fall Term", "Student Type", "Percentage") %>% 
-  pivot_wider(names_from = "Fall Term", values_from = "Percentage") %>% 
+fall_type <- fall_type_p %>% 
   rbind(fthc)
+
+names(fall_type)[names(fall_type) == 'term_status'] <- 'Student Type'
 
 
 #credit headcounts by goal
