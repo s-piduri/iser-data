@@ -54,13 +54,13 @@ annual_sc <- enroll %>%
   mutate(annual = paste(term_reporting_year, (term_reporting_year+1), sep="-")) %>%
   group_by(annual) %>% 
   summarize(seatcount = n())
-
+#overall ftes by year
 annual_ftes <- enroll %>% 
   filter(location == "San Jose City College") %>% 
   mutate(annual = paste(term_reporting_year, (term_reporting_year+1), sep="-")) %>%
   group_by(annual) %>% 
   summarize(ftes = trunc(sum(total_FTES)))
-
+#total annual sc/hc/ftes table
 annual <- annual_hc %>% 
   left_join(annual_sc, by="annual") %>% 
   left_join(annual_ftes, by="annual")
@@ -108,12 +108,15 @@ percentage <- function(y) {
 
 #credit headcounts by student type
 #the steps are as follows: 
-      #get credit headcounts by type, 
-      #take type %, 
-      #add row of N
+      #1 get credit headcounts by type, 
+      #2 take type %, 
+      #3 take five year mean of percentages
+      #4 add row of N
+      #5 take five year mean of N
 fall_type_hc <- enroll_cred %>% 
   filter(grepl("FA", term_id)) %>% 
   filter(location == "San Jose City College") %>% 
+  #1 get credit headcounts by type
   mutate(student_term = paste(student_id, term_id, sep="_")) %>% 
   mutate(term_status = case_when(
     sb15_term_status=="CONT" ~ "Continuing",
@@ -131,32 +134,35 @@ fall_type_hc <- enroll_cred %>%
   summarize(headcount = n()) %>% 
   ungroup() %>% 
   group_by(term_id) %>% 
-  #percentage column is formatted as a percentage without %, not a decimal
+  #2 percentage column is formatted as a percentage without %, not a decimal
   mutate(perc = (round((headcount/sum(headcount)), digits = 4))*100)
 fall_type_p <- fall_type_hc %>% 
   select(term_status, perc, term_id) %>% 
   pivot_wider(names_from=term_id, values_from=perc) %>% 
-  #take five year mean of percentages
+  #3 take five year mean of percentages
   mutate(mean = (round(rowMeans(fall_type_p[ , c(2:6)]), digits = 2))) %>% 
   mutate_if(is.numeric, as.character) %>% 
-  mutate(across(c(2:7), ~percentage))
-
+  mutate_at(c(2:7), ~percentage(.))
+#4 add row of N
 fthc <- fall_type_hc %>% 
   group_by(term_id) %>% 
   mutate(total = sum(headcount)) %>% 
   select(term_id, term_status, total) %>% 
   unique() %>% 
   pivot_wider(names_from=term_id, values_from=total) %>%
+  #5 five year mean of N
   mutate(mean = floor(rowMeans(fthc[ , c(2:6)]))) %>% 
   filter(term_status == "New") %>% 
-  mutate_at(is.numeric, as.character)
+  mutate_if(is.numeric, as.character)
+fthc[1] <- "Total (N)" #relabel N row
 
-fthc[1] <- "Total (N)"
+#6 bind together percentages and N
 fall_type <- fall_type_p %>% 
   rbind(fthc)
 
+#edit column names
 names(fall_type)[names(fall_type) == 'term_status'] <- 'Student Type'
-
+names(fall_type)[names(fall_type) == 'mean'] <- "5 Year Average"
 
 #credit headcounts by goal
 fall_goal_hc <- enroll_cred %>% 
@@ -172,7 +178,9 @@ fall_goal_hc <- enroll_cred %>%
   summarize(headcount = n()) %>% 
   ungroup() %>% 
   arrange(desc(headcount, educ_goal_id))
+
 colnames(fall_goal_hc) <- c("Fall Term", "id", "Educational Goal", "Headcount")
+
 fall_goal_hc1 <- fall_goal_hc %>% 
   pivot_wider(names_from="Fall Term", values_from = "Headcount") %>% 
   select("Educational Goal", "2017FA", "2018FA", "2019FA", "2020FA", "2021FA") %>% 
