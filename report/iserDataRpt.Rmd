@@ -61,10 +61,10 @@ fall_hc %>%
 ```{r, ft.align='left'}
 fall_type_hc %>% 
   flextable() %>% 
-  set_caption("Unduplicated Credit Headcount by Student Type, Fall Terms", 
+  set_caption("Unduplicated Headcount by Student Type, Fall Terms", 
               autonum = run_autonum(seq_id='tab', bkm='fthc')) %>% 
   footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
-           ref_symbols=c(""), part = "header") %>% 
+           ref_symbols=c(""), part = "header") %>%
   width(j=1, width=2)
 
 ```
@@ -559,7 +559,7 @@ licensure %>%
   footnote(i=4, j=8, value = as_paragraph("No campus specific data on this item."), ref_symbols = c("A"), part = "body") %>%  
   footnote(i=5, j=8, value = as_paragraph("No one took the exam this year due to Covid"), ref_symbols = c("B"), part = "body") %>% 
   set_caption("Licensure Pass Rates", autonum = run_autonum(seq_id='tab', bkm='cert')) %>%
-  footnote(j=1, value = as_paragraph("Source: "), ref_symbols=c(""), part = "header")
+  footnote(j=1, value = as_paragraph("Source: ACCJC Annual Reports"), ref_symbols=c(""), part = "header")
 
 
 ```
@@ -576,6 +576,8 @@ licensure %>%
   flextable::align(i=1, align="center", part="header") %>% 
   flextable::width(width=1.1) %>% 
   set_caption("Job Placement Rates", autonum = run_autonum(seq_id='tab', bkm='cert')) %>%
-  footnote(j=1, value = as_paragraph("Source: "), ref_symbols=c(""), part = "header")
+  footnote(j=1, value = as_paragraph("Source: ACCJC Annual Reports"), ref_symbols=c(""), part = "header")
+  footnote(j=1, value = as_paragraph("Note that data is only available for 2018-2019 and years after."), ref_symbols=c(""), part = "header")
+
 
 ```
