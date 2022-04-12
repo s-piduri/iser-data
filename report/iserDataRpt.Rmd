@@ -65,55 +65,61 @@ fall_type %>%
               autonum = run_autonum(seq_id='tab', bkm='fthc')) %>% 
   footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
            ref_symbols=c(""), part = "header") %>%
-  width(j=1, width=2)
-
+  width(j=1, width=1.3) %>% 
+  width(j=7, width=1) %>% 
+  align(j = c(2:7), align = "right", part = "all")
 ```
 
 ```{r, ft.align='left'}
-fall_goal_hc1 %>% 
-  #pivot_wider(names_from="Fall Term", values_from = "Headcount") %>% 
+fall_goal %>% 
   flextable() %>% 
-  set_caption("Unduplicated Credit Headcount by Student Goal, Fall Terms", 
+  set_caption("Unduplicated Headcount by Student Goal, Fall Terms", 
               autonum = run_autonum(seq_id='tab', bkm='fghc')) %>% 
   footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
            ref_symbols=c(""), part = "header") %>% 
-  width(j=1, width=2)
+  width(j=1, width=1.7) %>% 
+  width(j=7, width=1) %>% 
+  align(j = c(2:7), align = "right", part = "all")
 
 ```
 
 ```{r, ft.align='left'}
-fall_gender_hc %>% 
-  pivot_wider(names_from="Fall Term", values_from = "Headcount") %>% 
+fall_gender %>% 
   flextable() %>% 
-  set_caption("Unduplicated Credit Headcount by Gender, Fall Terms", 
+  set_caption("Unduplicated Headcount by Gender, Fall Terms", 
               autonum = run_autonum(seq_id='tab', bkm='fgehc')) %>% 
   footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
            ref_symbols=c(""), part = "header") %>% 
-  width(width=1)
+  width(j=7, width=1.2) %>% 
+  align(j = c(2:7), align = "right", part = "all")
+
 ```
 
 
 ```{r, ft.align='left'}
-fall_race_hc %>% 
-  pivot_wider(names_from="Fall Term", values_from = "Headcount") %>% 
+fall_race %>% 
   flextable() %>% 
-  set_caption("Unduplicated Credit Headcount by Race/Ethnicity, Fall Terms", 
+  set_caption("Unduplicated Headcount by Race/Ethnicity, Fall Terms", 
               autonum = run_autonum(seq_id='tab', bkm='frhc')) %>% 
   footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
            ref_symbols=c(""), part = "header") %>% 
-  width(width=1)
+  align(j = c(2:7), align = "right", part = "all") %>% 
+  width(j=7, width=1.1) %>% 
+  width(j=1, width=1.8)
+
 
 ```
 
 ```{r, ft.align='left'}
-fall_age_hc %>% 
-  pivot_wider(names_from="Fall Term", values_from = "Headcount") %>% 
+fall_age %>% 
   flextable() %>% 
-  set_caption("Unduplicated Credit Headcount by Age, Fall Terms", 
+  set_caption("Unduplicated Headcount by Age, Fall Terms", 
               autonum = run_autonum(seq_id='tab', bkm='fahc')) %>% 
   footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
            ref_symbols=c(""), part = "header") %>% 
-  width(width=1)
+  align(j = c(2:7), align = "right", part = "all") %>% 
+  width(width=.8) %>% 
+  width(j=7, width=1.1) 
 ```
 
 
@@ -489,7 +495,7 @@ csrace %>%
   flextable::set_formatter("2018-2019" = function(x) sprintf("%.001f%%", x*100)) %>% 
   flextable::set_formatter("2019-2020" = function(x) sprintf("%.001f%%", x*100)) %>% 
   flextable::add_footer_lines(values = desc) %>% 
-  flextable::width(width=1.3) %>% 
+  flextable::width(j=1, width=2.1) %>% 
   align(j=1, align= "left", part = "all") %>% 
   align(j=2:5, align = "right", part = "all") %>% 
   set_caption(title, autonum = run_autonum(seq_id='tab', bkm='cse')) %>%
@@ -507,7 +513,7 @@ rgrads603 %>%
   pivot_wider(names_from = years, values_from = value) %>% 
   flextable::flextable() %>% 
   flextable::align(i=1, align="center", part="header") %>% 
-  flextable::width(j=1, width=2) %>% 
+  flextable::width(j=1, width=2.1) %>% 
   width(j=2:5, width = 1) %>% 
   flextable::add_footer_lines(values = desc) %>% 
   align(j=1, align= "left", part = "all") %>% 
@@ -526,7 +532,7 @@ rgrads631%>%
   pivot_wider(names_from = years, values_from = value) %>% 
   flextable::flextable() %>% 
   flextable::align(i=1, align="center", part="header") %>% 
-  flextable::width(j=1, width=2) %>% 
+  flextable::width(j=1, width=2.2) %>% 
   width(j=2:5, width = 1) %>% 
   flextable::add_footer_lines(values = desc) %>% 
   align(j=1, align= "left", part = "all") %>% 
@@ -545,7 +551,7 @@ rgrads608%>%
   pivot_wider(names_from = years, values_from = value) %>% 
   flextable::flextable() %>% 
   flextable::align(i=1, align="center", part="header") %>% 
-  flextable::width(j=1, width=2) %>% 
+  flextable::width(j=1, width=2.3) %>% 
   width(j=2:5, width = 1) %>% 
   flextable::add_footer_lines(values = desc) %>% 
   align(j=1, align= "left", part = "all") %>% 
@@ -564,8 +570,7 @@ rgrads614 %>%
   pivot_wider(names_from = years, values_from = value) %>% 
   flextable::flextable() %>% 
   flextable::align(i=1, align="center", part="header") %>% 
-  flextable::width(j=1, width=2) %>% 
-  width(j=2:5, width = 1) %>% 
+  flextable::width(j=1, width=2.2) %>% 
   flextable::add_footer_lines(values = desc) %>% 
   align(j=1, align= "left", part = "all") %>% 
   align(j=2:6, align = "right", part = "all") %>% 
@@ -610,7 +615,7 @@ licensure %>%
   flextable::align(i=1, align="center", part="header") %>% 
   flextable::width(width=1.1) %>% 
   set_caption("Job Placement Rates", autonum = run_autonum(seq_id='tab', bkm='cert')) %>%
-  footnote(j=1, value = as_paragraph("Source: ACCJC Annual Reports"), ref_symbols=c(""), part = "header")
+  footnote(j=1, value = as_paragraph("Source: ACCJC Annual Reports"), ref_symbols=c(""), part = "header") %>% 
   footnote(j=1, value = as_paragraph("Note that data is only available for 2018-2019 and years after."), ref_symbols=c(""), part = "header")
 
 
