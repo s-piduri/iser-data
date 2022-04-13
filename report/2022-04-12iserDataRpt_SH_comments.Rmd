@@ -83,16 +83,11 @@ fall_type_hc %>%
               autonum = run_autonum(seq_id='tab', bkm='fthc')) %>% 
   footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
            ref_symbols=c(""), part = "header") %>%
-<<<<<<< HEAD
   width(j=1, width=2)
 
 #### this table needs to be pivoted.
 
-=======
-  width(j=1, width=1.3) %>% 
-  width(j=7, width=1) %>% 
-  align(j = c(2:7), align = "right", part = "all")
->>>>>>> 60b16ba99ccb488902774d57f3d121dacc7da75b
+
 ```
 
 >>> same thing here
@@ -134,7 +129,7 @@ fall_race %>%
   width(j=7, width=1.1) %>% 
   width(j=1, width=1.8)
 
-
+####### arrange by 5-year avg column highest to lowest. couldn't arrange because it's alreay converted to text  
 ```
 
 ```{r, ft.align='left'}
@@ -147,6 +142,9 @@ fall_age %>%
   align(j = c(2:7), align = "right", part = "all") %>% 
   width(width=.8) %>% 
   width(j=7, width=1.1) 
+
+##### this is fine as is.
+
 ```
 
 
@@ -237,8 +235,7 @@ most_growth %>% select(-"Unemployment") %>%
 
 ## Demographic Data 
 
-[Provide summary-level demographic data for the service area. Disaggregate the data as appropriate for the institution’s mission and service area. Provide brief context if needed.] 
-
+Population projections indicate strong growth in Santa Clara County as well as the Greater Bay Area. Between 2020 and 2060 projections suggest the Greater Bay Area’s population will increase by 18.2 % Santa Clara County’s population growth is expected to be higher at 23.1%.
 
 ```{r, ft.align="left"}
 projections %>% 
@@ -247,8 +244,17 @@ projections %>%
   set_caption("Bay Area Population Projections", autonum = run_autonum(seq_id='tab', bkm='popproj')) %>% 
   width(width=1.05) %>% 
   footnote(j=1, value = as_paragraph("Source: State of California Department of Finance, via Hanover Research"), ref_symbols=c(""), part = "header")
-```
 
+####could you create a column that shows the %growth from 10 year growth and 40 yr growth from 2020?
+####also, let's use notation like Population (in millions) and keep 2decimal places with rounding.
+```
+Projections by age group suggest an aging population, though the traditional student age group is expected to remain stable. Projections through 2060 by age group indicate large increases in the share of residents ages 40-44 and 85+, with a small increase in the 35-39 age group. The share of residents below 20 is expected to decline. Ages 20-24, the prime college going population, is expected to remain between 7.6 and 7.7%.
+
+>>>>> can you add the population project by age group here?
+
+
+
+Projections suggest an increasingly diverse community in the Greater Bay Area. A Metropolitan Transportation Commission (MTC) report on The Bay Area in 2040 suggests the population will become substantially more racially and ethnically diverse compared to the 2010 Census figures. Hispanic/Latino residents are projected to become the largest ethnic group and significant decline is projected in the White non Hispanic population. The share of Black or African American residents is also expected to decline slightly. Population projections in the Greater Bay Area suggest this trend will continue through 2060 with the share of non-Hispanic Whites dropping by 15.7% while the Asian population increases by 10.2%, and the Hispanic/Latino population grows by 4.8%. The Black non Hispanic population is expected to fall very slightly, by less than one percentage point.
 
 ```{r, ft.align="left"}
 raceproj %>% 
@@ -271,10 +277,12 @@ race %>% flextable::flextable() %>%
 
 
 #### for SC County, either spell it out Santa Clara or put it in notes. Acronyms are to be avoided in ISER.
-
+#### let's go with the ethncity breakdown, not race. Delete this table.
 
 
 ```
+The Greater Bay Area and the Santa Clara County are relatively diverse, but has a low share of Black or African American residents (5.5% and 2.3%, respectively). In the Greater Bay Area, the largest share of the population is White non Hispanic, while in the Santa Clara County, it is Asian. In both areas, approximately a quarter of residents are Hispanic or Latino (of any race).
+
 
 ```{r, ft.align="left"}
   ethnicity %>% flextable::flextable() %>% 
@@ -284,6 +292,11 @@ race %>% flextable::flextable() %>%
     flextable::set_table_properties(width = .5, layout='autofit') %>% 
     footnote(j=1, value = as_paragraph("Source: US Census Bureau, via Hanover Research"), ref_symbols=c(""), part = "header")
 
+#### please note the year of the data.
+#### order based on the bay area percentage
+### can you check that the white alone actually means white alone, not hispanic or Latino?
+#### let's add the 2020-2021 annual headcount (both credit and noncredit) by ethnicity as another column both n and %. Add a note below that says it is from 2020-2021 data. 
+
 ```
 
 
@@ -291,7 +304,7 @@ race %>% flextable::flextable() %>%
 
 ## Socio-economic Data 
 
-[Provide summary-level socio-economic data for the service area. Disaggregate the data as appropriate for the institution’s mission and service area. Provide brief context if needed.] 
+On the whole, the Greater Bay Area and Santa Clara County is well-educated. More than a quarter of Greater Bay Area residents hold a bachelor’s degree, with nearly 20 % holding a graduate or professional degree. A small share holds associate’s degrees, but it is unclear how many bachelor’s degree holders initially pursued an associate’s program before transfer. However, over 40% of Santa Clara County residents aged 25 or older hold less than associate degree.  
 
 ```{r, ft.align="left"}
 education %>% 
@@ -302,10 +315,13 @@ education %>%
   flextable::set_table_properties(width = .5, layout='autofit') %>% 
   footnote(j=1, value = as_paragraph("Source: US Census Bureau, via Hanover Research"), ref_symbols=c(""), part = "header")
 
-#### for total, use 100% instead of NA%. Also, add "Total" before population for the first row.
+#### for total, use 100% instead of NA%. Also, add "Total" before the word population for the first row.
 
 #### use a row separater to mark the last 2 rows in a way similar to Santa Barabara did it. As it is, it is a bit hard to understand what the last 2 rows are doing. I want to see a line or a row above high school separating the last 2 rows from the rest. 
 
+### is this data available by race if you go to census? If available, can you write a paragraph which population are experiencing lower educational attainment?
+
+### add year information
 
 
 ```
@@ -322,7 +338,7 @@ median %>%
 #### can  you make sure that the SC county data also goes down to the 2 decimal places. If unavailable, get rid of it for other columns too.
 
 
-#### can you get this sort of income data by race to illustrate the income gap?
+#### can you get this sort of income data by race to illustrate the income gap? When you do, please draft a paragrpah or a few sentences about it.
 ### also can you find out if by income we mean household income? 
 
 
@@ -338,7 +354,7 @@ poverty %>% flextable() %>%
   footnote(j=1, value = as_paragraph("Source: US Census Bureau, via Hanover Research"), ref_symbols=c(""), part = "header")
 
 
-###also is this data available by race?
+###also is this data available by race? same as above. develop a narrative from the disaggregated data.
 
 ```
 
