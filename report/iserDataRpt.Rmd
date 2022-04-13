@@ -31,8 +31,11 @@ set_flextable_defaults(font.size = 9)
 
 ## Student Enrollment Data 
 
-[Provide tables/charts summarizing enrollment trends. Disaggregate the data as appropriate for the institution’s mission and service area. Provide brief context if needed.] 
+### Overall Enrollment Trend
 
+The college's overall enrollment, using any enrollment metrics (headcount, seatcount or full-time equivalent students (FTES)), has declined in the last 5 years after a small increase in 2018-2019. Given the impact of COVID-19 pandemic and the statewide enrollment decline, this is not surprising.
+
+>>>>> Calculate the percentage decline from 2017-18 for headcount and talk about that.
 
 ```{r, ft.align='left'}
 annual %>% 
@@ -42,8 +45,23 @@ annual %>%
   footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
            ref_symbols=c(""), part = "header") %>% 
   width(j=1, width=2)
+
+#### source for this I believe isn't the data mart, but our internal data. please check. If this is true, please make changes to all of the enrollment data tables
+#### please change the metric "Full-Time Equivalent" to "Full-Time Equivalent Students"
+#### I like what Santa Barbara did. Let's separate this out by credit and noncredit and overall. In notes, say that the sum of credit and noncredit do not equal the overall hdct because some students enroll in both credit and noncredit during the academic year. Count a student as enrolled if they take at least one course in either type in a given year.
+#### have the seatcount and FTES ready, but remove from the discussion here. We may put them back in later. Let me know if you have any questions on this.
 ```
 
+
+
+### Credit Enrollment Trends and Student Composition
+
+>>>>> let's separate out credit and noncredit. in this section only focus on credit students and their breakdown
+>>>>> decribe the 5 year trend using 5yr %change, which sets the reference decline for examining all groups.
+>>>>> add the average at the end here.
+
+This section describes the credit enrollment trends by various student attributes. Data are from Fall terms between Fall 2017 and Fall 2021. It includes all students enrolled in at least one credit course. The data are extracted from the district's internal database by the Office of Research, Planning and Institutional Effectiveness. 
+>>>> insert discussion of 5 year trend here.
 
 ```{r, ft.align='left'}
 fall_hc %>% 
@@ -55,11 +73,11 @@ fall_hc %>%
            ref_symbols=c(""), part = "header") %>% 
   width(width=1)
 ```
-
+>>>> Describe the trend you see here in a plain straightforward language. For example, "In Fall terms, xx percent of credit students are y type, xx percent are z type, etc. any other noteworthy obvious trends.
 
 
 ```{r, ft.align='left'}
-fall_type %>% 
+fall_type_hc %>% 
   flextable() %>% 
   set_caption("Unduplicated Headcount by Student Type, Fall Terms", 
               autonum = run_autonum(seq_id='tab', bkm='fthc')) %>% 
@@ -67,7 +85,11 @@ fall_type %>%
            ref_symbols=c(""), part = "header") %>%
   width(j=1, width=2)
 
+#### this table needs to be pivoted.
+
 ```
+
+>>> same thing here
 
 ```{r, ft.align='left'}
 fall_goal_hc1 %>% 
@@ -126,11 +148,14 @@ sp_hc %>% flextable() %>%
            ref_symbols=c(""), part = "header") %>% 
   width(j=1, width=2.75)
 ```
+### Noncredit Enrollment Trends and Student Composition
+
+>>>>> for noncredit, only disaggregate by gender, race and age.
+>>>> Also do this by subject area too where if they take one noncredit course in one subject area, then count that as enrollment in that subject area. The point I want to make is that the biggest program is our noncredit esl.
+
 
 
 ## Labor Market Data 
-
-[Provide summary-level labor market data for the service area. Disaggregate the data as appropriate for the institution’s mission and service area. Provide brief context if needed.] 
 
 At a broad level, the top industries in the Greater Bay Area are Health Care and Social Assistance and Professional, Scientific, and Technical Services (Reference table).
 
@@ -233,6 +258,11 @@ race %>% flextable::flextable() %>%
   flextable::set_table_properties(width = .5, layout='autofit') %>% 
   footnote(j=1, value = as_paragraph("Source: US Census Bureau, via Hanover Research"), ref_symbols=c(""), part = "header")
 
+
+#### for SC County, either spell it out Santa Clara or put it in notes. Acronyms are to be avoided in ISER.
+
+
+
 ```
 
 ```{r, ft.align="left"}
@@ -261,6 +291,11 @@ education %>%
   flextable::set_table_properties(width = .5, layout='autofit') %>% 
   footnote(j=1, value = as_paragraph("Source: US Census Bureau, via Hanover Research"), ref_symbols=c(""), part = "header")
 
+#### for total, use 100% instead of NA%. Also, add "Total" before population for the first row.
+
+#### use a row separater to mark the last 2 rows in a way similar to Santa Barabara did it. As it is, it is a bit hard to understand what the last 2 rows are doing. I want to see a line or a row above high school separating the last 2 rows from the rest. 
+
+
 
 ```
 
@@ -273,6 +308,13 @@ median %>%
   width(width=1.5) %>% 
     footnote(j=1, value = as_paragraph("Source: US Census Bureau, via Hanover Research"), ref_symbols=c(""), part = "header")
 
+#### can  you make sure that the SC county data also goes down to the 2 decimal places. If unavailable, get rid of it for other columns too.
+
+
+#### can you get this sort of income data by race to illustrate the income gap?
+### also can you find out if by income we mean household income? 
+
+
 ```
 
 
@@ -283,6 +325,9 @@ poverty %>% flextable() %>%
     set_caption("Poverty Level in the Service Area",autonum = run_autonum(seq_id='tab', bkm='poverty')) %>% 
   width(width=1.5) %>% 
   footnote(j=1, value = as_paragraph("Source: US Census Bureau, via Hanover Research"), ref_symbols=c(""), part = "header")
+
+
+###also is this data available by race?
 
 ```
 
