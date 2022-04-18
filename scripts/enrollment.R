@@ -47,6 +47,19 @@ annual_hc <- enroll %>%
   group_by(annual) %>% 
   summarize(headcount = n()) 
 
+enroll_cred %>% 
+  filter(location == "San Jose City College" & cr_ncr == "Y") %>% 
+  mutate(student_yr = paste(student_id, term_reporting_year, sep="_")) %>% 
+  mutate(annual = paste(term_reporting_year, (term_reporting_year+1), sep="-")) %>% 
+  group_by(student_yr) %>% 
+  arrange(student_yr, annual) %>% 
+  mutate(acad_year_unique = row_number()) %>%
+  filter(acad_year_unique == 1) %>%
+  ungroup() %>% 
+  group_by(annual) %>% 
+  summarize(headcount = n()) 
+
+
 
 #overall seatcount by year
 annual_sc <- enroll %>% 
@@ -66,9 +79,9 @@ annual_ftes <- enroll %>%
 annual <- annual_hc %>% 
   left_join(annual_sc, by="annual") %>% 
   left_join(annual_ftes, by="annual")
-colnames(annual) <- c("Academic Year", "Headcount", "Seatcount", "Full-Time Equivalent")
+colnames(annual) <- c("Academic Year", "Headcount", "Seatcount", "Full-Time Equivalent Students")
 annual <- annual %>% pivot_longer(cols=c("Headcount", "Seatcount", 
-                               "Full-Time Equivalent"), names_to="Metric", 
+                               "Full-Time Equivalent Students"), names_to="Metric", 
                         values_to="value") %>% 
   pivot_wider(names_from = "Academic Year")
 
@@ -182,12 +195,12 @@ fall_goal_hc <- enroll_cred %>%
   #2 percentage column is formatted as a percentage without %, NOT a decimal
   mutate(perc = (round((headcount/sum(headcount)), digits = 4))*100) %>% 
   select(-headcount, -educ_goal_id) %>% 
-  arrange(desc(perc)) %>% 
   pivot_wider(names_from=term_id, values_from = perc)
 # 3 take five year mean of percentages
 n_row <- fthc
 fall_goal_hc1 <- fall_goal_hc %>% 
   mutate(mean = (round(rowMeans(fall_goal_hc[ , c(2:6)]), digits = 2))) %>% 
+  arrange(desc(mean)) %>% 
   mutate_if(is.numeric, as.character) %>% 
   mutate_at(c(2:7), ~percentage(.)) %>% 
   select(educ_goal_desc, '2017FA', '2018FA', '2019FA', '2020FA', '2021FA', 'mean') 
@@ -247,7 +260,8 @@ fall_race_hc <- enroll_cred %>%
   select(-headcount) %>% 
   pivot_wider(names_from=term_id, values_from = perc)
 fall_race_hc1 <- fall_race_hc %>% 
-  mutate(mean = (round(rowMeans(fall_race_hc[ , c(2:6)]), digits = 2))) %>% 
+  mutate(mean = (round(rowMeans(fall_race_hc[ , c(2:6)]), digits = 2))) %>%
+  arrange(desc(mean)) %>% 
   mutate_if(is.numeric, as.character) %>% 
   mutate_at(c(2:7), ~percentage(.))
 n_rowr <- n_row
@@ -278,6 +292,7 @@ fall_gender_hc <- enroll_cred %>%
   pivot_wider(names_from=term_id, values_from = perc)
 fall_gender_hc1 <- fall_gender_hc %>% 
   mutate(mean = (round(rowMeans(fall_gender_hc[ , c(2:6)]), digits = 2))) %>% 
+  arrange(desc(mean)) %>% 
   mutate_if(is.numeric, as.character) %>% 
   mutate_at(c(2:7), ~percentage(.))
 names(n_rowa)[names(n_rowa) == 'age'] <- "gender"
