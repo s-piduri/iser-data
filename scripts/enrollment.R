@@ -1,6 +1,13 @@
 library(tidyverse); library(readxl)
 library(scales)
 
+#functions
+percentage <- function(y) {
+  paste0(y, "%")
+} 
+
+##########################################
+
 #head count by special populations
 sp <- "C:\\Users\\spiduri\\Downloads\\SPStudentCountSumm.csv"
 special_pop <- read_csv(sp, skip=2)
@@ -112,7 +119,7 @@ annual_nc_ftes <- enroll_cred %>%
   group_by(annual) %>% 
   summarize(ftes = trunc(sum(total_FTES)))
 
-#total annual sc/hc/ftes table
+#total annual sc/hc/ftes tables
 annual_o <- annual_hc %>% 
   left_join(annual_sc, by="annual") %>% 
   left_join(annual_ftes, by="annual")
@@ -177,10 +184,6 @@ fall_hc <- enroll_cred %>%
   group_by(term_id) %>% 
   summarize(headcount = n())
 colnames(fall_hc) <- c("Fall Term", "Headcount")
-
-percentage <- function(y) {
-  paste0(y, "%")
-} 
 
 
 #credit headcounts by student type
@@ -304,6 +307,47 @@ fall_age <- fall_age_hc1 %>%
 names(fall_age)[names(fall_age) == 'age'] <- 'Age'
 names(fall_age)[names(fall_age) == 'mean'] <- "5-Year Average"
 
+#noncredit headcounts by age
+fall_ncage_hc <- enroll_cred %>% 
+  filter(grepl("FA", term_id)) %>%  
+  filter(location == "San Jose City College" & cr_ncr == "Y") %>% 
+  mutate(student_term = paste(student_id, term_id, sep="_")) %>% 
+  group_by(student_term) %>% 
+  arrange(student_term, term_reporting_year) %>% 
+  mutate(fall_unique = row_number()) %>% 
+  filter(fall_unique == 1) %>%
+  ungroup() %>% 
+  group_by(term_id, age) %>% 
+  summarize(headcount = n()) %>% 
+  ungroup() %>% 
+  group_by(term_id) %>% 
+  #2 percentage column is formatted as a percentage without %, NOT a decimal
+  mutate(perc = (round((headcount/sum(headcount)), digits = 4))*100) %>% 
+  select(-headcount) %>% 
+  pivot_wider(names_from=term_id, values_from = perc) %>% 
+  mutate_if(is.numeric, ~replace_na(., 0))
+fall_ncage_hc1 <- fall_ncage_hc %>% 
+  mutate(mean = (round(rowMeans(fall_ncage_hc[ , c(2:6)]), digits = 2))) %>% 
+  mutate_if(is.numeric, as.character) %>% 
+  mutate_at(c(2:7), ~percentage(.))
+
+#4 add row of n
+fahc <- enroll_cred %>% 
+  filter(grepl("FA", term_id)) %>%  
+  filter(location == "San Jose City College" & cr_ncr == "Y") %>% 
+  group_by(term_id) %>% 
+  summarize(total = n()) %>% 
+  mutate(age = "Total (N)") %>% 
+  pivot_wider(names_from=term_id, values_from=total) %>%
+  mutate(mean = floor(rowMeans(fahc[ , c(2:6)]))) %>% 
+  mutate_if(is.numeric, as.character) 
+
+fall_ncage <- fall_ncage_hc1 %>% 
+  rbind(fahc)
+names(fall_ncage)[names(fall_ncage) == 'age'] <- 'Age'
+names(fall_ncage)[names(fall_ncage) == 'mean'] <- "5-Year Average"
+
+
   
 #credit headcounts by race
 fall_race_hc <- enroll_cred %>% 
@@ -335,6 +379,38 @@ fall_race <- fall_race_hc1 %>%
 names(fall_race)[names(fall_race) == 'race'] <- 'Race'
 names(fall_race)[names(fall_race) == 'mean'] <- "5-Year Average"
 
+
+#noncredit headcounts by race
+fall_ncrace_hc <- enroll_cred %>% 
+  filter(grepl("FA", term_id)) %>% 
+  filter(location == "San Jose City College" & cr_ncr == "Y") %>% 
+  mutate(student_term = paste(student_id, term_id, sep="_")) %>% 
+  group_by(student_term) %>% 
+  arrange(student_term, term_reporting_year) %>% 
+  mutate(fall_unique = row_number()) %>% 
+  filter(fall_unique == 1) %>%
+  ungroup() %>% 
+  group_by(term_id, race) %>% 
+  summarize(headcount = n()) %>% 
+  ungroup() %>% 
+  group_by(term_id) %>% 
+  #2 percentage column is formatted as a percentage without %, NOT a decimal
+  mutate(perc = (round((headcount/sum(headcount)), digits = 4))*100) %>% 
+  select(-headcount) %>% 
+  pivot_wider(names_from=term_id, values_from = perc) %>% 
+  mutate_if(is.numeric, ~replace_na(., 0))
+fall_ncrace_hc1 <- fall_ncrace_hc %>% 
+  mutate(mean = (round(rowMeans(fall_ncrace_hc[ , c(2:6)]), digits = 2))) %>%
+  arrange(desc(mean)) %>% 
+  mutate_if(is.numeric, as.character) %>% 
+  mutate_at(c(2:7), ~percentage(.))
+names(fahc)[names(fahc) == 'age'] <- "race"
+fall_ncrace <- fall_ncrace_hc1 %>% 
+  rbind(fahc)
+names(fall_ncrace)[names(fall_ncrace) == 'race'] <- 'Race'
+names(fall_ncrace)[names(fall_ncrace) == 'mean'] <- "5-Year Average"
+
+
 #fall credit headcounts by gender
 fall_gender_hc <- enroll_cred %>% 
   filter(grepl("FA", term_id)) %>% 
@@ -362,12 +438,45 @@ fall_gender_hc1 <- fall_gender_hc %>%
 names(n_rowa)[names(n_rowa) == 'age'] <- "gender"
 fall_gender <- fall_gender_hc1 %>% 
   rbind(n_rowa)
-names(fall_race)[names(fall_race) == 'gender'] <- 'Gender'
-names(fall_race)[names(fall_race) == 'mean'] <- "5-Year Average"
+names(fall_gender)[names(fall_gender) == 'gender'] <- 'Gender'
+names(fall_gender)[names(fall_gender) == 'mean'] <- "5-Year Average"
+
+#fall noncredit headcounts by gender
+fall_ncgender_hc <- enroll_cred %>% 
+  filter(grepl("FA", term_id)) %>% 
+  filter(location == "San Jose City College" & cr_ncr == "N") %>% 
+  mutate(student_term = paste(student_id, term_id, sep="_")) %>% 
+  group_by(student_term) %>% 
+  arrange(student_term, term_reporting_year) %>% 
+  mutate(fall_unique = row_number()) %>% 
+  filter(fall_unique == 1) %>%
+  ungroup() %>% 
+  group_by(term_id, gender) %>% 
+  summarize(headcount = n()) %>% 
+  replace(is.na(.), 'Unknown') %>% 
+  ungroup() %>% 
+  group_by(term_id) %>% 
+  #2 percentage column is formatted as a percentage without %, NOT a decimal
+  mutate(perc = (round((headcount/sum(headcount)), digits = 4))*100) %>% 
+  select(-headcount) %>% 
+  pivot_wider(names_from=term_id, values_from = perc)
+
+fall_ncgender_hc1 <- fall_ncgender_hc %>% 
+  mutate(mean = (round(rowMeans(fall_ncgender_hc[ , c(2:6)]), digits = 2))) %>% 
+  arrange(desc(mean)) %>% 
+  mutate_if(is.numeric, as.character) %>% 
+  mutate_at(c(2:7), ~percentage(.))
+
+names(fahc)[names(fahc) == 'race'] <- "gender"
+fall_ncgender <- fall_ncgender_hc1 %>% 
+  rbind(fahc)
+names(fall_ncgender)[names(fall_ncgender) == 'gender'] <- 'Gender'
+names(fall_ncgender)[names(fall_ncgender) == 'mean'] <- "5-Year Average"
 
 
 ##save####
 save(sp_hc, annual, 
      fall_age, fall_cred_hc, fall_gender, fall_goal,
      fall_hc, fall_race, fall_type, 
+     fall_ncage, fall_ncrace, fall_ncgender,
      file="entable.RData")

@@ -35,7 +35,7 @@ set_flextable_defaults(font.size = 9)
 
 The college's overall enrollment, using any enrollment metrics (headcount, seatcount or full-time equivalent students (FTES)), has declined in the last 5 years after a small increase in 2018-2019. Given the impact of COVID-19 pandemic and the statewide enrollment decline, this is not surprising.
 
-Overall headcount has declined 16% from 2017-18 to 2021-22. This decline is reflected throughout the enrollment trend data. 
+Overall headcount has declined 16% from 2017-18 to 2021-22. This decline is reflected throughout the enrollment trend data.
 
 >>>>> Calculate the percentage decline from 2017-18 for headcount and talk about that.
 
@@ -167,29 +167,60 @@ sp_hc %>% flextable() %>%
 >>>>> for noncredit, only disaggregate by gender, race and age.
 >>>> Also do this by subject area too where if they take one noncredit course in one subject area, then count that as enrollment in that subject area. The point I want to make is that the biggest program is our noncredit esl.
 
-```{r}
+```{r, ft.align='left'}
 #gender
+fall_ncgender %>% 
+  flextable() %>% 
+  set_caption("Noncredit Headcount by Gender, Fall Terms", 
+              autonum = run_autonum(seq_id='tab', bkm='fgehcnc')) %>% 
+  footnote(j=1, value=as_paragraph("Source: SJCC Internal Data Warehouse"),
+           ref_symbols=c(""), part = "header") %>% 
+  width(width=1)
 ```
 
 
-```{r}
+```{r, ft.align='left'}
 #race
+fall_ncrace %>% 
+  flextable() %>% 
+  set_caption("Noncredit Headcount by Race/Ethnicity, Fall Terms", 
+              autonum = run_autonum(seq_id='tab', bkm='frhcnc')) %>% 
+  footnote(j=1, value=as_paragraph("Source: SJCC Internal Data Warehouse"),
+           ref_symbols=c(""), part = "header") %>% 
+  width(width=1)
+
 ```
 
 
-```{r}
+```{r, ft.align='left'}
 #age
+fall_ncage %>% 
+  flextable() %>% 
+  set_caption("Noncredit Headcount by Age, Fall Terms", 
+              autonum = run_autonum(seq_id='tab', bkm='fahcnc')) %>% 
+  footnote(j=1, value=as_paragraph("Source: SJCC Internal Data Warehouse"),
+           ref_symbols=c(""), part = "header") %>% 
+  width(width=1)
+
 ```
 
 
-```{r}
+```{r, ft.align='left'}
 #subject area (split crs_name into dept, #)
+fall_ncsubject %>% 
+  flextable() %>% 
+  set_caption("Noncredit Headcount by Subject, Fall Terms", 
+              autonum = run_autonum(seq_id='tab', bkm='fahc')) %>% 
+  footnote(j=1, value=as_paragraph("Source: SJCC Internal Data Warehouse"),
+           ref_symbols=c(""), part = "header") %>% 
+  width(width=1)
+
 ```
 
 
 ## Labor Market Data 
 
-At a broad level, the top industries in the Greater Bay Area are Health Care and Social Assistance and Professional, Scientific, and Technical Services (Reference table).
+At a broad level, the top industries in the Greater Bay Area are Health Care and Social Assistance and Professional, Scientific, and Technical Services.
 
 ```{r, ft.align='left'}
 broad_ten %>% flextable() %>% 
