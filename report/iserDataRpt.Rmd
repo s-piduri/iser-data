@@ -35,20 +35,32 @@ set_flextable_defaults(font.size = 9)
 
 The college's overall enrollment, using any enrollment metrics (headcount, seatcount or full-time equivalent students (FTES)), has declined in the last 5 years after a small increase in 2018-2019. Given the impact of COVID-19 pandemic and the statewide enrollment decline, this is not surprising.
 
+Overall headcount has declined 16% from 2017-18 to 2021-22. This decline is reflected throughout the enrollment trend data. 
+
 >>>>> Calculate the percentage decline from 2017-18 for headcount and talk about that.
 
 ```{r, ft.align='left'}
 annual %>% 
+    filter(Metric == "Overall:" | Metric == "Credit Students:" | Metric == "Noncredit Students:" | Metric == "Headcount") %>% 
   flextable() %>% 
   set_caption("Annual Student Metrics", 
               autonum = run_autonum(seq_id='tab', bkm='hc')) %>% 
   footnote(j=1, value=as_paragraph("Source: SJCC Internal Data Warehouse"),
            ref_symbols=c(""), part = "header") %>% 
-  width(j=1, width=2)
-
-#### source for this I believe isn't the data mart, but our internal data. please check. If this is true, please make changes to all of the enrollment data tables
-#### please change the metric "Full-Time Equivalent" to "Full-Time Equivalent Students"
-#### I like what Santa Barbara did. Let's separate this out by credit and noncredit and overall. In notes, say that the sum of credit and noncredit do not equal the overall hdct because some students enroll in both credit and noncredit during the academic year. Count a student as enrolled if they take at least one course in either type in a given year.
+  width(j=1, width=2) %>% 
+  #if including ftes and sc, these five lines need to be used so that they affect the subheadings
+  # surround(i = 5, part = 'body', border.top = fp_border()) %>% 
+  # surround(i = 9, part = 'body', border.top = fp_border()) %>% 
+  # bold(i=1, part='body') %>% 
+  # bold(i=5, part='body') %>%
+  # bold(i=9, part='body') %>% 
+  surround(i = 3, part = 'body', border.top = fp_border()) %>% 
+  surround(i = 5, part = 'body', border.top = fp_border()) %>% 
+  bold(i=1, part='body') %>% 
+  bold(i=3, part='body') %>%
+  bold(i=5, part='body') %>% 
+  footnote(j=1, value=as_paragraph("A student is counted as credit/noncredit if they take at least one course in that type. Note that some students enroll in both credit and noncredit courses during the academic year, so they are included in both the credit and noncredit figures. Because of this, the sum of credit and noncredit headcounts does not equal the overall headcount."),
+           ref_symbols=c(""), part = "header")
 #### have the seatcount and FTES ready, but remove from the discussion here. We may put them back in later. Let me know if you have any questions on this.
 ```
 
@@ -61,6 +73,7 @@ annual %>%
 >>>>> add the average at the end here.
 
 This section describes the credit enrollment trends by various student attributes. Data are from Fall terms between Fall 2017 and Fall 2021. It includes all students enrolled in at least one credit course. The data are extracted from the district's internal database by the Office of Research, Planning and Institutional Effectiveness. 
+
 >>>> insert discussion of 5 year trend here.
 
 ```{r, ft.align='left'}
@@ -69,11 +82,12 @@ fall_hc %>%
   flextable() %>% 
   set_caption("Unduplicated Overall Headcount, Fall Terms", 
               autonum = run_autonum(seq_id='tab', bkm='fhc')) %>% 
-  footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
+  footnote(j=1, value=as_paragraph("Source: SJCC Internal Data Warehouse"),
            ref_symbols=c(""), part = "header") %>% 
   width(width=1)
 ```
 >>>> Describe the trend you see here in a plain straightforward language. For example, "In Fall terms, xx percent of credit students are y type, xx percent are z type, etc. any other noteworthy obvious trends.
+
 
 
 ```{r, ft.align='left'}
@@ -81,13 +95,11 @@ fall_type %>%
   flextable() %>% 
   set_caption("Unduplicated Headcount by Student Type, Fall Terms", 
               autonum = run_autonum(seq_id='tab', bkm='fthc')) %>% 
-  footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
+  footnote(j=1, value=as_paragraph("Source: SJCC Internal Data Warehouse"),
            ref_symbols=c(""), part = "header") %>%
   width(j=1, width=1.3) %>% 
   width(j=7, width=1) %>% 
   align(j=c(2:7), align = 'right', part = 'all')
-
-#### this table needs to be pivoted.
 
 ```
 
@@ -99,7 +111,7 @@ fall_goal %>%
   flextable() %>% 
   set_caption("Unduplicated Credit Headcount by Student Goal, Fall Terms", 
               autonum = run_autonum(seq_id='tab', bkm='fghc')) %>% 
-  footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
+  footnote(j=1, value=as_paragraph("Source: SJCC Internal Data Warehouse"),
            ref_symbols=c(""), part = "header") %>% 
   width(j=1, width=2)
 
@@ -107,11 +119,11 @@ fall_goal %>%
 
 ```{r, ft.align='left'}
 fall_gender %>% 
-  pivot_wider(names_from="Fall Term", values_from = "Headcount") %>% 
+  #pivot_wider(names_from="Fall Term", values_from = "Headcount") %>% 
   flextable() %>% 
   set_caption("Unduplicated Credit Headcount by Gender, Fall Terms", 
               autonum = run_autonum(seq_id='tab', bkm='fgehc')) %>% 
-  footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
+  footnote(j=1, value=as_paragraph("Source: SJCC Internal Data Warehouse"),
            ref_symbols=c(""), part = "header") %>% 
   width(width=1)
 ```
@@ -119,11 +131,11 @@ fall_gender %>%
 
 ```{r, ft.align='left'}
 fall_race %>% 
-  pivot_wider(names_from="Fall Term", values_from = "Headcount") %>% 
+  #pivot_wider(names_from="Fall Term", values_from = "Headcount") %>% 
   flextable() %>% 
   set_caption("Unduplicated Credit Headcount by Race/Ethnicity, Fall Terms", 
               autonum = run_autonum(seq_id='tab', bkm='frhc')) %>% 
-  footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
+  footnote(j=1, value=as_paragraph("Source: SJCC Internal Data Warehouse"),
            ref_symbols=c(""), part = "header") %>% 
   width(width=1)
 
@@ -131,11 +143,11 @@ fall_race %>%
 
 ```{r, ft.align='left'}
 fall_age %>% 
-  pivot_wider(names_from="Fall Term", values_from = "Headcount") %>% 
+  #pivot_wider(names_from="Fall Term", values_from = "Headcount") %>% 
   flextable() %>% 
   set_caption("Unduplicated Credit Headcount by Age, Fall Terms", 
               autonum = run_autonum(seq_id='tab', bkm='fahc')) %>% 
-  footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
+  footnote(j=1, value=as_paragraph("Source: SJCC Internal Data Warehouse"),
            ref_symbols=c(""), part = "header") %>% 
   width(width=1)
 ```
@@ -155,6 +167,24 @@ sp_hc %>% flextable() %>%
 >>>>> for noncredit, only disaggregate by gender, race and age.
 >>>> Also do this by subject area too where if they take one noncredit course in one subject area, then count that as enrollment in that subject area. The point I want to make is that the biggest program is our noncredit esl.
 
+```{r}
+#gender
+```
+
+
+```{r}
+#race
+```
+
+
+```{r}
+#age
+```
+
+
+```{r}
+#subject area (split crs_name into dept, #)
+```
 
 
 ## Labor Market Data 
@@ -183,7 +213,6 @@ topten %>% flextable::flextable() %>%
 
 All top 10 Bay Area tech industries by share of employment have positive 10-year projected growth (reference table). Also, the Greater Bay Area is projected to have an employment undersupply for occupations in business, technology, and healthcare including software developers, nurses, and managers while it is also projected to have a slight oversupply for teaching related occupations and paralegals/legal assistants. 
 
-<!-- please add another table from pg 16 regarding top bay area occupation gaps 2020-2030. Can you also figure out what "Two-Year Degree or higher only" means here? My guess is that the data is among those with two year degree or higher? Also, are these referring to the numbers of persons with the necessary credentials to work in these positions?    -->
 
 ```{r, ft.align='left'}
 gaps %>% flextable() %>% 
@@ -646,9 +675,11 @@ licensure %>%
 
 
 ```{r job placement, ft.align='left'}
-  jobplace %>% 
-    flextable::flextable() %>%
-    flextable::set_formatter("Institution Set Standard" = function(x) sprintf("%.001f%%", x*100)) %>%
+jobplace %>% 
+  select("Program", "Institution Set Standard", "Stretch Goal", 
+         "2018-2019", "2019-2020", "2020-2021") %>% 
+  flextable() %>%
+  flextable::set_formatter("Institution Set Standard" = function(x) sprintf("%.001f%%", x*100)) %>%
   flextable::set_formatter("Stretch Goal" = function(x) sprintf("%.000f%%", x*100)) %>%
   flextable::set_formatter("2018-2019" = function(x) sprintf("%.000f%%", x*100)) %>% 
   flextable::set_formatter("2019-2020" = function(x) sprintf("%.000f%%", x*100)) %>% 

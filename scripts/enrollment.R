@@ -10,7 +10,8 @@ sp_hc <- sp_hc[c(-1),]
 colnames(sp_hc) <- c("Special Characteristic", "2017", "2018", "2019",
                      "2020", "2021")
 sp_hc <- sp_hc %>% 
-  replace(is.na(.), 0)
+  replace(is.na(.), 0) %>% 
+  arrange(desc('2017'))
 
 # length(unique(fa2018$student_id))
 
@@ -47,7 +48,19 @@ annual_hc <- enroll %>%
   group_by(annual) %>% 
   summarize(headcount = n()) 
 
-enroll_cred %>% 
+annual_c_hc <- enroll_cred %>% 
+  filter(location == "San Jose City College" & cr_ncr == "N") %>% 
+  mutate(student_yr = paste(student_id, term_reporting_year, sep="_")) %>% 
+  mutate(annual = paste(term_reporting_year, (term_reporting_year+1), sep="-")) %>% 
+  group_by(student_yr) %>% 
+  arrange(student_yr, annual) %>% 
+  mutate(acad_year_unique = row_number()) %>%
+  filter(acad_year_unique == 1) %>%
+  ungroup() %>% 
+  group_by(annual) %>% 
+  summarize(headcount = n()) 
+
+annual_nc_hc <- enroll_cred %>% 
   filter(location == "San Jose City College" & cr_ncr == "Y") %>% 
   mutate(student_yr = paste(student_id, term_reporting_year, sep="_")) %>% 
   mutate(annual = paste(term_reporting_year, (term_reporting_year+1), sep="-")) %>% 
@@ -60,13 +73,25 @@ enroll_cred %>%
   summarize(headcount = n()) 
 
 
-
 #overall seatcount by year
 annual_sc <- enroll %>% 
   filter(location == "San Jose City College") %>% 
   mutate(annual = paste(term_reporting_year, (term_reporting_year+1), sep="-")) %>%
   group_by(annual) %>% 
   summarize(seatcount = n())
+
+annual_c_sc <- enroll_cred %>% 
+  filter(location == "San Jose City College" & cr_ncr == "N") %>% 
+  mutate(annual = paste(term_reporting_year, (term_reporting_year+1), sep="-")) %>%
+  group_by(annual) %>% 
+  summarize(seatcount = n())
+
+annual_nc_sc <- enroll_cred %>% 
+  filter(location == "San Jose City College" & cr_ncr == "Y") %>% 
+  mutate(annual = paste(term_reporting_year, (term_reporting_year+1), sep="-")) %>%
+  group_by(annual) %>% 
+  summarize(seatcount = n())
+
 
 #overall ftes by year
 annual_ftes <- enroll %>% 
@@ -75,16 +100,53 @@ annual_ftes <- enroll %>%
   group_by(annual) %>% 
   summarize(ftes = trunc(sum(total_FTES)))
 
+annual_c_ftes <- enroll_cred %>% 
+  filter(location == "San Jose City College" & cr_ncr == "N") %>% 
+  mutate(annual = paste(term_reporting_year, (term_reporting_year+1), sep="-")) %>%
+  group_by(annual) %>% 
+  summarize(ftes = trunc(sum(total_FTES)))
+
+annual_nc_ftes <- enroll_cred %>% 
+  filter(location == "San Jose City College" & cr_ncr == "Y") %>% 
+  mutate(annual = paste(term_reporting_year, (term_reporting_year+1), sep="-")) %>%
+  group_by(annual) %>% 
+  summarize(ftes = trunc(sum(total_FTES)))
+
 #total annual sc/hc/ftes table
-annual <- annual_hc %>% 
+annual_o <- annual_hc %>% 
   left_join(annual_sc, by="annual") %>% 
   left_join(annual_ftes, by="annual")
-colnames(annual) <- c("Academic Year", "Headcount", "Seatcount", "Full-Time Equivalent Students")
-annual <- annual %>% pivot_longer(cols=c("Headcount", "Seatcount", 
+colnames(annual_o) <- c("Academic Year", "Headcount", "Seatcount", "Full-Time Equivalent Students")
+annual_o <- annual_o %>% pivot_longer(cols=c("Headcount", "Seatcount", 
                                "Full-Time Equivalent Students"), names_to="Metric", 
                         values_to="value") %>% 
-  pivot_wider(names_from = "Academic Year")
+  pivot_wider(names_from = "Academic Year") %>% 
+  add_row(Metric = "Overall:", .before = 1)
 
+annual_c <- annual_c_hc %>% 
+  left_join(annual_c_sc, by="annual") %>% 
+  left_join(annual_c_ftes, by="annual")
+colnames(annual_c) <- c("Academic Year", "Headcount", "Seatcount", "Full-Time Equivalent Students")
+annual_c <- annual_c %>% pivot_longer(cols=c("Headcount", "Seatcount", 
+                                         "Full-Time Equivalent Students"), names_to="Metric", 
+                                  values_to="value") %>% 
+  pivot_wider(names_from = "Academic Year") %>% 
+  add_row(Metric = "Credit Students:", .before = 1) #add header label
+
+annual_nc <- annual_nc_hc %>% 
+  left_join(annual_nc_sc, by="annual") %>% 
+  left_join(annual_nc_ftes, by="annual")
+colnames(annual_nc) <- c("Academic Year", "Headcount", "Seatcount", "Full-Time Equivalent Students")
+annual_nc <- annual_nc %>% pivot_longer(cols=c("Headcount", "Seatcount", 
+                                         "Full-Time Equivalent Students"), names_to="Metric", 
+                                  values_to="value") %>% 
+  pivot_wider(names_from = "Academic Year") %>% 
+  add_row(Metric = "Noncredit Students:", .before = 1) #add header label
+
+#combine all three tables (overall, credit, noncredit)
+annual <- annual_o %>% 
+  rbind(annual_c) %>% 
+  rbind(annual_nc)
 
 #####headcount by term overall#####
 #headcount by term
@@ -130,7 +192,7 @@ percentage <- function(y) {
       #5 take five year mean of N
 fall_type_hc <- enroll_cred %>% 
   filter(grepl("FA", term_id)) %>% 
-  filter(location == "San Jose City College") %>% 
+  filter(location == "San Jose City College" & cr_ncr == "N") %>% 
   #1 get credit headcounts by type
   mutate(student_term = paste(student_id, term_id, sep="_")) %>% 
   mutate(term_status = case_when(
@@ -153,10 +215,11 @@ fall_type_hc <- enroll_cred %>%
   mutate(perc = (round((headcount/sum(headcount)), digits = 4))*100)
 fall_type_p <- fall_type_hc %>% 
   select(term_status, perc, term_id) %>% 
-  pivot_wider(names_from=term_id, values_from=perc) %>% 
+  pivot_wider(names_from=term_id, values_from=perc) %>%
+  mutate_if(is.numeric, ~replace_na(., 0)) %>%
   #3 take five year mean of percentages
   mutate(mean = (round(rowMeans(fall_type_p[ , c(2:6)]), digits = 2))) %>% 
-  mutate_if(is.numeric, as.character) %>% 
+  mutate_if(is.numeric, as.character) %>%
   mutate_at(c(2:7), ~percentage(.))
 
 #4 add row of n
@@ -168,7 +231,8 @@ fthc <- fall_type_hc %>%
   pivot_wider(names_from=term_id, values_from=total) %>%
   mutate(mean = floor(rowMeans(fthc[ , c(2:6)]))) %>% 
   filter(term_status == "New")%>% 
-  mutate_if(is.numeric, as.character)
+  mutate_if(is.numeric, as.character) 
+  
 # bind together percentages and N
 fthc[1] <- "Total (N)"
 fall_type <- fall_type_p %>% 
@@ -181,7 +245,7 @@ names(fall_type)[names(fall_type) == 'mean'] <- '5-Year Average'
 #credit headcounts by goal
 fall_goal_hc <- enroll_cred %>% 
   filter(grepl("FA", term_id)) %>% 
-  filter(location == "San Jose City College") %>% 
+  filter(location == "San Jose City College" & cr_ncr == "N") %>% 
   mutate(student_term = paste(student_id, term_id, sep="_")) %>% 
   group_by(student_term) %>% 
   arrange(student_term, term_reporting_year) %>% 
@@ -214,7 +278,7 @@ names(fall_goal)[names(fall_goal) == 'mean'] <- "5 Year Average"
 #credit headcounts by age
 fall_age_hc <- enroll_cred %>% 
   filter(grepl("FA", term_id)) %>%  
-  filter(location == "San Jose City College") %>% 
+  filter(location == "San Jose City College" & cr_ncr == "N") %>% 
   mutate(student_term = paste(student_id, term_id, sep="_")) %>% 
   group_by(student_term) %>% 
   arrange(student_term, term_reporting_year) %>% 
@@ -244,7 +308,7 @@ names(fall_age)[names(fall_age) == 'mean'] <- "5-Year Average"
 #credit headcounts by race
 fall_race_hc <- enroll_cred %>% 
   filter(grepl("FA", term_id)) %>% 
-  filter(location == "San Jose City College") %>% 
+  filter(location == "San Jose City College" & cr_ncr == "N") %>% 
   mutate(student_term = paste(student_id, term_id, sep="_")) %>% 
   group_by(student_term) %>% 
   arrange(student_term, term_reporting_year) %>% 
@@ -274,7 +338,7 @@ names(fall_race)[names(fall_race) == 'mean'] <- "5-Year Average"
 #fall credit headcounts by gender
 fall_gender_hc <- enroll_cred %>% 
   filter(grepl("FA", term_id)) %>% 
-  filter(location == "San Jose City College") %>% 
+  filter(location == "San Jose City College" & cr_ncr == "N") %>% 
   mutate(student_term = paste(student_id, term_id, sep="_")) %>% 
   group_by(student_term) %>% 
   arrange(student_term, term_reporting_year) %>% 
