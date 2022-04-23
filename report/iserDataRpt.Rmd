@@ -113,8 +113,8 @@ fall_goal %>%
               autonum = run_autonum(seq_id='tab', bkm='fghc')) %>% 
   footnote(j=1, value=as_paragraph("Source: SJCC Internal Data Warehouse"),
            ref_symbols=c(""), part = "header") %>% 
-  width(j=1, width=2)
-
+  width(j=1, width=2) %>% 
+  align(j=c(2:7), align = 'right', part = 'all')
 ```
 
 ```{r, ft.align='left'}
@@ -125,7 +125,8 @@ fall_gender %>%
               autonum = run_autonum(seq_id='tab', bkm='fgehc')) %>% 
   footnote(j=1, value=as_paragraph("Source: SJCC Internal Data Warehouse"),
            ref_symbols=c(""), part = "header") %>% 
-  width(width=1)
+  width(j=7, width=1.1) %>% 
+  align(j=c(2:7), align = 'right', part = 'all')
 ```
 
 
@@ -137,8 +138,8 @@ fall_race %>%
               autonum = run_autonum(seq_id='tab', bkm='frhc')) %>% 
   footnote(j=1, value=as_paragraph("Source: SJCC Internal Data Warehouse"),
            ref_symbols=c(""), part = "header") %>% 
-  width(width=1)
-
+  width(j=1, width=1.6) %>% 
+  align(j=c(2:7), align = 'right', part = 'all')
 ```
 
 ```{r, ft.align='left'}
@@ -149,7 +150,9 @@ fall_age %>%
               autonum = run_autonum(seq_id='tab', bkm='fahc')) %>% 
   footnote(j=1, value=as_paragraph("Source: SJCC Internal Data Warehouse"),
            ref_symbols=c(""), part = "header") %>% 
-  width(width=1)
+  width(j=1, width=.8) %>% 
+  width(j=7, width=1) %>% 
+  align(j=c(2:7), align = 'right', part = 'all')
 ```
 
 
@@ -160,7 +163,7 @@ sp_hc %>% flextable() %>%
               autonum = run_autonum(seq_id='tab', bkm='special')) %>% 
   footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
            ref_symbols=c(""), part = "header") %>% 
-  width(j=1, width=2.75)
+  width(j=1, width=3)
 ```
 ### Noncredit Enrollment Trends and Student Composition
 
@@ -175,7 +178,11 @@ fall_ncgender %>%
               autonum = run_autonum(seq_id='tab', bkm='fgehcnc')) %>% 
   footnote(j=1, value=as_paragraph("Source: SJCC Internal Data Warehouse"),
            ref_symbols=c(""), part = "header") %>% 
-  width(width=1)
+  width(j=7,width=1.1) %>% 
+  align(j=c(2:7), align = 'right', part = 'all')
+
+
+
 ```
 
 
@@ -187,7 +194,9 @@ fall_ncrace %>%
               autonum = run_autonum(seq_id='tab', bkm='frhcnc')) %>% 
   footnote(j=1, value=as_paragraph("Source: SJCC Internal Data Warehouse"),
            ref_symbols=c(""), part = "header") %>% 
-  width(width=1)
+  width(j=7,width=1.1) %>% 
+  width(j=1,width=1.6) %>% 
+  align(j=c(2:7), align = 'right', part = 'all')
 
 ```
 
@@ -200,7 +209,9 @@ fall_ncage %>%
               autonum = run_autonum(seq_id='tab', bkm='fahcnc')) %>% 
   footnote(j=1, value=as_paragraph("Source: SJCC Internal Data Warehouse"),
            ref_symbols=c(""), part = "header") %>% 
-  width(width=1)
+  width(j=7,width=1.1) %>% 
+  width(j=1,width=.9) %>% 
+  align(j=c(2:7), align = 'right', part = 'all')
 
 ```
 
@@ -213,7 +224,8 @@ fall_ncsubject %>%
               autonum = run_autonum(seq_id='tab', bkm='fahc')) %>% 
   footnote(j=1, value=as_paragraph("Source: SJCC Internal Data Warehouse"),
            ref_symbols=c(""), part = "header") %>% 
-  width(width=1)
+  width(j=7,width=1.1) %>% 
+  align(j=c(2:7), align = 'right', part = 'all')
 
 ```
 
@@ -308,7 +320,7 @@ raceproj %>%
   flextable::set_formatter("2020" = function(x) sprintf("%.001f%%", x*100)) %>% 
   flextable::set_formatter("2060" = function(x) sprintf("%.001f%%", x*100)) %>% 
   flextable::set_formatter("Percent Change" = function(x) sprintf("%.001f%%", x*100)) %>% 
-  width(width=1.6) %>% 
+  width(j=1,width=3) %>% 
   footnote(j=1, value = as_paragraph("Source: State of California Department of Finance, via Hanover Research"), ref_symbols=c(""), part = "header")
 
 ```
@@ -351,7 +363,8 @@ education %>%
   flextable::set_formatter("Bay Area: Percent" = function(x) sprintf("%.001f%%", x*100)) %>% 
   flextable::set_formatter("SC County: Percent" = function(x) sprintf("%.001f%%", x*100)) %>% 
   flextable::set_table_properties(width = .5, layout='autofit') %>% 
-  footnote(j=1, value = as_paragraph("Source: US Census Bureau, via Hanover Research"), ref_symbols=c(""), part = "header")
+  footnote(j=1, value = as_paragraph("Source: US Census Bureau, via Hanover Research"), ref_symbols=c(""), part = "header") %>% 
+  surround(i = 9, part = 'body', border.top = fp_border(width = 1.2))
 
 #### for total, use 100% instead of NA%. Also, add "Total" before population for the first row.
 

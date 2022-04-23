@@ -21,6 +21,13 @@ raceproj <- race_proj[418:424,] %>%
   select("Race/Ethnicity Recode", "2020", "2060") %>% 
   mutate("Percent Change" = .data[[years[[2]]]]-.data[[years[[1]]]])
 
+#table of age projections
+a <- "C:\\Users\\spiduri\\San Jose-Evergreen Community College District\\Accreditation ISER 2023 - env_scan_data\\Total Age Population Projections by County.xlsx"
+age_proj <- read_excel(path=a, sheet = 3, skip =2)
+ageproj <- age_proj %>% 
+  filter(County == "Santa Clara County") %>% 
+  select("County","Age Group", "2020", "2030", "2040", "2050", "2060")
+
 #bay area language table
 #read into r
 l <- "C:\\Users\\spiduri\\San Jose-Evergreen Community College District\\Accreditation ISER 2023 - env_scan_data\\Census - Language Spoken at Home by County.xlsx"
@@ -39,7 +46,7 @@ i <- c(2:5)
 education <- educ[c(8:17), c(1:3, 18:19)] %>%
   mutate(across(where(is.numeric), round, 2)) 
 e <- education[ ,i] <- apply(education[ , i], 2, function(x) as.numeric(as.character(x)))
-colnames(education) <- c(" ", 'Bay Area: Estimate', 'Bay Area: Percent', 'SC County: Estimate', 'SC County: Percent')
+colnames(education) <- c(" ", 'Bay Area: Estimate', 'Bay Area: Percent', 'Santa Clara County: Estimate', 'Santa Clara County: Percent')
 
 #ggplot(projections, aes(x=years, y=population, fill=Geography)) + geom_bar(stat = "identity", position='dodge')
 
@@ -51,7 +58,7 @@ cen_raw <- read_excel(path=census, sheet = 2)
 
 cen_total <- subset(cen_raw, select = -c(4:17, 20:25))
 
-colnames(cen_total) <- c(" ", 'Bay Area: Estimate', 'Bay Area: Percent', 'SC County: Estimate', 'SC County: Percent')
+colnames(cen_total) <- c(" ", 'Bay Area: Estimate', 'Bay Area: Percent', 'Santa Clara County: Estimate', 'Santa Clara County: Percent')
 
 cen_total = cen_total[-1,]
 

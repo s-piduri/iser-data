@@ -1,3 +1,6 @@
+#This file creates the enrollment tables (credit, noncredit, overall)
+
+
 library(tidyverse); library(readxl)
 library(scales)
 
@@ -444,7 +447,7 @@ names(fall_gender)[names(fall_gender) == 'mean'] <- "5-Year Average"
 #fall noncredit headcounts by gender
 fall_ncgender_hc <- enroll_cred %>% 
   filter(grepl("FA", term_id)) %>% 
-  filter(location == "San Jose City College" & cr_ncr == "N") %>% 
+  filter(location == "San Jose City College" & cr_ncr == "Y") %>% 
   mutate(student_term = paste(student_id, term_id, sep="_")) %>% 
   group_by(student_term) %>% 
   arrange(student_term, term_reporting_year) %>% 
@@ -460,23 +463,50 @@ fall_ncgender_hc <- enroll_cred %>%
   mutate(perc = (round((headcount/sum(headcount)), digits = 4))*100) %>% 
   select(-headcount) %>% 
   pivot_wider(names_from=term_id, values_from = perc)
-
 fall_ncgender_hc1 <- fall_ncgender_hc %>% 
   mutate(mean = (round(rowMeans(fall_ncgender_hc[ , c(2:6)]), digits = 2))) %>% 
   arrange(desc(mean)) %>% 
   mutate_if(is.numeric, as.character) %>% 
   mutate_at(c(2:7), ~percentage(.))
-
 names(fahc)[names(fahc) == 'race'] <- "gender"
 fall_ncgender <- fall_ncgender_hc1 %>% 
   rbind(fahc)
 names(fall_ncgender)[names(fall_ncgender) == 'gender'] <- 'Gender'
 names(fall_ncgender)[names(fall_ncgender) == 'mean'] <- "5-Year Average"
 
+#fall noncredit headcounts by subject
+fall_ncsubject_hc <- enroll_cred %>% 
+  separate(crs_name, into = c("subject", 'number')) %>% 
+  filter(grepl("FA", term_id) & location == "San Jose City College" & cr_ncr == "Y") %>% 
+  mutate(student_term = paste(student_id, term_id, sep="_")) %>% 
+  group_by(student_term) %>% 
+  arrange(student_term, term_reporting_year) %>% 
+  mutate(fall_unique = row_number()) %>% 
+  filter(fall_unique == 1) %>%
+  ungroup() %>% 
+  group_by(term_id, subject) %>% 
+  summarize(headcount = n()) %>% 
+  ungroup() %>% 
+  group_by(term_id) %>% 
+  #2 percentage column is formatted as a percentage without %, NOT a decimal
+  mutate(perc = (round((headcount/sum(headcount)), digits = 4))*100) %>% 
+  select(-headcount) %>%   
+  pivot_wider(names_from=term_id, values_from = perc) %>% 
+  mutate_if(is.numeric, ~replace_na(., 0)) %>% 
+  mutate(mean = (round(rowMeans(fall_ncsubject_hc[ , c(2:6)]), digits = 2))) %>% 
+  arrange(desc(mean)) %>% 
+  mutate_if(is.numeric, as.character) %>% 
+  mutate_at(c(2:7), ~percentage(.))
+names(fahc)[names(fahc) == 'gender'] <- "subject"
+fall_ncsubject <- fall_ncsubject_hc %>% 
+  rbind(fahc)
+names(fall_ncsubject)[names(fall_ncsubject) == 'subject'] <- 'Subject'
+names(fall_ncsubject)[names(fall_ncsubject) == 'mean'] <- "5-Year Average"
+
 
 ##save####
 save(sp_hc, annual, 
      fall_age, fall_cred_hc, fall_gender, fall_goal,
      fall_hc, fall_race, fall_type, 
-     fall_ncage, fall_ncrace, fall_ncgender,
+     fall_ncage, fall_ncrace, fall_ncgender, fall_ncsubject,
      file="entable.RData")
