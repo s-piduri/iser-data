@@ -177,16 +177,17 @@ colnames(term_hc) <- c("Term", "Headcount")
 #specifically fall headcounts
 fall_hc <- enroll_cred %>% 
   filter(grepl("FA", term_id)) %>% 
-  filter(location == "San Jose City College") %>% 
-  mutate(student_term = paste(student_id, term_id, sep="_")) %>% 
-  group_by(student_term) %>% 
-  arrange(student_term, term_reporting_year) %>% 
+  filter(location == "San Jose City College" & cr_ncr == "N") %>% 
+  group_by(term_id, student_id) %>% 
   mutate(fall_unique = row_number()) %>% 
   filter(fall_unique == 1) %>%
   ungroup() %>% 
   group_by(term_id) %>% 
-  summarize(headcount = n())
-colnames(fall_hc) <- c("Fall Term", "Headcount")
+  summarize(headcount = n()) %>% 
+  pivot_wider(names_from = term_id, values_from = headcount) %>% 
+  mutate(mean = rowMeans(fall_hc[ , c(1:5)]))
+fall_hc[, c(1:5)]
+#colnames(fall_hc) <- c("Fall Term", "Headcount")
 
 
 #credit headcounts by student type
@@ -224,7 +225,8 @@ fall_type_p <- fall_type_hc %>%
   pivot_wider(names_from=term_id, values_from=perc) %>%
   mutate_if(is.numeric, ~replace_na(., 0)) %>%
   #3 take five year mean of percentages
-  mutate(mean = (round(rowMeans(fall_type_p[ , c(2:6)]), digits = 2))) %>% 
+  mutate(mean = (round(rowMeans(fall_type_p[ , c(2:6)]), digits = 2))) %>%
+  arrange(desc(mean)) %>% 
   mutate_if(is.numeric, as.character) %>%
   mutate_at(c(2:7), ~percentage(.))
 

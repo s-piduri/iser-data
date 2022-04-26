@@ -35,7 +35,7 @@ set_flextable_defaults(font.size = 9)
 
 The college's overall enrollment, using any enrollment metrics (headcount, seatcount or full-time equivalent students (FTES)), has declined in the last 5 years after a small increase in 2018-2019. Given the impact of COVID-19 pandemic and the statewide enrollment decline, this is not surprising.
 
-Overall headcount has declined 16% from 2017-18 to 2021-22. This decline is reflected throughout the enrollment trend data.
+Specifically, overall headcount has declined 16% from 2017-18 to 2021-22. This decline is reflected throughout the enrollment trend data.
 
 >>>>> Calculate the percentage decline from 2017-18 for headcount and talk about that.
 
@@ -78,7 +78,6 @@ This section describes the credit enrollment trends by various student attribute
 
 ```{r, ft.align='left'}
 fall_hc %>% 
-  pivot_wider(names_from="Fall Term", values_from = "Headcount") %>% 
   flextable() %>% 
   set_caption("Unduplicated Overall Headcount, Fall Terms", 
               autonum = run_autonum(seq_id='tab', bkm='fhc')) %>% 
@@ -88,7 +87,8 @@ fall_hc %>%
 ```
 >>>> Describe the trend you see here in a plain straightforward language. For example, "In Fall terms, xx percent of credit students are y type, xx percent are z type, etc. any other noteworthy obvious trends.
 
-
+On average, 62% of credit students are continuing students in Fall terms. While enrollment has decreased, the percentage of continuing students enrolled in credit classes has increased, going from 57%. 
+Nearly 17% of credit students are new students, and 12% of credit students are returning students. Approximately 8% percent of credit students are K-12 students dual-enrolled in college courses.  
 
 ```{r, ft.align='left'}
 fall_type %>% 
@@ -103,7 +103,9 @@ fall_type %>%
 
 ```
 
->>> same thing here
+Earning an AA degree for transfer to a four-year college is the most common educational goal among credit students in Fall terms, with 40% of credit students listing this as their primary educational goal. Around 11% of students stated their goal was to transfer to a four-year college without an AA, and another 10% were undecided on their goal. 
+Around 50% of students plan on transferring to a four-year college with or without an AA degree. Similarly, around 48% of credit students plan on earning an AA degree regardless of whether they transfer to a four-year college.
+
 
 ```{r, ft.align='left'}
 fall_goal %>% 
@@ -117,6 +119,9 @@ fall_goal %>%
   align(j=c(2:7), align = 'right', part = 'all')
 ```
 
+The majority of credit students across all five years were female, with an average population of 57% female students and 42% male students. 
+The percentage of female students has risen 5 percent in the past five years, while the percentage of male students has dropped.
+
 ```{r, ft.align='left'}
 fall_gender %>% 
   #pivot_wider(names_from="Fall Term", values_from = "Headcount") %>% 
@@ -129,6 +134,7 @@ fall_gender %>%
   align(j=c(2:7), align = 'right', part = 'all')
 ```
 
+Approximately 45% of credit students in Fall terms were Latinx. This has remained constant throughout the past five years. The percentage of Asian credit students has slightly increased from 23% in 2017 to 27% in 2021. Likewise, the percentage of white credit students has decreased from 14% to 11%. The percentage of Black credit students has stayed steady at around 5% over the past five years.  
 
 ```{r, ft.align='left'}
 fall_race %>% 
@@ -141,6 +147,8 @@ fall_race %>%
   width(j=1, width=1.6) %>% 
   align(j=c(2:7), align = 'right', part = 'all')
 ```
+
+Around 46% of credit students in Fall terms are between the ages of 18 and 24. Then, 33% of credit students are between 25 and 39. While nearly 80% of credit students between 18 and 39 years old, there are also sizable populations of students over 40 and under 18.
 
 ```{r, ft.align='left'}
 fall_age %>% 
