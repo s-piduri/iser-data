@@ -17,11 +17,11 @@ special_pop <- read_csv(sp, skip=2)
 
 sp_hc <- special_pop[,c(1:2, 7, 12, 17, 22)]
 sp_hc <- sp_hc[c(-1),]
-colnames(sp_hc) <- c("Special Characteristic", "2017", "2018", "2019",
-                     "2020", "2021")
+colnames(sp_hc) <- c("Special Characteristic", "2017FA", "2018FA", "2019FA",
+                     "2020FA", "2021FA")
 sp_hc <- sp_hc %>% 
   replace(is.na(.), 0) %>% 
-  arrange(desc('2017'))
+  mutate(sum = colSums(sp_hc[]))
 
 # length(unique(fa2018$student_id))
 
@@ -385,6 +385,7 @@ names(fall_race)[names(fall_race) == 'race'] <- 'Race'
 names(fall_race)[names(fall_race) == 'mean'] <- "5-Year Average"
 
 
+
 #noncredit headcounts by race
 fall_ncrace_hc <- enroll_cred %>% 
   filter(grepl("FA", term_id)) %>% 
@@ -512,3 +513,48 @@ save(sp_hc, annual,
      fall_hc, fall_race, fall_type, 
      fall_ncage, fall_ncrace, fall_ncgender, fall_ncsubject,
      file="entable.RData")
+
+
+annual_hc_r <- enroll %>%
+  filter(location == "San Jose City College") %>% 
+  mutate(student_yr = paste(student_id, term_reporting_year, sep="_")) %>% 
+  mutate(annual = paste(term_reporting_year, (term_reporting_year+1), sep="-")) %>% 
+  group_by(student_yr) %>% 
+  arrange(student_yr, annual) %>% 
+  mutate(acad_year_unique = row_number()) %>%
+  filter(acad_year_unique == 1) %>%
+  ungroup() %>% 
+  group_by(annual, race) %>% 
+  summarize(headcount = n()) %>% 
+  filter(annual == "2020-2021") %>% 
+  mutate(perc = (round((headcount/sum(headcount)), digits = 4))*100) %>%
+  mutate(Ethnicity = case_when(grepl("Latinx", race) ~ "Hispanic or Latino (of any race)",
+                               grepl("White", race) ~ "White alone",
+                               grepl("Asian", race) ~ "Asian alone",
+                               grepl("Black/African American", race) ~ "Black or African American alone",
+                               grepl("Hawaiian/Pacific Islander", race) ~ "Native Hawaiian and Other Pacific Islander alone",
+                               grepl("American Indian", race) ~ "American Indian and Alaska Native alone",
+                               grepl("Two or More Races", race) ~ "Two or more races",
+                               grepl("Unknown", race) ~ "Some other race alone",
+                               TRUE ~ as.character("x")))
+save(annual_hc_r, file = "raceenrollment.RData")                           
+                               
+                               
+
+
+
+fall_race_overall <- enroll_cred %>% 
+  filter(grepl("2021FA", term_id)) %>% 
+  filter(location == "San Jose City College" & cr_ncr == "N") %>% 
+  mutate(student_term = paste(student_id, term_id, sep="_")) %>% 
+  group_by(student_term) %>% 
+  arrange(student_term, term_reporting_year) %>% 
+  mutate(fall_unique = row_number()) %>% 
+  filter(fall_unique == 1) %>%
+  ungroup() %>% 
+  group_by(term_id, race) %>% 
+  summarize(headcount = n()) %>% 
+  ungroup() %>% 
+  group_by(term_id) %>% 
+  #2 percentage column is formatted as a percentage without %, NOT a decimal
+  mutate(perc = (round((headcount/sum(headcount)), digits = 4))*100)

@@ -162,7 +162,7 @@ fall_age %>%
   width(j=7, width=1) %>% 
   align(j=c(2:7), align = 'right', part = 'all')
 ```
-
+The largest special population served by SJCC is First Generation college students, who made up xx% of the total headcount of the past 5 years on average.  
 
 
 ```{r, ft.align='left'}
@@ -178,6 +178,9 @@ sp_hc %>% flextable() %>%
 >>>>> for noncredit, only disaggregate by gender, race and age.
 >>>> Also do this by subject area too where if they take one noncredit course in one subject area, then count that as enrollment in that subject area. The point I want to make is that the biggest program is our noncredit esl.
 
+Female students make up the majority of noncredit students with 67% of the noncredit student population being female over the past five years. In contrast, male students make up only 30% of the noncredit student population.
+In Fall 2020, female students comprised almost 75% of the noncredit student population, a 10% increase than the year before. 
+
 ```{r, ft.align='left'}
 #gender
 fall_ncgender %>% 
@@ -192,7 +195,8 @@ fall_ncgender %>%
 
 
 ```
-
+On average, 34% of noncredit students in Fall terms were Asian, while 31% were Latinx. White students made up 15% of the noncredit student population, and Black students comprised around 4% on average.
+In Fall 2020, the percentage of noncredit White students rose 12 percent from Fall 2019, while the percentage for noncredit Asian students dropped 10 percent. Similarly, the percentage of Latinx noncredit students dropped around 8 percent from Fall 2018 to Fall 2019. 
 
 ```{r, ft.align='left'}
 #race
@@ -207,7 +211,8 @@ fall_ncrace %>%
   align(j=c(2:7), align = 'right', part = 'all')
 
 ```
-
+Students aged 25 to 39 make up 42% of the noncredit student population on average. In contrast with the credit student population, 40% of the noncredit student population is 40 years old or over. In total, over 80% of the noncredit student population is 25 or older. 
+Only 15% of the noncredit population is between 18 and 24. 
 
 ```{r, ft.align='left'}
 #age
@@ -222,7 +227,7 @@ fall_ncage %>%
   align(j=c(2:7), align = 'right', part = 'all')
 
 ```
-
+The vast majority of noncredit students are enrolled in ESL classes. 
 
 ```{r, ft.align='left'}
 #subject area (split crs_name into dept, #)
@@ -270,11 +275,11 @@ gaps %>% flextable() %>%
   width(j=1, width = 5) %>% 
   set_caption("Occupation Gaps over 10 Years in Greater Bay Area, Two-Year Degree or Higher Only", autonum = run_autonum(seq_id='tab', bkm='gaps')) %>% 
   footnote(j=1, value = as_paragraph("Source: JobsEQ, via Hanover Research"), ref_symbols=c(""), part = "header") %>% 
-  footnote(j=1, value = as_paragraph("Note that this list only includes occupations that require at minimum a two-year (Associate's) degree."), ref_symbols=c(""), part = "header")
+  footnote(j=1, value = as_paragraph("Note that this list only includes occupations that require at minimum a two-year (Associate's) degree. The Gap column illustrates the  number of persons with necessary credentials to work in these field."), ref_symbols=c(""), part = "header")
 
 ```
 
-
+The 
 
 ```{r, ft.align="left"}
 toptech %>% flextable::flextable() %>% 
@@ -285,6 +290,9 @@ toptech %>% flextable::flextable() %>%
   footnote(j=1, value = as_paragraph("Source: JobsEQ, via Hanover Research"), ref_symbols=c(""), part = "header")
 
 ```
+
+
+
 ```{r, ft.align="left"}
 most_openings %>% select(-"Unemployment") %>% 
   flextable::flextable() %>% 
@@ -308,7 +316,7 @@ most_growth %>% select(-"Unemployment") %>%
 
 ## Demographic Data 
 
-[Provide summary-level demographic data for the service area. Disaggregate the data as appropriate for the institution’s mission and service area. Provide brief context if needed.] 
+Population projections indicate strong growth in Santa Clara County as well as the Greater Bay Area. Between 2020 and 2060 projections suggest the Greater Bay Area’s population will increase by 18.2 % Santa Clara County’s population growth is expected to be higher at 23.1%.
 
 
 ```{r, ft.align="left"}
@@ -319,6 +327,23 @@ projections %>%
   width(width=1.05) %>% 
   footnote(j=1, value = as_paragraph("Source: State of California Department of Finance, via Hanover Research"), ref_symbols=c(""), part = "header")
 ```
+Projections by age group suggest an aging population, though the traditional student age group is expected to remain stable. Projections through 2060 by age group indicate large increases in the share of residents ages 40-44 and 85+, with a small increase in the 35-39 age group. The share of residents below 20 is expected to decline. Ages 20-24, the prime college going population, is expected to remain between 7.6 and 7.7%.
+
+>>>>> can you add the population project by age group here?
+
+```{r, ft.align="left"}
+#population projection by age
+ageproj %>% 
+  flextable() %>% 
+  set_caption("Bay Area Population Projections by Age",autonum = run_autonum(seq_id='tab', bkm='aproj')) %>% 
+    footnote(j=1, value = as_paragraph("Source: State of California Department of Finance, via Hanover Research"), ref_symbols=c(""), part = "header")
+
+
+```
+
+
+
+Projections suggest an increasingly diverse community in the Greater Bay Area. A Metropolitan Transportation Commission (MTC) report on The Bay Area in 2040 suggests the population will become substantially more racially and ethnically diverse compared to the 2010 Census figures. Hispanic/Latino residents are projected to become the largest ethnic group and significant decline is projected in the White non Hispanic population. The share of Black or African American residents is also expected to decline slightly. Population projections in the Greater Bay Area suggest this trend will continue through 2060 with the share of non-Hispanic Whites dropping by 15.7% while the Asian population increases by 10.2%, and the Hispanic/Latino population grows by 4.8%. The Black non Hispanic population is expected to fall very slightly, by less than one percentage point.
 
 
 ```{r, ft.align="left"}
@@ -333,27 +358,23 @@ raceproj %>%
 
 ```
 
-```{r, ft.align="left"}
-race %>% flextable::flextable() %>% 
-    flextable::set_caption("Service Area Racial Breakdown",autonum = run_autonum(seq_id='tab', bkm='race')) %>%     flextable::set_formatter("Bay Area: Percent" = function(x) sprintf("%.001f%%", x*100)) %>% 
-    flextable::set_formatter("SC County: Percent" = function(x) sprintf("%.001f%%", x*100))%>% 
-  flextable::set_table_properties(width = .5, layout='autofit') %>% 
-  footnote(j=1, value = as_paragraph("Source: US Census Bureau, via Hanover Research"), ref_symbols=c(""), part = "header")
+The Greater Bay Area and the Santa Clara County are relatively diverse, but has a low share of Black or African American residents (5.5% and 2.3%, respectively). In the Greater Bay Area, the largest share of the population is White non Hispanic, while in the Santa Clara County, it is Asian. In both areas, approximately a quarter of residents are Hispanic or Latino (of any race).
 
-
-#### for SC County, either spell it out Santa Clara or put it in notes. Acronyms are to be avoided in ISER.
-
-
-
-```
 
 ```{r, ft.align="left"}
-  ethnicity %>% flextable::flextable() %>% 
-    set_caption("Service Area Ethnicity Breakdown",autonum = run_autonum(seq_id='tab', bkm='ethn')) %>% 
-    flextable::set_formatter("Bay Area: Percent" = function(x) sprintf("%.001f%%", x*100)) %>% 
-    flextable::set_formatter("SC County: Percent" = function(x) sprintf("%.001f%%", x*100))%>% 
-    flextable::set_table_properties(width = .5, layout='autofit') %>% 
-    footnote(j=1, value = as_paragraph("Source: US Census Bureau, via Hanover Research"), ref_symbols=c(""), part = "header")
+  ethnicity1 %>% flextable() %>% 
+   set_caption("Service Area Ethnicity Breakdown, 2019",autonum = run_autonum(seq_id='tab', bkm='ethn')) %>% 
+    flextable::set_formatter("Bay Area %" = function(x) sprintf("%.001f%%", x*100)) %>%
+    flextable::set_formatter("Santa Clara County %" = function(x) sprintf("%.001f%%", x*100))%>%
+    flextable::set_table_properties(width = .5, layout='autofit') %>%
+    footnote(j=1, value = as_paragraph("Source: US Census Bureau, via Hanover Research"), ref_symbols=c(""), part = "header") %>% 
+  footnote(j=1, value = as_paragraph("Note: SJCC Headcount data is the annual 2020-2021 overall headcount."), ref_symbols=c(""), part = "header")
+
+#### please note the year of the data. -done
+#### order based on the bay area percentage
+### can you check that the white alone actually means white alone, not hispanic or Latino? - it does
+#### let's add the 2020-2021 annual headcount (both credit and noncredit) by ethnicity as another column both n and %. Add a note below that says it is from 2020-2021 data. 
+
 
 ```
 
@@ -362,21 +383,26 @@ race %>% flextable::flextable() %>%
 
 ## Socio-economic Data 
 
-[Provide summary-level socio-economic data for the service area. Disaggregate the data as appropriate for the institution’s mission and service area. Provide brief context if needed.] 
+On the whole, the Greater Bay Area and Santa Clara County is well-educated. More than a quarter of Greater Bay Area residents hold a bachelor’s degree, with nearly 20 % holding a graduate or professional degree. A small share holds associate’s degrees, but it is unclear how many bachelor’s degree holders initially pursued an associate’s program before transfer. However, over 40% of Santa Clara County residents aged 25 or older hold less than associate degree.  
 
 ```{r, ft.align="left"}
-education %>% 
+education1 %>% 
+  
   flextable::flextable() %>% 
-  set_caption("Educational Attainment for Population Age 25+",autonum = run_autonum(seq_id='tab', bkm='edatt')) %>% 
+  set_caption("Educational Attainment for Population Age 25+, 2019",autonum = run_autonum(seq_id='tab', bkm='edatt')) %>% 
   flextable::set_formatter("Bay Area: Percent" = function(x) sprintf("%.001f%%", x*100)) %>% 
-  flextable::set_formatter("SC County: Percent" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::set_formatter("Santa Clara County: Percent" = function(x) sprintf("%.001f%%", x*100)) %>% 
   flextable::set_table_properties(width = .5, layout='autofit') %>% 
   footnote(j=1, value = as_paragraph("Source: US Census Bureau, via Hanover Research"), ref_symbols=c(""), part = "header") %>% 
   surround(i = 9, part = 'body', border.top = fp_border(width = 1.2))
 
-#### for total, use 100% instead of NA%. Also, add "Total" before population for the first row.
+#### for total, use 100% instead of NA%. Also, add "Total" before the word population for the first row. -done
 
-#### use a row separater to mark the last 2 rows in a way similar to Santa Barabara did it. As it is, it is a bit hard to understand what the last 2 rows are doing. I want to see a line or a row above high school separating the last 2 rows from the rest. 
+#### use a row separater to mark the last 2 rows in a way similar to Santa Barabara did it. As it is, it is a bit hard to understand what the last 2 rows are doing. I want to see a line or a row above high school separating the last 2 rows from the rest. - done
+
+### is this data available by race if you go to census? If available, can you write a paragraph which population are experiencing lower educational attainment?
+
+### add year information - done
 
 
 
@@ -384,18 +410,17 @@ education %>%
 
 
 ```{r, ft.align="left"}
-median[1,1] <- "Median Income (dollars)"
-median %>% 
+median1 %>% 
   flextable::flextable() %>% 
-  set_caption("Income in the Service Area",autonum = run_autonum(seq_id='tab', bkm='income')) %>% 
+  set_caption("Household Income in the Service Area",autonum = run_autonum(seq_id='tab', bkm='income')) %>% 
   width(width=1.5) %>% 
-    footnote(j=1, value = as_paragraph("Source: US Census Bureau, via Hanover Research"), ref_symbols=c(""), part = "header")
+    footnote(j=1, value = as_paragraph("Source: US Census Bureau (American Community Survey, 2014-2018), via Hanover Research"), ref_symbols=c(""), part = "header")
 
-#### can  you make sure that the SC county data also goes down to the 2 decimal places. If unavailable, get rid of it for other columns too.
+#### can  you make sure that the SC county data also goes down to the 2 decimal places. If unavailable, get rid of it for other columns too. - done
 
 
 #### can you get this sort of income data by race to illustrate the income gap?
-### also can you find out if by income we mean household income? 
+### also can you find out if by income we mean household income? - done
 
 
 ```
@@ -410,8 +435,19 @@ poverty %>% flextable() %>%
   footnote(j=1, value = as_paragraph("Source: US Census Bureau, via Hanover Research"), ref_symbols=c(""), part = "header")
 
 
-###also is this data available by race?
+###also is this data available by race? - yes
 
+```
+
+
+```{r}
+#poverty by race
+poverty_race1 %>% 
+  flextable() %>% 
+  set_caption("Poverty Level by Race in the Service Area",autonum = run_autonum(seq_id='tab', bkm='rpoverty')) %>% 
+  width(j= 1, width=3.5) %>% 
+  footnote(j=1, value = as_paragraph("Source: US Census Bureau, via Hanover Research"), ref_symbols=c(""), part = "header") %>% 
+  align(j=c(2:3), align='right', part='all')
 ```
 
 

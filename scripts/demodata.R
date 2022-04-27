@@ -26,7 +26,21 @@ a <- "C:\\Users\\spiduri\\San Jose-Evergreen Community College District\\Accredi
 age_proj <- read_excel(path=a, sheet = 3, skip =2)
 ageproj <- age_proj %>% 
   filter(County == "Santa Clara County") %>% 
-  select("County","Age Group", "2020", "2030", "2040", "2050", "2060")
+  select("Age Group", "2010", "2020", "2030", "2040", "2050", "2060")
+  
+ageproj1 <- ageproj %>% 
+  separate('Age Group', into = c("lower", 'higher')) %>% 
+  mutate(Age = case_when(lower == '0' | lower == '5' | lower == '10' |
+                                 lower == '1' ~ "0-14",
+                                 lower == '20' ~ '20-24',
+                                 lower == '15' ~ '15-19',
+                                 lower == '25' | lower == '30' | lower == '35' ~ "25-39",
+                                 lower == '40' | lower == '45' | lower == '50' |
+                                   lower == '55' | lower == '60' ~ "40-64",
+                                 TRUE ~ as.character("65+"))) %>% 
+  select(Age, "2010", "2020", "2030", "2040", "2050", "2060") %>%
+  group_by(Age) %>% 
+  summarize(across(where(is.numeric), sum))
 
 #bay area language table
 #read into r
@@ -44,10 +58,15 @@ educ <- read_excel(path=ed, sheet=2)
 
 i <- c(2:5)
 education <- educ[c(8:17), c(1:3, 18:19)] %>%
-  mutate(across(where(is.numeric), round, 2)) 
+  mutate(across(where(is.numeric), round, 2))
 e <- education[ ,i] <- apply(education[ , i], 2, function(x) as.numeric(as.character(x)))
 colnames(education) <- c(" ", 'Bay Area: Estimate', 'Bay Area: Percent', 'Santa Clara County: Estimate', 'Santa Clara County: Percent')
+education[1,1] <- "Total Population Age 25+"
+education1<- education %>% 
+  mutate_if(is.numeric, ~replace_na(., 1))
 
+reducation <- educ[c(30:57), c(1:3, 18:19)]
+  
 #ggplot(projections, aes(x=years, y=population, fill=Geography)) + geom_bar(stat = "identity", position='dodge')
 
 
@@ -68,12 +87,27 @@ race <- cen_total[67:72,] %>%
   mutate(across(where(is.numeric), round, 4)) 
 
 ethnicity <- rbind(cen_total[75,], cen_total[81:87,])
+colnames(ethnicity) <- c("Ethnicity", 'Bay Area: Estimate', 'Bay Area: Percent', 'Santa Clara County: Estimate', 'Santa Clara County: Percent')
+
+load("raceenrollment.RData")
+
+ethnicity1 <- ethnicity %>% 
+  left_join(annual_hc_r, by = "Ethnicity") %>% 
+  select(!annual) %>% 
+  select(!race)
+
+colnames(ethnicity1) <- c("Ethnicity", 'Bay Area: Estimate', 'Bay Area %', 'Santa Clara County: Estimate', 'Santa Clara County %',
+                         "SJCC Headcount", "SJCC Headcount %")
+
 
 ##socioeconomic data
 income <- "C:\\Users\\spiduri\\San Jose-Evergreen Community College District\\Accreditation ISER 2023 - env_scan_data\\Census - Income by County.xlsx"
 inc <- read_excel(path=income, sheet =2, skip=2)
 median <- inc[c(13:14),c(1, 5:7)]
-colnames(median) <- c("Income Level", 'Greater Bay Area', 'Santa Clara County', 'USA')
+median[1,1] <- "Median Income (dollars)"
+median1 <- median[1] %>% cbind(round(median[2:4], digits =0))
+colnames(median1) <- c("Income Level", 'Greater Bay Area', 'Santa Clara County', 'USA')
+
 inc_per <- inc[c(3:12),c(1:4)]
 colnames(inc_per) <- c("Income Level", 'Greater Bay Area', 'Santa Clara County', 'USA')
 
@@ -81,7 +115,24 @@ pov <- "C:\\Users\\spiduri\\San Jose-Evergreen Community College District\\Accre
 poverty <- read_excel(path=pov, skip=1, n_max=1)
 poverty <- poverty[,c(4,28)]
 colnames(poverty) <- c("Greater Bay Area", "Santa Clara County")
+poverty1 <- read_excel(path=pov, skip = 1)
+poverty_race <- poverty1[c(16:24),c(1, 4, 28)]
+colnames(poverty_race) <- c("Race", "Greater Bay Area", "Santa Clara County")
+p <- poverty_race[ ,3] <- apply(poverty_race[ , 3], 2, function(x) as.numeric(as.character(x)))
+pdemo <- function(x, na.rm = FALSE){
+  round(x*100, digits = 1)
+}
+percentage <- function(y) {
+  paste0(y, "%")
+} 
 
-save(projections, baylang, raceproj, race, education, ethnicity, 
-     median, inc_per, poverty, file="demo.RData")
+poverty_race1 <- poverty_race %>% 
+  mutate_at(c(2:3), pdemo) %>% 
+  arrange(desc(`Greater Bay Area`)) %>% 
+  mutate_at(c(2:3), percentage)
+
+
+
+save(projections, baylang, ageproj, raceproj, race, education1, ethnicity1, 
+     median1, inc_per, poverty, poverty_race1, file="demo.RData")
 
