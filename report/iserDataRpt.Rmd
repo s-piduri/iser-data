@@ -33,9 +33,7 @@ set_flextable_defaults(font.size = 9)
 
 ### Overall Enrollment Trend
 
-The college's overall enrollment, using any enrollment metrics (headcount, seatcount or full-time equivalent students (FTES)), has declined in the last 5 years after a small increase in 2018-2019. Given the impact of COVID-19 pandemic and the statewide enrollment decline, this is not surprising.
-
-Specifically, overall headcount has declined 16% from 2017-18 to 2021-22. This decline is reflected throughout the enrollment trend data.
+The college's overall enrollment (headcount) has declined in the last 5 years after a small increase in 2018-2019. Given the impact of COVID-19 pandemic and the statewide enrollment decline, this is not surprising. The overall annual headcount has declined 16% from 2017-18 to 2021-22. This decline is reflected throughout the enrollment trend data.
 
 >>>>> Calculate the percentage decline from 2017-18 for headcount and talk about that.
 
@@ -43,7 +41,7 @@ Specifically, overall headcount has declined 16% from 2017-18 to 2021-22. This d
 annual %>% 
     filter(Metric == "Overall:" | Metric == "Credit Students:" | Metric == "Noncredit Students:" | Metric == "Headcount") %>% 
   flextable() %>% 
-  set_caption("Annual Student Metrics", 
+  set_caption("Annual Student Headcount", 
               autonum = run_autonum(seq_id='tab', bkm='hc')) %>% 
   footnote(j=1, value=as_paragraph("Source: SJCC Internal Data Warehouse"),
            ref_symbols=c(""), part = "header") %>% 
@@ -74,7 +72,7 @@ annual %>%
 
 This section describes the credit enrollment trends by various student attributes. Data are from Fall terms between Fall 2017 and Fall 2021. It includes all students enrolled in at least one credit course. The data are extracted from the district's internal database by the Office of Research, Planning and Institutional Effectiveness. 
 
->>>> insert discussion of 5 year trend here.
+The five-year Fall credit headcount reveals a pattern already discussed above. While the decline in the last two years is largely due to the impact of the COVID-19 pandemic, the enrollment decline had began in Fall 2019. From Fall 2018 to Fall 2019, the credit headcount declined by 5%.  Over the last five years (from Fall 2017 to Fall 2021) , it declined 19%. The headcount averaged over the last five years is 8,841.
 
 ```{r, ft.align='left'}
 fall_hc %>% 
@@ -87,8 +85,9 @@ fall_hc %>%
 ```
 >>>> Describe the trend you see here in a plain straightforward language. For example, "In Fall terms, xx percent of credit students are y type, xx percent are z type, etc. any other noteworthy obvious trends.
 
-On average, 62% of credit students are continuing students in Fall terms. While enrollment has decreased, the percentage of continuing students enrolled in credit classes has increased, going from 57%. 
-Nearly 17% of credit students are new students, and 12% of credit students are returning students. Approximately 8% percent of credit students are K-12 students dual-enrolled in college courses.  
+On average, 62% of credit students are continuing students in Fall terms. While enrollment has decreased, the percentage of continuing students enrolled in credit classes has increased, going from 57%. On the other hand, the percentage of new students had decreased from 21% to 14%. 
+
+Nearly 17% of credit students are new students, and 12% of credit students are returning students. Approximately 8% percent of credit students are K-12 students dual-enrolled in high-school and college courses.  
 
 ```{r, ft.align='left'}
 fall_type %>% 
@@ -104,7 +103,10 @@ fall_type %>%
 ```
 
 Earning an AA degree for transfer to a four-year college is the most common educational goal among credit students in Fall terms, with 40% of credit students listing this as their primary educational goal. Around 11% of students stated their goal was to transfer to a four-year college without an AA, and another 10% were undecided on their goal. 
+
 Around 50% of students plan on transferring to a four-year college with or without an AA degree. Similarly, around 48% of credit students plan on earning an AA degree regardless of whether they transfer to a four-year college.
+
+Over 70% of students have a goal of transfer to four-year institutions or earning a degree or certificate.
 
 
 ```{r, ft.align='left'}
@@ -134,7 +136,7 @@ fall_gender %>%
   align(j=c(2:7), align = 'right', part = 'all')
 ```
 
-Approximately 45% of credit students in Fall terms were Latinx. This has remained constant throughout the past five years. The percentage of Asian credit students has slightly increased from 23% in 2017 to 27% in 2021. Likewise, the percentage of white credit students has decreased from 14% to 11%. The percentage of Black credit students has stayed steady at around 5% over the past five years.  
+Approximately 45% of credit students in Fall terms were Latinx. This has remained constant throughout the past five years. The percentage of Asian credit students has slightly increased from 23% in 2017 to 27% in 2021. Likewise, the percentage of White credit students has decreased from 14% to 11%. The percentage of Black credit students has stayed steady at around 5% over the past five years.  
 
 ```{r, ft.align='left'}
 fall_race %>% 
@@ -162,7 +164,7 @@ fall_age %>%
   width(j=7, width=1) %>% 
   align(j=c(2:7), align = 'right', part = 'all')
 ```
-The largest special population served by SJCC is First Generation college students, who made up xx% of the total headcount of the past 5 years on average.  
+The college serves multiple special student populations with the largest group being the First Generation college students. The college serves a sizable group of students with disability, the number served has declined significantly in the last two years, most likely due to the impact of the COVID-19 pandemic. On the other hand, the college has seen an increase in Foster Youth, UMOJA and Veteran students over the last five years.
 
 
 ```{r, ft.align='left'}
@@ -177,6 +179,22 @@ sp_hc %>% flextable() %>%
 
 >>>>> for noncredit, only disaggregate by gender, race and age.
 >>>> Also do this by subject area too where if they take one noncredit course in one subject area, then count that as enrollment in that subject area. The point I want to make is that the biggest program is our noncredit esl.
+
+The vast majority of noncredit students are enrolled in ESL classes. 
+
+```{r, ft.align='left'}
+#subject area (split crs_name into dept, #)
+fall_ncsubject %>% 
+  flextable() %>% 
+  set_caption("Noncredit Headcount by Subject, Fall Terms", 
+              autonum = run_autonum(seq_id='tab', bkm='fahc')) %>% 
+  footnote(j=1, value=as_paragraph("Source: SJCC Internal Data Warehouse"),
+           ref_symbols=c(""), part = "header") %>% 
+  width(j=7,width=1.1) %>% 
+  align(j=c(2:7), align = 'right', part = 'all')
+
+```
+
 
 Female students make up the majority of noncredit students with 67% of the noncredit student population being female over the past five years. In contrast, male students make up only 30% of the noncredit student population.
 In Fall 2020, female students comprised almost 75% of the noncredit student population, a 10% increase than the year before. 
@@ -195,7 +213,9 @@ fall_ncgender %>%
 
 
 ```
+
 On average, 34% of noncredit students in Fall terms were Asian, while 31% were Latinx. White students made up 15% of the noncredit student population, and Black students comprised around 4% on average.
+
 In Fall 2020, the percentage of noncredit White students rose 12 percent from Fall 2019, while the percentage for noncredit Asian students dropped 10 percent. Similarly, the percentage of Latinx noncredit students dropped around 8 percent from Fall 2018 to Fall 2019. 
 
 ```{r, ft.align='left'}
@@ -211,6 +231,7 @@ fall_ncrace %>%
   align(j=c(2:7), align = 'right', part = 'all')
 
 ```
+
 Students aged 25 to 39 make up 42% of the noncredit student population on average. In contrast with the credit student population, 40% of the noncredit student population is 40 years old or over. In total, over 80% of the noncredit student population is 25 or older. 
 Only 15% of the noncredit population is between 18 and 24. 
 
@@ -227,20 +248,8 @@ fall_ncage %>%
   align(j=c(2:7), align = 'right', part = 'all')
 
 ```
-The vast majority of noncredit students are enrolled in ESL classes. 
 
-```{r, ft.align='left'}
-#subject area (split crs_name into dept, #)
-fall_ncsubject %>% 
-  flextable() %>% 
-  set_caption("Noncredit Headcount by Subject, Fall Terms", 
-              autonum = run_autonum(seq_id='tab', bkm='fahc')) %>% 
-  footnote(j=1, value=as_paragraph("Source: SJCC Internal Data Warehouse"),
-           ref_symbols=c(""), part = "header") %>% 
-  width(j=7,width=1.1) %>% 
-  align(j=c(2:7), align = 'right', part = 'all')
 
-```
 
 
 ## Labor Market Data 
@@ -267,19 +276,7 @@ topten %>% flextable::flextable() %>%
   footnote(j=1, value = as_paragraph("Source: JobsEQ, via Hanover Research"), ref_symbols=c(""), part = "header")
 ```
 
-All top 10 Bay Area tech industries by share of employment have positive 10-year projected growth (reference table). Also, the Greater Bay Area is projected to have an employment undersupply for occupations in business, technology, and healthcare including software developers, nurses, and managers while it is also projected to have a slight oversupply for teaching related occupations and paralegals/legal assistants. 
-
-
-```{r, ft.align='left'}
-gaps %>% flextable() %>% 
-  width(j=1, width = 5) %>% 
-  set_caption("Occupation Gaps over 10 Years in Greater Bay Area, Two-Year Degree or Higher Only", autonum = run_autonum(seq_id='tab', bkm='gaps')) %>% 
-  footnote(j=1, value = as_paragraph("Source: JobsEQ, via Hanover Research"), ref_symbols=c(""), part = "header") %>% 
-  footnote(j=1, value = as_paragraph("Note that this list only includes occupations that require at minimum a two-year (Associate's) degree. The Gap column illustrates the  number of persons with necessary credentials to work in these field."), ref_symbols=c(""), part = "header")
-
-```
-
-The 
+All top 10 Bay Area tech industries by share of employment have positive 10-year projected growth.
 
 ```{r, ft.align="left"}
 toptech %>% flextable::flextable() %>% 
@@ -291,8 +288,19 @@ toptech %>% flextable::flextable() %>%
 
 ```
 
+Also, the Greater Bay Area is projected to have an employment undersupply for occupations in business, technology, and healthcare including software developers, nurses, and managers while it is also projected to have a slight oversupply for teaching related occupations and paralegals/legal assistants. 
 
 
+```{r, ft.align='left'}
+gaps %>% flextable() %>% 
+  width(j=1, width = 5) %>% 
+  set_caption("Occupation Gaps over 10 Years in Greater Bay Area, Two-Year Degree or Higher Only", autonum = run_autonum(seq_id='tab', bkm='gaps')) %>% 
+  footnote(j=1, value = as_paragraph("Source: JobsEQ, via Hanover Research"), ref_symbols=c(""), part = "header") %>% 
+  footnote(j=1, value = as_paragraph("Note that this list only includes occupations that require at minimum a two-year (Associate's) degree. The Gap column illustrates the  number of persons with necessary credentials to work in these field."), ref_symbols=c(""), part = "header")
+
+```
+
+The occupations with the most job openings in the Greater Bay Area is Software Developers, Project Management or Business Operations Specialists or Accountants. 
 ```{r, ft.align="left"}
 most_openings %>% select(-"Unemployment") %>% 
   flextable::flextable() %>% 
@@ -301,6 +309,9 @@ most_openings %>% select(-"Unemployment") %>%
   footnote(j=1, value = as_paragraph("Source: JobsEQ, via Hanover Research"), ref_symbols=c(""), part = "header")
 
 ```
+
+The fastest growing occupations are Information Security Analysts, Data Scientists and Medical and Health Services Managers.
+
 
 ```{r, ft.align="left"}
 most_growth %>% select(-"Unemployment") %>% 
@@ -318,7 +329,6 @@ most_growth %>% select(-"Unemployment") %>%
 
 Population projections indicate strong growth in Santa Clara County as well as the Greater Bay Area. Between 2020 and 2060 projections suggest the Greater Bay Area’s population will increase by 18.2 % Santa Clara County’s population growth is expected to be higher at 23.1%.
 
-
 ```{r, ft.align="left"}
 projections %>% 
   pivot_wider(names_from = years, values_from = population) %>% 
@@ -327,6 +337,7 @@ projections %>%
   width(width=1.05) %>% 
   footnote(j=1, value = as_paragraph("Source: State of California Department of Finance, via Hanover Research"), ref_symbols=c(""), part = "header")
 ```
+
 Projections by age group suggest an aging population, though the traditional student age group is expected to remain stable. Projections through 2060 by age group indicate large increases in the share of residents ages 40-44 and 85+, with a small increase in the 35-39 age group. The share of residents below 20 is expected to decline. Ages 20-24, the prime college going population, is expected to remain between 7.6 and 7.7%.
 
 >>>>> can you add the population project by age group here?
@@ -383,7 +394,7 @@ The Greater Bay Area and the Santa Clara County are relatively diverse, but has 
 
 ## Socio-economic Data 
 
-On the whole, the Greater Bay Area and Santa Clara County is well-educated. More than a quarter of Greater Bay Area residents hold a bachelor’s degree, with nearly 20 % holding a graduate or professional degree. A small share holds associate’s degrees, but it is unclear how many bachelor’s degree holders initially pursued an associate’s program before transfer. However, over 40% of Santa Clara County residents aged 25 or older hold less than associate degree.  
+On the whole, the Greater Bay Area and Santa Clara County is well-educated. More than a quarter of Greater Bay Area residents hold a bachelor’s degree, with nearly 20% holding a graduate or professional degree. A small share holds associate’s degrees, but it is unclear how many bachelor’s degree holders initially pursued an associate’s program before transfer. However, over 40% of Santa Clara County residents aged 25 or older hold less than associate degree.  
 
 ```{r, ft.align="left"}
 education1 %>% 
@@ -408,6 +419,7 @@ education1 %>%
 
 ```
 
+The median and average household income in the Greater Bay Area is high and slightly higher in the Santa Clara County. Both are comparably much higher than the national median income. The median household income in Greater Bay Area counties for 2019 is \$97,986. Santa Clara County median household income is slightly higher at \$116,178.
 
 ```{r, ft.align="left"}
 median1 %>% 
@@ -425,6 +437,7 @@ median1 %>%
 
 ```
 
+Poverty rates in the Santa Clara County and Greater Bay Area are lower than the state of California and the United States as a whole. Approximately 9.0% of Greater Bay Area residents between the ages of 18 and 64 are determined to be below the poverty level, lower than the share in California 12.3% and the United States 12.6%.
 
 ```{r, ft.align='left'}
 poverty %>% flextable() %>%
@@ -439,6 +452,7 @@ poverty %>% flextable() %>%
 
 ```
 
+However, the poverty level differs significantly by race. Approximately 18% of Black residents in the Greater Bay Area are determined to be below the poverty level, almost three times more compared to White residents. Similarly, American Indian and Alaska Native, Latinx and Pacific Islander residents also experienced higher rates of poverty compared to the Greater Bay Area average.
 
 ```{r}
 #poverty by race
@@ -637,6 +651,7 @@ ggrads614 %>%
   footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
 
 ```
+
 ## Disaggregation by Ethnicity
 
 ```{r, ft.align='left'}
