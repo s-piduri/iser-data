@@ -35,7 +35,6 @@ set_flextable_defaults(font.size = 9)
 
 The college's overall enrollment (headcount) has declined in the last 5 years after a small increase in 2018-2019. Given the impact of COVID-19 pandemic and the statewide enrollment decline, this is not surprising. The overall annual headcount has declined 16% from 2017-18 to 2021-22. This decline is reflected throughout the enrollment trend data.
 
->>>>> Calculate the percentage decline from 2017-18 for headcount and talk about that.
 
 ```{r, ft.align='left'}
 annual %>% 
@@ -66,10 +65,6 @@ annual %>%
 
 ### Credit Enrollment Trends and Student Composition
 
->>>>> let's separate out credit and noncredit. in this section only focus on credit students and their breakdown
->>>>> decribe the 5 year trend using 5yr %change, which sets the reference decline for examining all groups.
->>>>> add the average at the end here.
-
 This section describes the credit enrollment trends by various student attributes. Data are from Fall terms between Fall 2017 and Fall 2021. It includes all students enrolled in at least one credit course. The data are extracted from the district's internal database by the Office of Research, Planning and Institutional Effectiveness. 
 
 The five-year Fall credit headcount reveals a pattern already discussed above. While the decline in the last two years is largely due to the impact of the COVID-19 pandemic, the enrollment decline had began in Fall 2019. From Fall 2018 to Fall 2019, the credit headcount declined by 5%.  Over the last five years (from Fall 2017 to Fall 2021) , it declined 19%. The headcount averaged over the last five years is 8,841.
@@ -83,7 +78,6 @@ fall_hc %>%
            ref_symbols=c(""), part = "header") %>% 
   width(width=1)
 ```
->>>> Describe the trend you see here in a plain straightforward language. For example, "In Fall terms, xx percent of credit students are y type, xx percent are z type, etc. any other noteworthy obvious trends.
 
 On average, 62% of credit students are continuing students in Fall terms. While enrollment has decreased, the percentage of continuing students enrolled in credit classes has increased, going from 57%. On the other hand, the percentage of new students had decreased from 21% to 14%. 
 
@@ -177,8 +171,6 @@ sp_hc %>% flextable() %>%
 ```
 ### Noncredit Enrollment Trends and Student Composition
 
->>>>> for noncredit, only disaggregate by gender, race and age.
->>>> Also do this by subject area too where if they take one noncredit course in one subject area, then count that as enrollment in that subject area. The point I want to make is that the biggest program is our noncredit esl.
 
 The vast majority of noncredit students are enrolled in ESL classes. 
 
@@ -454,7 +446,7 @@ poverty %>% flextable() %>%
 
 However, the poverty level differs significantly by race. Approximately 18% of Black residents in the Greater Bay Area are determined to be below the poverty level, almost three times more compared to White residents. Similarly, American Indian and Alaska Native, Latinx and Pacific Islander residents also experienced higher rates of poverty compared to the Greater Bay Area average.
 
-```{r}
+```{r, ft.align='left'}
 #poverty by race
 poverty_race1 %>% 
   flextable() %>% 
@@ -487,9 +479,11 @@ overallcs %>%
   flextable::set_formatter("2017-2018" = function(x) sprintf("%.001f%%", x*100)) %>% 
   flextable::set_formatter("2018-2019" = function(x) sprintf("%.001f%%", x*100)) %>% 
   flextable::set_formatter("2019-2020" = function(x) sprintf("%.001f%%", x*100)) %>% 
-  width(width = 1.3) %>% 
+  flextable::set_formatter("2020-2021" = function(x) sprintf("%.001f%%", x*100)) %>%
+  width(width = 1) %>% 
+  width(j=1, width = 1.2) %>% 
   align(j=1, align= "left", part = "all") %>% 
-  align(j=2:5, align = "right", part = "all") %>% 
+  align(j=2:6, align = "right", part = "all") %>% 
   set_caption("Overall Course Success Rate",autonum = run_autonum(seq_id='tab', bkm='cso')) %>%
   footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
 
@@ -502,9 +496,10 @@ overall603 %>%
   pivot_wider(names_from = years, values_from = value) %>% 
   flextable::flextable() %>% 
   flextable::align(i=1, align="center", part="header") %>% 
-  flextable::width(width=1.3) %>% 
+  width(width = 1) %>% 
+  width(j=1, width = 1.2) %>% 
   align(j=1, align= "left", part = "all") %>% 
-  align(j=2:5, align = "right", part = "all") %>% 
+  align(j=2:6, align = "right", part = "all") %>% 
   set_caption(title, autonum = run_autonum(seq_id='tab', bkm='cert')) %>%
   footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
 
@@ -518,9 +513,10 @@ overall631 %>%
   pivot_wider(names_from = years, values_from = value) %>% 
   flextable::flextable() %>% 
   flextable::align(i=1, align="center", part="header") %>%
+  width(width = 1) %>% 
+  width(j=1, width = 1.2) %>% 
   align(j=1, align= "left", part = "all") %>% 
-  align(j=2:5, align = "right", part = "all") %>% 
-  flextable::width(width=1.3) %>% 
+  align(j=2:6, align = "right", part = "all") %>% 
   set_caption(title, autonum = run_autonum(seq_id='tab', bkm='deg')) %>%
   footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
 ```
@@ -531,10 +527,10 @@ overall608 %>%
   select(years, Type, value) %>% 
   pivot_wider(names_from = years, values_from = value) %>% 
   flextable::flextable() %>% 
-  flextable::align(i=1, align="center", part="header") %>% 
-  flextable::width(width=1.3) %>%
+  width(width = 1) %>% 
+  width(j=1, width = 1.2) %>% 
   align(j=1, align= "left", part = "all") %>% 
-  align(j=2:5, align = "right", part = "all") %>% 
+  align(j=2:6, align = "right", part = "all") %>% 
   set_caption(title, autonum = run_autonum(seq_id='tab', bkm='adt')) %>%
   footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
 
@@ -544,11 +540,12 @@ overall608 %>%
 ```{r, ft.align='left'}
 title <- "Distinct number of transfers to CSU or UC"
 overall614 %>% 
-  select(years, Type, value) %>% 
+  select(years, Type, value) %>%
+  filter(years != "2020-2021") %>% 
   pivot_wider(names_from = years, values_from = value) %>% 
   flextable::flextable() %>% 
-  flextable::align(i=1, align="center", part="header") %>% 
-  flextable::width(width=1.1) %>% 
+  width(width = 1) %>% 
+  width(j=1, width = 1.2) %>% 
   align(j=1, align= "left", part = "all") %>% 
   align(j=2:6, align = "right", part = "all") %>% 
   set_caption(title, autonum = run_autonum(seq_id='tab', bkm='csuuc')) %>%
@@ -565,15 +562,16 @@ csgender %>%
   drop_na() %>% 
   pivot_wider(names_from = years, values_from = value) %>% 
   flextable::flextable() %>% 
-  flextable::align(i=1, align="center", part="header") %>% 
   flextable::set_formatter("2016-2017" = function(x) sprintf("%.001f%%", x*100)) %>% 
   flextable::set_formatter("2017-2018" = function(x) sprintf("%.001f%%", x*100)) %>% 
   flextable::set_formatter("2018-2019" = function(x) sprintf("%.001f%%", x*100)) %>% 
   flextable::set_formatter("2019-2020" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::set_formatter("2020-2021" = function(x) sprintf("%.001f%%", x*100)) %>%
   flextable::add_footer_lines(values = desc) %>% 
+  width(width = 1) %>% 
+  width(j=1, width = 1.2) %>% 
   align(j=1, align= "left", part = "all") %>% 
-  align(j=2:5, align = "right", part = "all") %>% 
-  flextable::width(width=1.3) %>% 
+  align(j=2:6, align = "right", part = "all") %>% 
   set_caption(title, autonum = run_autonum(seq_id='tab', bkm='csg')) %>%
   footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
 ```
@@ -586,10 +584,10 @@ ggrads603 %>%
   drop_na() %>% 
   pivot_wider(names_from = years, values_from = value) %>% 
   flextable::flextable() %>% 
-  flextable::align(i=1, align="center", part="header") %>% 
-  flextable::width(width=1.3) %>% 
+  width(width = 1) %>% 
+  width(j=1, width = 1.2) %>% 
   align(j=1, align= "left", part = "all") %>% 
-  align(j=2:5, align = "right", part = "all") %>% 
+  align(j=2:6, align = "right", part = "all") %>% 
   flextable::add_footer_lines(values = desc) %>% 
   set_caption(title, autonum = run_autonum(seq_id='tab', bkm='certg')) %>%
   footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
@@ -605,11 +603,11 @@ ggrads631%>%
   drop_na() %>% 
   pivot_wider(names_from = years, values_from = value) %>% 
   flextable::flextable() %>% 
-  flextable::align(i=1, align="center", part="header") %>% 
   flextable::add_footer_lines(values = desc) %>% 
-  flextable::width(width=1.3) %>% 
+  width(width = 1) %>% 
+  width(j=1, width = 1.2) %>% 
   align(j=1, align= "left", part = "all") %>% 
-  align(j=2:5, align = "right", part = "all") %>% 
+  align(j=2:6, align = "right", part = "all") %>% 
   set_caption(title, autonum = run_autonum(seq_id='tab', bkm='degg')) %>%
   footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
 
@@ -623,11 +621,12 @@ ggrads608%>%
   drop_na() %>% 
   pivot_wider(names_from = years, values_from = value) %>% 
   flextable::flextable() %>% 
-  flextable::align(i=1, align="center", part="header") %>% 
   flextable::add_footer_lines(values = desc) %>% 
   flextable::width(width=1.3) %>% 
+  width(width = 1) %>% 
+  width(j=1, width = 1.2) %>% 
   align(j=1, align= "left", part = "all") %>% 
-  align(j=2:5, align = "right", part = "all") %>% 
+  align(j=2:6, align = "right", part = "all") %>% 
   set_caption(title, autonum = run_autonum(seq_id='tab', bkm='adtg')) %>%
   footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
 
@@ -639,12 +638,13 @@ title <- "Distinct Number of Transfers to CSU or UC by Gender"
 desc <- "Note: \"All Masked Values\" contains Non-Binary and Unknown/Non-Respondent students."
 ggrads614 %>% 
   select(years, Gender, value) %>% 
-  filter(Gender=="Female" | Gender=="Male" | Gender=="All Masked Values") %>% 
+  filter(Gender=="Female" | Gender=="Male" | Gender=="All Masked Values") %>%
+  filter(years != "2020-2021") %>% 
   pivot_wider(names_from = years, values_from = value) %>% 
   flextable::flextable() %>% 
-  flextable::align(i=1, align="center", part="header") %>% 
   flextable::add_footer_lines(values = desc) %>% 
-  flextable::width(width=1.075) %>% 
+  width(width = 1) %>% 
+  width(j=1, width = 1.2) %>% 
   align(j=1, align= "left", part = "all") %>% 
   align(j=2:6, align = "right", part = "all") %>% 
   set_caption(title, autonum = run_autonum(seq_id='tab', bkm='csuucg')) %>%
@@ -662,15 +662,16 @@ csrace %>%
   pivot_wider(names_from = years, values_from = value) %>% 
   drop_na() %>% 
   flextable::flextable() %>% 
-  flextable::align(i=1, align="center", part="header") %>% 
   flextable::set_formatter("2016-2017" = function(x) sprintf("%.001f%%", x*100)) %>% 
   flextable::set_formatter("2017-2018" = function(x) sprintf("%.001f%%", x*100)) %>% 
   flextable::set_formatter("2018-2019" = function(x) sprintf("%.001f%%", x*100)) %>% 
   flextable::set_formatter("2019-2020" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::set_formatter("2020-2021" = function(x) sprintf("%.001f%%", x*100)) %>%
   flextable::add_footer_lines(values = desc) %>% 
+  width(width = 1) %>% 
   flextable::width(j=1, width=2.1) %>% 
   align(j=1, align= "left", part = "all") %>% 
-  align(j=2:5, align = "right", part = "all") %>% 
+  align(j=2:6, align = "right", part = "all") %>% 
   set_caption(title, autonum = run_autonum(seq_id='tab', bkm='cse')) %>%
   footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
 
@@ -685,12 +686,11 @@ rgrads603 %>%
   #drop_na() %>% 
   pivot_wider(names_from = years, values_from = value) %>% 
   flextable::flextable() %>% 
-  flextable::align(i=1, align="center", part="header") %>% 
   flextable::width(j=1, width=2.1) %>% 
-  width(j=2:5, width = 1) %>% 
+  width(j=2:6, width = 1) %>% 
   flextable::add_footer_lines(values = desc) %>% 
   align(j=1, align= "left", part = "all") %>% 
-  align(j=2:5, align = "right", part = "all") %>% 
+  align(j=2:6, align = "right", part = "all") %>% 
   set_caption(title, autonum = run_autonum(seq_id='tab', bkm='certe')) %>%
   footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
 ```
@@ -704,12 +704,11 @@ rgrads631%>%
   #drop_na() %>% 
   pivot_wider(names_from = years, values_from = value) %>% 
   flextable::flextable() %>% 
-  flextable::align(i=1, align="center", part="header") %>% 
   flextable::width(j=1, width=2.2) %>% 
-  width(j=2:5, width = 1) %>% 
+  width(j=2:6, width = 1) %>% 
   flextable::add_footer_lines(values = desc) %>% 
   align(j=1, align= "left", part = "all") %>% 
-  align(j=2:5, align = "right", part = "all") %>% 
+  align(j=2:6, align = "right", part = "all") %>% 
   set_caption(title, autonum = run_autonum(seq_id='tab', bkm='dege')) %>%
   footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
 ```
@@ -723,12 +722,11 @@ rgrads608%>%
   #drop_na() %>% 
   pivot_wider(names_from = years, values_from = value) %>% 
   flextable::flextable() %>% 
-  flextable::align(i=1, align="center", part="header") %>% 
   flextable::width(j=1, width=2.3) %>% 
-  width(j=2:5, width = 1) %>% 
+  width(j=2:6, width = 1) %>% 
   flextable::add_footer_lines(values = desc) %>% 
   align(j=1, align= "left", part = "all") %>% 
-  align(j=2:5, align = "right", part = "all") %>% 
+  align(j=2:6, align = "right", part = "all") %>% 
   set_caption(title, autonum = run_autonum(seq_id='tab', bkm='adte')) %>%
   footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
 
@@ -740,6 +738,7 @@ title <- "Distinct Number of Transfers to CSU or UC by Ethnicity"
 desc <- "Note: \"All Masked Values\" contains students who listed another ethnicity or not respond."
 rgrads614 %>% 
   select(years, Ethnicity, value) %>% 
+  filter(years != "2020-2021") %>% 
   pivot_wider(names_from = years, values_from = value) %>% 
   flextable::flextable() %>% 
   flextable::align(i=1, align="center", part="header") %>% 

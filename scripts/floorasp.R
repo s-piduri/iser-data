@@ -159,7 +159,6 @@ overallcs <- overallcs %>%
 #gets number of certificate earners
 #aspirational percent increase of 20% from 16/17 to 21/22
 overall603 <- valuefloor(overall, 603, beg_yr, end_yr, 1.2)
-
 #gets number of degree earners (as, adt, aa)
 #aspirational percent increase of 20% from 16/17 to 21/22
 overall631 <- valuefloor(overall, 631, beg_yr, end_yr, 1.2)

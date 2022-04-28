@@ -43,7 +43,9 @@ enroll_cred <- enroll %>%
                    cr_ncr == "Y" ~ "Noncredit",
                    TRUE ~ as.character("Part-time"))) %>% 
   mutate_at(vars(gender, sb15_term_status), ~replace_na(., "Unknown"))
-  
+
+save(enroll_cred, file="enroll_cred.RData")
+
 ####overall headcounts#####
 #headcount by year
 annual_hc <- enroll %>%
