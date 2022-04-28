@@ -1,6 +1,6 @@
 ---
 title: "ISER Data Section"
-author: "Office of Reserach, Planning and Institutional Effectiveness"
+author: "Office of Research, Planning and Institutional Effectiveness"
 date: "`r Sys.Date()`"
 output: word_document
     
@@ -76,7 +76,7 @@ fall_hc %>%
               autonum = run_autonum(seq_id='tab', bkm='fhc')) %>% 
   footnote(j=1, value=as_paragraph("Source: SJCC Internal Data Warehouse"),
            ref_symbols=c(""), part = "header") %>% 
-  width(width=1)
+  width(width=.8)
 ```
 
 On average, 62% of credit students are continuing students in Fall terms. While enrollment has decreased, the percentage of continuing students enrolled in credit classes has increased, going from 57%. On the other hand, the percentage of new students had decreased from 21% to 14%. 
@@ -86,7 +86,7 @@ Nearly 17% of credit students are new students, and 12% of credit students are r
 ```{r, ft.align='left'}
 fall_type %>% 
   flextable() %>% 
-  set_caption("Unduplicated Headcount by Student Type, Fall Terms", 
+  set_caption("Share of Fall Credit Students by Student Type", 
               autonum = run_autonum(seq_id='tab', bkm='fthc')) %>% 
   footnote(j=1, value=as_paragraph("Source: SJCC Internal Data Warehouse"),
            ref_symbols=c(""), part = "header") %>%
@@ -107,7 +107,7 @@ Over 70% of students have a goal of transfer to four-year institutions or earnin
 fall_goal %>% 
   #pivot_wider(names_from="Fall Term", values_from = "Headcount") %>% 
   flextable() %>% 
-  set_caption("Unduplicated Credit Headcount by Student Goal, Fall Terms", 
+  set_caption("Share of Fall Credit Students by Educational Goal", 
               autonum = run_autonum(seq_id='tab', bkm='fghc')) %>% 
   footnote(j=1, value=as_paragraph("Source: SJCC Internal Data Warehouse"),
            ref_symbols=c(""), part = "header") %>% 
@@ -122,7 +122,7 @@ The percentage of female students has risen 5 percent in the past five years, wh
 fall_gender %>% 
   #pivot_wider(names_from="Fall Term", values_from = "Headcount") %>% 
   flextable() %>% 
-  set_caption("Unduplicated Credit Headcount by Gender, Fall Terms", 
+  set_caption("Share of Fall Credit Students by Gender", 
               autonum = run_autonum(seq_id='tab', bkm='fgehc')) %>% 
   footnote(j=1, value=as_paragraph("Source: SJCC Internal Data Warehouse"),
            ref_symbols=c(""), part = "header") %>% 
@@ -136,7 +136,7 @@ Approximately 45% of credit students in Fall terms were Latinx. This has remaine
 fall_race %>% 
   #pivot_wider(names_from="Fall Term", values_from = "Headcount") %>% 
   flextable() %>% 
-  set_caption("Unduplicated Credit Headcount by Race/Ethnicity, Fall Terms", 
+  set_caption("Share of Fall Credit Students by Race/Ethnicity", 
               autonum = run_autonum(seq_id='tab', bkm='frhc')) %>% 
   footnote(j=1, value=as_paragraph("Source: SJCC Internal Data Warehouse"),
            ref_symbols=c(""), part = "header") %>% 
@@ -150,7 +150,7 @@ Around 46% of credit students in Fall terms are between the ages of 18 and 24. T
 fall_age %>% 
   #pivot_wider(names_from="Fall Term", values_from = "Headcount") %>% 
   flextable() %>% 
-  set_caption("Unduplicated Credit Headcount by Age, Fall Terms", 
+  set_caption("Share of Fall Credit Students by Age", 
               autonum = run_autonum(seq_id='tab', bkm='fahc')) %>% 
   footnote(j=1, value=as_paragraph("Source: SJCC Internal Data Warehouse"),
            ref_symbols=c(""), part = "header") %>% 
@@ -178,7 +178,7 @@ The vast majority of noncredit students are enrolled in ESL classes.
 #subject area (split crs_name into dept, #)
 fall_ncsubject %>% 
   flextable() %>% 
-  set_caption("Noncredit Headcount by Subject, Fall Terms", 
+  set_caption("Share of Fall Noncredit Students by Subject Area", 
               autonum = run_autonum(seq_id='tab', bkm='fahc')) %>% 
   footnote(j=1, value=as_paragraph("Source: SJCC Internal Data Warehouse"),
            ref_symbols=c(""), part = "header") %>% 
@@ -195,7 +195,7 @@ In Fall 2020, female students comprised almost 75% of the noncredit student popu
 #gender
 fall_ncgender %>% 
   flextable() %>% 
-  set_caption("Noncredit Headcount by Gender, Fall Terms", 
+  set_caption("Share of Fall Noncredit Students by Gender", 
               autonum = run_autonum(seq_id='tab', bkm='fgehcnc')) %>% 
   footnote(j=1, value=as_paragraph("Source: SJCC Internal Data Warehouse"),
            ref_symbols=c(""), part = "header") %>% 
@@ -214,7 +214,7 @@ In Fall 2020, the percentage of noncredit White students rose 12 percent from Fa
 #race
 fall_ncrace %>% 
   flextable() %>% 
-  set_caption("Noncredit Headcount by Race/Ethnicity, Fall Terms", 
+  set_caption("Share of Fall Noncredit Students by Race/Ethnicity", 
               autonum = run_autonum(seq_id='tab', bkm='frhcnc')) %>% 
   footnote(j=1, value=as_paragraph("Source: SJCC Internal Data Warehouse"),
            ref_symbols=c(""), part = "header") %>% 
@@ -231,7 +231,7 @@ Only 15% of the noncredit population is between 18 and 24.
 #age
 fall_ncage %>% 
   flextable() %>% 
-  set_caption("Noncredit Headcount by Age, Fall Terms", 
+  set_caption("Share of Fall Noncredit Students by Age", 
               autonum = run_autonum(seq_id='tab', bkm='fahcnc')) %>% 
   footnote(j=1, value=as_paragraph("Source: SJCC Internal Data Warehouse"),
            ref_symbols=c(""), part = "header") %>% 
@@ -332,7 +332,6 @@ projections %>%
 
 Projections by age group suggest an aging population, though the traditional student age group is expected to remain stable. Projections through 2060 by age group indicate large increases in the share of residents ages 40-44 and 85+, with a small increase in the 35-39 age group. The share of residents below 20 is expected to decline. Ages 20-24, the prime college going population, is expected to remain between 7.6 and 7.7%.
 
->>>>> can you add the population project by age group here?
 
 ```{r, ft.align="left"}
 #population projection by age
@@ -435,7 +434,7 @@ Poverty rates in the Santa Clara County and Greater Bay Area are lower than the 
 poverty %>% flextable() %>%
     flextable::set_formatter("Greater Bay Area" = function(x) sprintf("%.001f%%", x*100)) %>% 
     flextable::set_formatter("Santa Clara County" = function(x) sprintf("%.001f%%", x*100)) %>% 
-    set_caption("Poverty Level in the Service Area",autonum = run_autonum(seq_id='tab', bkm='poverty')) %>% 
+    set_caption("Poverty Level in the Service Area, 2019",autonum = run_autonum(seq_id='tab', bkm='poverty')) %>% 
   width(width=1.5) %>% 
   footnote(j=1, value = as_paragraph("Source: US Census Bureau, via Hanover Research"), ref_symbols=c(""), part = "header")
 
@@ -450,7 +449,7 @@ However, the poverty level differs significantly by race. Approximately 18% of B
 #poverty by race
 poverty_race1 %>% 
   flextable() %>% 
-  set_caption("Poverty Level by Race in the Service Area",autonum = run_autonum(seq_id='tab', bkm='rpoverty')) %>% 
+  set_caption("Poverty Level by Race in the Service Area, 2019",autonum = run_autonum(seq_id='tab', bkm='rpoverty')) %>% 
   width(j= 1, width=3.5) %>% 
   footnote(j=1, value = as_paragraph("Source: US Census Bureau, via Hanover Research"), ref_symbols=c(""), part = "header") %>% 
   align(j=c(2:3), align='right', part='all')
@@ -769,6 +768,8 @@ licensure %>%
   flextable::set_formatter("2020-2021" = function(x) sprintf("%.000f%%", x*100)) %>% 
   footnote(i=4, j=8, value = as_paragraph("No campus specific data on this item."), ref_symbols = c("A"), part = "body") %>%  
   footnote(i=5, j=8, value = as_paragraph("No one took the exam this year due to Covid"), ref_symbols = c("B"), part = "body") %>% 
+    align(j=1:2, align= "left", part = "all") %>% 
+  align(j=3:9, align = "right", part = "all") %>% 
   set_caption("Licensure Pass Rates", autonum = run_autonum(seq_id='tab', bkm='cert')) %>%
   footnote(j=1, value = as_paragraph("Source: ACCJC Annual Reports"), ref_symbols=c(""), part = "header")
 
@@ -788,6 +789,8 @@ jobplace %>%
   flextable::set_formatter("2020-2021" = function(x) sprintf("%.000f%%", x*100)) %>% 
   flextable::align(i=1, align="center", part="header") %>% 
   flextable::width(width=1.1) %>% 
+  align(j=1, align= "left", part = "all") %>% 
+  align(j=2:6, align = "right", part = "all") %>% 
   set_caption("Job Placement Rates", autonum = run_autonum(seq_id='tab', bkm='cert')) %>%
   footnote(j=1, value = as_paragraph("Source: ACCJC Annual Reports"), ref_symbols=c(""), part = "header") %>% 
   footnote(j=1, value = as_paragraph("Note that data is only available for 2018-2019 and years after."), ref_symbols=c(""), part = "header")

@@ -187,8 +187,7 @@ fall_hc <- enroll_cred %>%
   group_by(term_id) %>% 
   summarize(headcount = n()) %>% 
   pivot_wider(names_from = term_id, values_from = headcount) %>% 
-  mutate(mean = rowMeans(fall_hc[ , c(1:5)]))
-fall_hc[, c(1:5)]
+  mutate('5-Year Average' = rowMeans(fall_hc[ , c(1:5)]))
 #colnames(fall_hc) <- c("Fall Term", "Headcount")
 
 
