@@ -8,7 +8,8 @@ topten <- read_excel(path=labor, sheet = 3, skip =2, n_max=10)
 broad_ten <- read_excel(path=labor, sheet=1, skip=2, n_max=10)
 toptech <- read_excel(path=labor, sheet = 5, skip =2, n_max=10)
 
-gaps <- read_excel(path=occ_gaps, skip=1, n_max=15)
+ogaps <- read_excel(path=occ_gaps, skip=1, n_max=20)
+gaps <- ogaps[c(1:10,16,17,18,19,20),]
 
 some_college <- read_excel(path=occupations, sheet = 1, skip = 2, n_max=6)
 nondegree <- read_excel(path=occupations, sheet = 2, skip = 2, n_max=46)
