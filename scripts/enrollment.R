@@ -42,7 +42,10 @@ enroll_cred <- enroll %>%
   mutate(load = case_when(total_att_units >= 12 ~ "Full-time",
                    cr_ncr == "Y" ~ "Noncredit",
                    TRUE ~ as.character("Part-time"))) %>% 
-  mutate_at(vars(gender, sb15_term_status), ~replace_na(., "Unknown"))
+  mutate_at(vars(gender, sb15_term_status), ~replace_na(., "Unknown")) %>% 
+  mutate(gender1 = case_when(grepl('F', gender, fixed = TRUE) ~ "Female",
+                                  grepl('M', gender, fixed = TRUE) ~ "Male",
+                                  TRUE ~ as.character("Unknown")))
 
 save(enroll_cred, file="enroll_cred.RData")
 
@@ -432,7 +435,7 @@ fall_gender_hc <- enroll_cred %>%
   mutate(fall_unique = row_number()) %>% 
   filter(fall_unique == 1) %>%
   ungroup() %>% 
-  group_by(term_id, gender) %>% 
+  group_by(term_id, gender1) %>% 
   summarize(headcount = n()) %>% 
   replace(is.na(.), 'Unknown') %>% 
   ungroup() %>% 
@@ -446,10 +449,10 @@ fall_gender_hc1 <- fall_gender_hc %>%
   arrange(desc(mean)) %>% 
   mutate_if(is.numeric, as.character) %>% 
   mutate_at(c(2:7), ~percentage(.))
-names(n_rowa)[names(n_rowa) == 'age'] <- "gender"
+names(n_rowa)[names(n_rowa) == 'age'] <- 'gender1'
 fall_gender <- fall_gender_hc1 %>% 
   rbind(n_rowa)
-names(fall_gender)[names(fall_gender) == 'gender'] <- 'Gender'
+names(fall_gender)[names(fall_gender) == 'gender1'] <- 'Gender'
 names(fall_gender)[names(fall_gender) == 'mean'] <- "5-Year Average"
 
 #fall noncredit headcounts by gender
@@ -462,7 +465,7 @@ fall_ncgender_hc <- enroll_cred %>%
   mutate(fall_unique = row_number()) %>% 
   filter(fall_unique == 1) %>%
   ungroup() %>% 
-  group_by(term_id, gender) %>% 
+  group_by(term_id, gender1) %>% 
   summarize(headcount = n()) %>% 
   replace(is.na(.), 'Unknown') %>% 
   ungroup() %>% 
@@ -476,10 +479,10 @@ fall_ncgender_hc1 <- fall_ncgender_hc %>%
   arrange(desc(mean)) %>% 
   mutate_if(is.numeric, as.character) %>% 
   mutate_at(c(2:7), ~percentage(.))
-names(fahc)[names(fahc) == 'race'] <- "gender"
+names(fahc)[names(fahc) == 'race'] <- "gender1"
 fall_ncgender <- fall_ncgender_hc1 %>% 
   rbind(fahc)
-names(fall_ncgender)[names(fall_ncgender) == 'gender'] <- 'Gender'
+names(fall_ncgender)[names(fall_ncgender) == 'gender1'] <- 'Gender'
 names(fall_ncgender)[names(fall_ncgender) == 'mean'] <- "5-Year Average"
 
 #fall noncredit headcounts by subject

@@ -368,7 +368,7 @@ The Greater Bay Area and the Santa Clara County are relatively diverse, but has 
    set_caption("Service Area Ethnicity Breakdown, 2019",autonum = run_autonum(seq_id='tab', bkm='ethn')) %>% 
     flextable::set_formatter("Bay Area %" = function(x) sprintf("%.001f%%", x*100)) %>%
     flextable::set_formatter("Santa Clara County %" = function(x) sprintf("%.001f%%", x*100))%>%
-    flextable::set_table_properties(width = .5, layout='autofit') %>%
+    align(j=7, align = "right", part = "all") %>% 
     footnote(j=1, value = as_paragraph("Source: US Census Bureau, via Hanover Research"), ref_symbols=c(""), part = "header") %>% 
   footnote(j=1, value = as_paragraph("Note: SJCC Headcount data is the annual 2020-2021 overall headcount."), ref_symbols=c(""), part = "header")
 

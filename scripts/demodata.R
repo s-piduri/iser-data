@@ -87,14 +87,22 @@ race <- cen_total[67:72,] %>%
   mutate(across(where(is.numeric), round, 4)) 
 
 ethnicity <- rbind(cen_total[75,], cen_total[81:87,])
-colnames(ethnicity) <- c("Ethnicity", 'Bay Area: Estimate', 'Bay Area: Percent', 'Santa Clara County: Estimate', 'Santa Clara County: Percent')
+colnames(ethnicity) <- c('Ethnicity', 'bae', 'bap', 'scce', 'sccp')
 
 load("raceenrollment.RData")
 
+percentage <- function(y) {
+  paste0(y, "%")
+} 
+
+
 ethnicity1 <- ethnicity %>% 
   left_join(annual_hc_r, by = "Ethnicity") %>% 
+  arrange(desc(bap)) %>% 
   select(!annual) %>% 
-  select(!race)
+  select(!race) %>% 
+  mutate_at(c(7), as.character) %>% 
+  mutate_at(c(7), ~percentage(.))
 
 colnames(ethnicity1) <- c("Ethnicity", 'Bay Area: Estimate', 'Bay Area %', 'Santa Clara County: Estimate', 'Santa Clara County %',
                          "SJCC Headcount", "SJCC Headcount %")
