@@ -167,6 +167,7 @@ sp_hc %>% flextable() %>%
               autonum = run_autonum(seq_id='tab', bkm='special')) %>% 
   footnote(j=1, value=as_paragraph("Source: CCC Chancellor's Office Data Mart"),
            ref_symbols=c(""), part = "header") %>% 
+  align(j=2:6, align = "right", part = "all") %>% 
   width(j=1, width=3)
 ```
 ### Noncredit Enrollment Trends and Student Composition
@@ -183,7 +184,9 @@ fall_ncsubject %>%
   footnote(j=1, value=as_paragraph("Source: SJCC Internal Data Warehouse"),
            ref_symbols=c(""), part = "header") %>% 
   width(j=7,width=1.1) %>% 
-  align(j=c(2:7), align = 'right', part = 'all')
+  align(j=c(2:7), align = 'right', part = 'all') %>% 
+  footnote(j=1, value=as_paragraph("Students who enrolled in multiple noncredit subjects are included in the percentages for all relevant noncredit subjects."), ref_symbols=c(""), part = "header")
+
 
 ```
 
@@ -360,7 +363,8 @@ raceproj %>%
 
 ```
 
-The Greater Bay Area and the Santa Clara County are relatively diverse, but has a low share of Black or African American residents (5.5% and 2.3%, respectively). In the Greater Bay Area, the largest share of the population is White non Hispanic, while in the Santa Clara County, it is Asian. In both areas, approximately a quarter of residents are Hispanic or Latino (of any race).
+The Greater Bay Area and the Santa Clara County are relatively diverse, but has a low share of Black or African American residents (5.5% and 2.3%, respectively). In the Greater Bay Area, the largest share of the population is White non Hispanic, while in the Santa Clara County, it is Asian. In both areas, approximately a quarter of residents are Hispanic or Latino (of any race). 
+Latinx students comprise the largest percentage of the SJCC 2021 population, making up 40% of the student population compared to around 25% of both the Santa Clara County and greater Bay Area populations. Asian students are 30% of the SJCC population, which is higher than the greater Bay Area population (25%) but lower than the Santa Clara County population (35%). The percentage of Black SJCC students is comparable to the greater Bay Area's population percentage. 
 
 
 ```{r, ft.align="left"}
@@ -667,7 +671,7 @@ csrace %>%
   flextable::set_formatter("2019-2020" = function(x) sprintf("%.001f%%", x*100)) %>% 
   flextable::set_formatter("2020-2021" = function(x) sprintf("%.001f%%", x*100)) %>%
   flextable::add_footer_lines(values = desc) %>% 
-  width(width = 1) %>% 
+  width(width = .8) %>% 
   flextable::width(j=1, width=2.1) %>% 
   align(j=1, align= "left", part = "all") %>% 
   align(j=2:6, align = "right", part = "all") %>% 
@@ -686,7 +690,7 @@ rgrads603 %>%
   pivot_wider(names_from = years, values_from = value) %>% 
   flextable::flextable() %>% 
   flextable::width(j=1, width=2.1) %>% 
-  width(j=2:6, width = 1) %>% 
+  width(j=2:6, width = .8) %>% 
   flextable::add_footer_lines(values = desc) %>% 
   align(j=1, align= "left", part = "all") %>% 
   align(j=2:6, align = "right", part = "all") %>% 
@@ -704,7 +708,7 @@ rgrads631%>%
   pivot_wider(names_from = years, values_from = value) %>% 
   flextable::flextable() %>% 
   flextable::width(j=1, width=2.2) %>% 
-  width(j=2:6, width = 1) %>% 
+  width(j=2:6, width = .8) %>% 
   flextable::add_footer_lines(values = desc) %>% 
   align(j=1, align= "left", part = "all") %>% 
   align(j=2:6, align = "right", part = "all") %>% 
@@ -722,7 +726,7 @@ rgrads608%>%
   pivot_wider(names_from = years, values_from = value) %>% 
   flextable::flextable() %>% 
   flextable::width(j=1, width=2.3) %>% 
-  width(j=2:6, width = 1) %>% 
+  width(j=2:6, width = .8) %>% 
   flextable::add_footer_lines(values = desc) %>% 
   align(j=1, align= "left", part = "all") %>% 
   align(j=2:6, align = "right", part = "all") %>% 
@@ -742,6 +746,7 @@ rgrads614 %>%
   flextable::flextable() %>% 
   flextable::align(i=1, align="center", part="header") %>% 
   flextable::width(j=1, width=2.2) %>% 
+  width(j=2:6, width = .8) %>% 
   flextable::add_footer_lines(values = desc) %>% 
   align(j=1, align= "left", part = "all") %>% 
   align(j=2:6, align = "right", part = "all") %>% 

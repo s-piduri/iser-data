@@ -19,9 +19,15 @@ sp_hc1 <- special_pop[,c(1:2, 7, 12, 17, 22)]
 sp_hc1 <- sp_hc1[c(-1),]
 colnames(sp_hc1) <- c("Special Characteristic", "2017FA", "2018FA", "2019FA",
                      "2020FA", "2021FA")
-sp_hc <- sp_hc1 %>% 
+sp_hctotal <- sp_hc1 %>% 
   replace(is.na(.), 0) %>% 
-  mutate(sum = colSums(sp_hc1[]))
+  summarize_if(is.numeric, sum) %>% 
+  mutate("Special Characteristic" = "Total (N)", .before = 1)
+sp_hc <- sp_hc1 %>%   
+  mutate_if(is.numeric, as.character) %>% 
+  mutate_if(is.character, ~replace_na(., "--")) %>% 
+  rbind(sp_hctotal)
+
 
 # length(unique(fa2018$student_id))
 
@@ -348,12 +354,15 @@ fahc1 <- enroll_cred %>%
   filter(grepl("FA", term_id)) %>%  
   filter(location == "San Jose City College" & cr_ncr == "Y") %>% 
   group_by(term_id) %>% 
+  distinct(student_id) %>% 
   summarize(total = n()) %>% 
   mutate(age = "Total (N)") %>% 
   pivot_wider(names_from=term_id, values_from=total)
 fahc <- fahc1 %>% 
   mutate(mean = floor(rowMeans(fahc1[ , c(2:6)]))) %>% 
   mutate_if(is.numeric, as.character) 
+
+
 
 fall_ncage <- fall_ncage_hc1 %>% 
   rbind(fahc)
@@ -509,9 +518,27 @@ fall_ncsubject_hc <- fall_ncsubject_hc1 %>%
   arrange(desc(mean)) %>% 
   mutate_if(is.numeric, as.character) %>% 
   mutate_at(c(2:7), ~percentage(.))
-names(fahc)[names(fahc) == 'gender'] <- "subject"
+fshc <- enroll_cred %>% 
+  separate(crs_name, into = c("subject", 'number')) %>% 
+  filter(grepl("FA", term_id) & location == "San Jose City College" & cr_ncr == "Y") %>% 
+  mutate(student_term = paste(student_id, term_id, subject, sep="_")) %>% 
+  group_by(student_term) %>% 
+  arrange(student_term, term_reporting_year) %>% 
+  mutate(fall_unique = row_number()) %>% 
+  filter(fall_unique == 1) %>%
+  ungroup() %>% 
+  group_by(term_id, subject) %>% 
+  summarize(headcount = n()) %>% 
+  ungroup() %>% 
+  group_by(term_id) %>% 
+  pivot_wider(names_from=term_id, values_from = headcount) %>% 
+  mutate_if(is.numeric, ~replace_na(., 0)) %>% 
+  summarize_if(is.numeric, sum) %>% 
+  mutate(subject = "Total (N)", .before = 1) %>%
+  mutate(mean = round(rowMeans(across(where(is.numeric)))))
+
 fall_ncsubject <- fall_ncsubject_hc %>% 
-  rbind(fahc)
+  rbind(fshc)
 names(fall_ncsubject)[names(fall_ncsubject) == 'subject'] <- 'Subject'
 names(fall_ncsubject)[names(fall_ncsubject) == 'mean'] <- "5-Year Average"
 
