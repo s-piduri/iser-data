@@ -27,7 +27,45 @@ set_flextable_defaults(font.size = 9)
 
 ## College History
 
-[Provide a brief history of the institution, including year of establishment. Highlight major events or developments that have occurred since the last comprehensive review.]
+San José City College is celebrating its Centennial this year, 2021. For 100 years, SJCC has been a symbol of hope for students and an innovative leader in providing educational and career pathways to generations of families living in California's third-largest city. SJCC has built a legacy of educational and institutional excellence by adapting to the rapid changes that have transformed the Valley of Hearts Delight into Silicon Valley, a major driver of the state, national, and global economies.
+
+The College was founded in 1921 and it is located southwest of the City of San José, California. The College is one of two accredited institutions governed by the Board of Trustees of the San José-Evergreen Community College District (SJECCD). The District, located in northeastern Santa Clara Valley, includes all of the City of Milpitas and part of the City of San José. The second college in the SJECCD, Evergreen Valley College (EVC), is located fifteen miles southeast of SJCC, in a suburban area of the City of San José and adjacent to Montgomery Hill Park. The District includes 300 square miles. The San José/Evergreen Community College District officially became an independent college district in
+1963.
+
+San José City College (SJCC) opened its doors in 1921 to a class of 86 students. It is the oldest community college in Santa Clara County and one of the 10 oldest in California. Today, SJCC, which includes the Milpitas Extension, enrolls more than 16,000 students annually. The campus, which is federally designated as a Hispanic Serving Institution (HSI) and Asian American Native American Pacific Islander Serving Institute (AANAPISI), comprises one of the most diverse student bodies within the California Community College System.
+
+For 61 years the campus has been located in downtown San José. Through the 1960’s and 1970’s San José City College owned more property than it does currently. The boundaries of SJCC stretched east from Bascom Avenue to Menker Avenue. Portions of this property were sold off for the development of Interstate 280 and traded to incorporate the current land where a multipurpose field currently resides.
+
+Bond measures in 1998, 2004, 2010 and 2016 have supported much needed facilities construction: the Cesar Chavez Library, Parking Garage, Career Technology, Technology Center, Multi-Disciplinary and Carmen Castellano Fine Arts Center, Student Center, Jaguar Athletics Complex, Science/Math, and renovations of the Business, Cosmetology, Reprographics, Theater buildings. Construction is underway for a new Maintenance and Operations and Career Education Complex. Additionally, plans are underway for a new Jaguar Multicultural Building.
+
+SJCC’s Milpitas Extension is a unique collaboration between the Milpitas Unified School District (MUSD) and the San José Evergreen Community College District (SJECCD) to establish an Educational Innovation Lab.  Since the conception of this joint effort, the landscape has changed allowing capacity to implement innovative programs, have a fluid operation, and to develop new academic pathways that will shorten the time to degree, enhance the student experience, and develop best practices in dual enrollment, and collaborative efforts between a California Community College and K–12 District.
+
+The Community College Center for Economic Mobility (CEM), located in the District location in downtown San José, complements the instructional programs of both colleges in the SJECCD. Established in 1988 as a self-supporting enterprise, the Institute has partnered with a diverse array of companies applying performance-based solutions to ensure effective training. In addition, CEM provides educational and training opportunities for working professionals and job seekers to keep them current in the highly competitive Silicon Valley job market. The offerings of WI include a range of online, self-paced industry certificates for career development, personal enrichment fee-based community service classes, contract education to businesses, and noncredit adult education associated with regional
+partnerships.
+
+As we look back at SJCC's history, it is also vitally important that we honor the history of the land on which we stand and recognize that our community continues to benefit from the use and occupation of the Ohlone people's unceded ancestral homeland. Consistent with our values of inclusion and diversity, we respect and honor the College's relationship with the San Francisco Bay Area's original people. They continue to flourish in our communities, and we affirm their sovereign rights as first peoples.
+
+Finally, we are proud to say that the future of SJCC looks bright and full of opportunity. We aspire, through excellence, to be the very best community college in Silicon Valley. We will continue to strive to build and strengthen our teams of students, faculty, alumni, and community partners.
+
+
+## Mission, Vision, Values
+Mission: The mission of San José City College is to provide student-centered and culturally responsive curriculum and services for career pathways, university transfer, and life-long learning. We strive to accomplish this by promoting an inclusive, multicultural learning community that values social justice, along with excellence in teaching and learning.
+
+Vision: Through a framework of equity, San José City College will be an exceptional learning environment that challenges and empowers students through teaching excellence, robust student support programs, and innovation in order to prepare students to succeed and thrive in a dynamic global environment.
+
+Values: The Core Values of SJCC include:
+- Diversity, equity, and inclusion
+- Social justice and respect
+- Multiple pathways for student opportunity
+- Innovation and collaboration
+
+## Institutional Student Learning Outcomes
+- Communication: Students will communicate effectively including reading, writing, speaking and listening.
+- Critical and Analytical Thinking: Students will analyze problems using evidence and sound reasoning to make decisions.
+- Global Awareness and Social Justice: Students will demonstrate an awareness of social, economic, ecological, historical, and cultural differences and their implications.
+- Personal Responsibility, Ethics and Civility: Students will demonstrate personal and civic responsibility and professional integrity.
+- Technology: Students will utilize technology effectively for informational, academic, personal, and professional needs.
+- Aesthetics and Creativity: Students will develop an appreciation of the arts and engage in the creative process.
 
 ## Student Enrollment Data 
 
