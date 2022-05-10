@@ -260,7 +260,7 @@ broad_ten %>% flextable() %>%
   width(j=2, width=2)
 ```
 
-More than 10 percent of workers are employed in each of these two broad industries. At a more detailed level, employment after restaurants is concentrated in several high tech industries, schools, and hospitals (reference the top industries by employment table). 
+More than 10 percent of workers are employed in each of these two broad industries. At a more detailed level, employment after restaurants is concentrated in several high tech industries, schools, and hospitals (see the top industries by employment table). 
 
 ```{r, ft.align="left"}
 topten %>% flextable::flextable() %>% 
@@ -318,6 +318,21 @@ most_growth %>% select(-"Unemployment") %>%
 
 
 ```
+
+>id_arch, id_comp, id_data, id_man, id_nav, id_semi
+
+Diversity varies across industries, with less representation for women and/or persons of color in healthcare, technology, business services, public administration, and financial services. BLS’ population survey indicates that women make up less than half the workforce in many industries, with particularly low shares in manufacturing, architecture and engineering, and computer systems. Tech has also noted diversity issues: a 2020 LinkedIn analysis shows only 24 percent of tech workers are female, only Asians have a significant share of the workforce, and Silicon Valley diversity is very low. Many women and underrepresented minorities report leaving tech jobs due to workplace unfairness. Although women make up a large share of the healthcare workforce, few have leadership roles. Further, racial and ethnic diversity in the healthcare industry is low.  
+```{r, ft.align="left"}
+ind_div %>% arrange(Industry) %>% 
+  flextable() %>%
+  width(j = 1, width = 5) %>% 
+  flextable::set_formatter("Percentage" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  set_caption("Diversity in Industries (Greater Bay Area, 2020 Q3)", autonum = run_autonum(seq_id='tab', bkm='divind')) %>% 
+  footnote(j=1, value = as_paragraph("Source: JobsEQ, via Hanover Research"), ref_symbols=c(""), part = "header") %>% 
+  surround(i = c(7, 13, 19, 25, 31), part = 'body', border.top = fp_border())
+
+```
+
 
 
 ## Demographic Data 
