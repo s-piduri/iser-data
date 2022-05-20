@@ -57,13 +57,28 @@ ed <- "C:\\Users\\spiduri\\San Jose-Evergreen Community College District\\Accred
 educ <- read_excel(path=ed, sheet=2)
 
 i <- c(2:5)
-education <- educ[c(8:17), c(1:3, 18:19)] %>%
+education <- educ[c(8:15), c(1:3, 18:19)] %>%
   mutate(across(where(is.numeric), round, 2))
 e <- education[ ,i] <- apply(education[ , i], 2, function(x) as.numeric(as.character(x)))
-colnames(education) <- c(" ", 'Bay Area: Estimate', 'Bay Area: Percent', 'Santa Clara County: Estimate', 'Santa Clara County: Percent')
+colnames(education) <- c("level", 'Bay Area: Estimate', 'Bay Area: Percent', 'Santa Clara County: Estimate', 'Santa Clara County: Percent')
 education[1,1] <- "Total Population Age 25+"
 education1<- education %>% 
   mutate_if(is.numeric, ~replace_na(., 1))
+sumed <- education1 %>% 
+  mutate(aa = case_when(grepl("Bachelor", level) | grepl("professional", level) ~ "Associate's degree or higher",
+                        grepl("Total", level) ~ "Total Population Age 25+",
+                        TRUE ~ as.character("Lower than Associate's degree"))) %>% 
+  group_by(aa) %>% 
+  summarize(bae = sum(`Bay Area: Estimate`),
+            bap = sum(`Bay Area: Percent`),
+            scce = sum(`Santa Clara County: Estimate`),
+            sccp = sum(`Santa Clara County: Percent`)) %>% 
+  filter(grepl("degree", aa)) %>% 
+  ungroup() %>% 
+  arrange(desc(aa))
+colnames(education1) <- c(" ", 'Bay Area: Estimate', 'Bay Area: Percent', 'Santa Clara County: Estimate', 'Santa Clara County: Percent')
+colnames(sumed) <- c(" ", 'Bay Area: Estimate', 'Bay Area: Percent', 'Santa Clara County: Estimate', 'Santa Clara County: Percent')
+educ_total <- rbind(education1, sumed)
 
 reducation <- educ[c(30:57), c(1:3, 18:19)]
   
@@ -141,6 +156,6 @@ poverty_race1 <- poverty_race %>%
 
 
 
-save(projections, baylang, ageproj, raceproj, race, education1, ethnicity1, 
+save(projections, baylang, ageproj, raceproj, race, educ_total, ethnicity1, 
      median1, inc_per, poverty, poverty_race1, file="demo.RData")
 

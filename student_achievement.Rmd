@@ -1,0 +1,356 @@
+---
+title: "Student Achievement Data"
+author: "Office of Research, Planning and Institutional Effectiveness"
+date: "`r Sys.Date()`"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(tidyverse)
+library(flextable)
+library(officer)
+
+load("../is_standards.RData")
+load("../entable.RData")
+load("../jobs.RData")
+load("../demo.RData")
+load("../labor_data.RData")
+set_flextable_defaults(font.size = 9)
+
+```
+
+# Presentation of Student Achievement Data and Institution-Set Standards 
+
+```{r, ft.align='left'}
+desc <- overallcs$description[1]
+overallcs %>% 
+  select(years, Type, percentage) %>% 
+  pivot_wider(names_from = years, values_from = percentage) %>% 
+  flextable::flextable() %>% 
+  flextable::align(i=1, align="center", part="header") %>% 
+  flextable::set_formatter("2016-2017" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::set_formatter("2017-2018" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::set_formatter("2018-2019" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::set_formatter("2019-2020" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::set_formatter("2020-2021" = function(x) sprintf("%.001f%%", x*100)) %>%
+  width(width = 1) %>% 
+  width(j=1, width = 1.2) %>% 
+  align(j=1, align= "left", part = "all") %>% 
+  align(j=2:6, align = "right", part = "all") %>% 
+  set_caption("Overall Course Success Rate",autonum = run_autonum(seq_id='tab', bkm='cso')) %>%
+  footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
+
+```
+
+```{r, ft.align='left'}
+title <- "Distinct number of CO-approved certificate earners (12+ units)"
+overall603 %>% 
+  select(years, Type, value) %>% 
+  pivot_wider(names_from = years, values_from = value) %>% 
+  flextable::flextable() %>% 
+  flextable::align(i=1, align="center", part="header") %>% 
+  width(width = 1) %>% 
+  width(j=1, width = 1.2) %>% 
+  align(j=1, align= "left", part = "all") %>% 
+  align(j=2:6, align = "right", part = "all") %>% 
+  set_caption(title, autonum = run_autonum(seq_id='tab', bkm='cert')) %>%
+  footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
+
+```
+
+
+```{r, ft.align='left'}
+title <- "Distinct number of degree earners (AA, AS, or ADT) "
+overall631 %>% 
+  select(years, Type, value) %>% 
+  pivot_wider(names_from = years, values_from = value) %>% 
+  flextable::flextable() %>% 
+  flextable::align(i=1, align="center", part="header") %>%
+  width(width = 1) %>% 
+  width(j=1, width = 1.2) %>% 
+  align(j=1, align= "left", part = "all") %>% 
+  align(j=2:6, align = "right", part = "all") %>% 
+  set_caption(title, autonum = run_autonum(seq_id='tab', bkm='deg')) %>%
+  footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
+```
+
+```{r, ft.align='left'}
+title <- "Distinct number of ADT earners"
+overall608 %>% 
+  select(years, Type, value) %>% 
+  pivot_wider(names_from = years, values_from = value) %>% 
+  flextable::flextable() %>% 
+  width(width = 1) %>% 
+  width(j=1, width = 1.2) %>% 
+  align(j=1, align= "left", part = "all") %>% 
+  align(j=2:6, align = "right", part = "all") %>% 
+  set_caption(title, autonum = run_autonum(seq_id='tab', bkm='adt')) %>%
+  footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
+
+```
+
+
+```{r, ft.align='left'}
+title <- "Distinct number of transfers to CSU or UC"
+overall614 %>% 
+  select(years, Type, value) %>%
+  filter(years != "2020-2021") %>% 
+  pivot_wider(names_from = years, values_from = value) %>% 
+  flextable::flextable() %>% 
+  width(width = 1) %>% 
+  width(j=1, width = 1.2) %>% 
+  align(j=1, align= "left", part = "all") %>% 
+  align(j=2:6, align = "right", part = "all") %>% 
+  set_caption(title, autonum = run_autonum(seq_id='tab', bkm='csuuc')) %>%
+  footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
+```
+## Disaggregation by Gender
+
+
+```{r, ft.align='left'}
+title <- "Course Success Rates by Gender"
+desc <- "Note: \"All Masked Values\" contains Non-Binary and Unknown/Non-Respondent students."
+csgender %>% 
+  select(years, Gender, value) %>% 
+  drop_na() %>% 
+  pivot_wider(names_from = years, values_from = value) %>% 
+  flextable::flextable() %>% 
+  flextable::set_formatter("2016-2017" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::set_formatter("2017-2018" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::set_formatter("2018-2019" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::set_formatter("2019-2020" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::set_formatter("2020-2021" = function(x) sprintf("%.001f%%", x*100)) %>%
+  flextable::add_footer_lines(values = desc) %>% 
+  width(width = 1) %>% 
+  width(j=1, width = 1.2) %>% 
+  align(j=1, align= "left", part = "all") %>% 
+  align(j=2:6, align = "right", part = "all") %>% 
+  set_caption(title, autonum = run_autonum(seq_id='tab', bkm='csg')) %>%
+  footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
+```
+
+```{r, ft.align='left'}
+title <- "Certificate Earners by Gender"
+desc <- "Note: \"All Masked Values\" contains Non-Binary and Unknown/Non-Respondent students."
+ggrads603 %>% 
+  select(years, Gender, value) %>% 
+  drop_na() %>% 
+  pivot_wider(names_from = years, values_from = value) %>% 
+  flextable::flextable() %>% 
+  width(width = 1) %>% 
+  width(j=1, width = 1.2) %>% 
+  align(j=1, align= "left", part = "all") %>% 
+  align(j=2:6, align = "right", part = "all") %>% 
+  flextable::add_footer_lines(values = desc) %>% 
+  set_caption(title, autonum = run_autonum(seq_id='tab', bkm='certg')) %>%
+  footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
+
+```
+
+
+```{r, ft.align='left'}
+title <- "Degree Earners by Gender"
+desc <- "Note: \"All Masked Values\" contains Non-Binary and Unknown/Non-Respondent students."
+ggrads631%>% 
+  select(years, Gender, value) %>% 
+  drop_na() %>% 
+  pivot_wider(names_from = years, values_from = value) %>% 
+  flextable::flextable() %>% 
+  flextable::add_footer_lines(values = desc) %>% 
+  width(width = 1) %>% 
+  width(j=1, width = 1.2) %>% 
+  align(j=1, align= "left", part = "all") %>% 
+  align(j=2:6, align = "right", part = "all") %>% 
+  set_caption(title, autonum = run_autonum(seq_id='tab', bkm='degg')) %>%
+  footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
+
+```
+
+```{r, ft.align='left'}
+title <- "ADT Earners by Gender"
+desc <- "Note: \"All Masked Values\" contains Non-Binary and Unknown/Non-Respondent students."
+ggrads608%>% 
+  select(years, Gender, value) %>% 
+  drop_na() %>% 
+  pivot_wider(names_from = years, values_from = value) %>% 
+  flextable::flextable() %>% 
+  flextable::add_footer_lines(values = desc) %>% 
+  flextable::width(width=1.3) %>% 
+  width(width = 1) %>% 
+  width(j=1, width = 1.2) %>% 
+  align(j=1, align= "left", part = "all") %>% 
+  align(j=2:6, align = "right", part = "all") %>% 
+  set_caption(title, autonum = run_autonum(seq_id='tab', bkm='adtg')) %>%
+  footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
+
+```
+
+
+```{r, ft.align='left'}
+title <- "Distinct Number of Transfers to CSU or UC by Gender"
+desc <- "Note: \"All Masked Values\" contains Non-Binary and Unknown/Non-Respondent students."
+ggrads614 %>% 
+  select(years, Gender, value) %>% 
+  filter(Gender=="Female" | Gender=="Male" | Gender=="All Masked Values") %>%
+  filter(years != "2020-2021") %>% 
+  pivot_wider(names_from = years, values_from = value) %>% 
+  flextable::flextable() %>% 
+  flextable::add_footer_lines(values = desc) %>% 
+  width(width = 1) %>% 
+  width(j=1, width = 1.2) %>% 
+  align(j=1, align= "left", part = "all") %>% 
+  align(j=2:6, align = "right", part = "all") %>% 
+  set_caption(title, autonum = run_autonum(seq_id='tab', bkm='csuucg')) %>%
+  footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
+
+```
+
+## Disaggregation by Ethnicity
+
+```{r, ft.align='left'}
+title <- "Course Success Rates by Ethnicity"
+desc <- "Note: \"All Masked Values\" contains students who listed another ethnicity or did not respond."
+csrace %>% 
+  select(years, Ethnicity, value) %>% 
+  pivot_wider(names_from = years, values_from = value) %>% 
+  drop_na() %>% 
+  flextable::flextable() %>% 
+  flextable::set_formatter("2016-2017" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::set_formatter("2017-2018" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::set_formatter("2018-2019" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::set_formatter("2019-2020" = function(x) sprintf("%.001f%%", x*100)) %>% 
+  flextable::set_formatter("2020-2021" = function(x) sprintf("%.001f%%", x*100)) %>%
+  flextable::add_footer_lines(values = desc) %>% 
+  width(width = .8) %>% 
+  flextable::width(j=1, width=2.1) %>% 
+  align(j=1, align= "left", part = "all") %>% 
+  align(j=2:6, align = "right", part = "all") %>% 
+  set_caption(title, autonum = run_autonum(seq_id='tab', bkm='cse')) %>%
+  footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
+
+```
+
+
+```{r, ft.align='left'}
+title <- "Certificate Earners by Ethnicity"
+desc <- "Note: \"All Masked Values\" contains students who listed another ethnicity or did not respond."
+rgrads603 %>% 
+  select(years, Ethnicity, value) %>% 
+  #drop_na() %>% 
+  pivot_wider(names_from = years, values_from = value) %>% 
+  flextable::flextable() %>% 
+  flextable::width(j=1, width=2.1) %>% 
+  width(j=2:6, width = .8) %>% 
+  flextable::add_footer_lines(values = desc) %>% 
+  align(j=1, align= "left", part = "all") %>% 
+  align(j=2:6, align = "right", part = "all") %>% 
+  set_caption(title, autonum = run_autonum(seq_id='tab', bkm='certe')) %>%
+  footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
+```
+
+
+```{r, ft.align='left'}
+title <- "Degree Earners by Ethnicity"
+desc <- "Note: \"All Masked Values\" contains students who listed another ethnicity or did not respond."
+rgrads631%>% 
+  select(years, Ethnicity, value) %>% 
+  #drop_na() %>% 
+  pivot_wider(names_from = years, values_from = value) %>% 
+  flextable::flextable() %>% 
+  flextable::width(j=1, width=2.2) %>% 
+  width(j=2:6, width = .8) %>% 
+  flextable::add_footer_lines(values = desc) %>% 
+  align(j=1, align= "left", part = "all") %>% 
+  align(j=2:6, align = "right", part = "all") %>% 
+  set_caption(title, autonum = run_autonum(seq_id='tab', bkm='dege')) %>%
+  footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
+```
+
+
+```{r, ft.align='left'}
+title <- "ADT Earners by Ethnicity"
+desc <- "Note: \"All Masked Values\" contains students who listed another ethnicity or did not respond."
+rgrads608%>% 
+  select(years, Ethnicity, value) %>% 
+  #drop_na() %>% 
+  pivot_wider(names_from = years, values_from = value) %>% 
+  flextable::flextable() %>% 
+  flextable::width(j=1, width=2.3) %>% 
+  width(j=2:6, width = .8) %>% 
+  flextable::add_footer_lines(values = desc) %>% 
+  align(j=1, align= "left", part = "all") %>% 
+  align(j=2:6, align = "right", part = "all") %>% 
+  set_caption(title, autonum = run_autonum(seq_id='tab', bkm='adte')) %>%
+  footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
+
+```
+
+
+```{r, ft.align='left'}
+title <- "Distinct Number of Transfers to CSU or UC by Ethnicity"
+desc <- "Note: \"All Masked Values\" contains students who listed another ethnicity or not respond."
+rgrads614 %>% 
+  select(years, Ethnicity, value) %>% 
+  filter(years != "2020-2021") %>% 
+  pivot_wider(names_from = years, values_from = value) %>% 
+  flextable::flextable() %>% 
+  flextable::align(i=1, align="center", part="header") %>% 
+  flextable::width(j=1, width=2.2) %>% 
+  width(j=2:6, width = .8) %>% 
+  flextable::add_footer_lines(values = desc) %>% 
+  align(j=1, align= "left", part = "all") %>% 
+  align(j=2:6, align = "right", part = "all") %>% 
+  set_caption(title, autonum = run_autonum(seq_id='tab', bkm='csuuce')) %>%
+  footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
+
+```
+
+## Licensure Pass and Job Placement Rates
+
+```{r licensure, ft.align='left'}
+licensure %>% 
+  select("Program", "Exam Type", "Institution Set Standard", "Stretch Goal", 
+         "2016-2017", "2017-2018", "2018-2019", "2019-2020", "2020-2021") %>% 
+  flextable::flextable() %>% 
+  flextable::set_table_properties(width = .5, layout='autofit') %>% 
+  flextable::align(i=1, align="center", part="header") %>% 
+  flextable::set_formatter("Institution Set Standard" = function(x) sprintf("%.001f%%", x*100)) %>%
+  flextable::set_formatter("Stretch Goal" = function(x) sprintf("%.000f%%", x*100)) %>%
+  flextable::set_formatter("2016-2017" = function(x) sprintf("%.000f%%", x*100)) %>% 
+  flextable::set_formatter("2017-2018" = function(x) sprintf("%.000f%%", x*100)) %>% 
+  flextable::set_formatter("2018-2019" = function(x) sprintf("%.000f%%", x*100)) %>% 
+  flextable::set_formatter("2019-2020" = function(x) sprintf("%.000f%%", x*100)) %>% 
+  flextable::set_formatter("2020-2021" = function(x) sprintf("%.000f%%", x*100)) %>% 
+  footnote(i=4, j=8, value = as_paragraph("No campus specific data on this item."), ref_symbols = c("A"), part = "body") %>%  
+  footnote(i=5, j=8, value = as_paragraph("No one took the exam this year due to Covid"), ref_symbols = c("B"), part = "body") %>% 
+    align(j=1:2, align= "left", part = "all") %>% 
+  align(j=3:9, align = "right", part = "all") %>% 
+  set_caption("Licensure Pass Rates", autonum = run_autonum(seq_id='tab', bkm='cert')) %>%
+  footnote(j=1, value = as_paragraph("Source: ACCJC Annual Reports"), ref_symbols=c(""), part = "header")
+
+
+```
+
+
+```{r job placement, ft.align='left'}
+jobplace %>% 
+  select("Program", "Institution Set Standard", "Stretch Goal", 
+         "2018-2019", "2019-2020", "2020-2021") %>% 
+  flextable() %>%
+  flextable::set_formatter("Institution Set Standard" = function(x) sprintf("%.001f%%", x*100)) %>%
+  flextable::set_formatter("Stretch Goal" = function(x) sprintf("%.000f%%", x*100)) %>%
+  flextable::set_formatter("2018-2019" = function(x) sprintf("%.000f%%", x*100)) %>% 
+  flextable::set_formatter("2019-2020" = function(x) sprintf("%.000f%%", x*100)) %>% 
+  flextable::set_formatter("2020-2021" = function(x) sprintf("%.000f%%", x*100)) %>% 
+  flextable::align(i=1, align="center", part="header") %>% 
+  flextable::width(width=1.1) %>% 
+  align(j=1, align= "left", part = "all") %>% 
+  align(j=2:6, align = "right", part = "all") %>% 
+  set_caption("Job Placement Rates", autonum = run_autonum(seq_id='tab', bkm='cert')) %>%
+  footnote(j=1, value = as_paragraph("Source: ACCJC Annual Reports"), ref_symbols=c(""), part = "header") %>% 
+  footnote(j=1, value = as_paragraph("Note that data is only available for 2018-2019 and years after."), ref_symbols=c(""), part = "header")
+
+
+```
