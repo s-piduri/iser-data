@@ -21,7 +21,25 @@ set_flextable_defaults(font.size = 9)
 
 ```
 
+The tables below present the student achievement data and the institution-set standards. The student achievement metrics presented mirrors the metrics the college reports to ACCJC in the ACCJC Annual Report and include:
+
+* Course success rates
+* Number of certificate earners
+* Number of degree earners
+* Number of associate degree of transfer earners
+* Number of transfers to California State University (CSU) or University of California (UC)
+* Licensure pass rates
+* Job placement rates
+
+The actual value is presented with the institution-set standards, which includes both the floor or minimum goal and the aspirational or stretch goal.
+
+Additionally, the section includes data on term-to-term persistence, which will be referenced in the Quality Focus Essay.
+
 # Presentation of Student Achievement Data and Institution-Set Standards 
+
+## Course Success Rates
+
+The table below shows the institution-wide course success rates, where course success is defined as a grade of C or better or Pass in a course section, using the standard statewide definition. In the last five years, the course success rates has remained at around 73%. The college has met its floor goal, but has not met its aspirational goal, which increases by .5% each year.
 
 ```{r, ft.align='left'}
 desc <- overallcs$description[1]
@@ -43,71 +61,7 @@ overallcs %>%
   footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
 
 ```
-
-```{r, ft.align='left'}
-title <- "Distinct number of CO-approved certificate earners (12+ units)"
-overall603 %>% 
-  select(years, Type, value) %>% 
-  pivot_wider(names_from = years, values_from = value) %>% 
-  flextable::flextable() %>% 
-  flextable::align(i=1, align="center", part="header") %>% 
-  width(width = 1) %>% 
-  width(j=1, width = 1.2) %>% 
-  align(j=1, align= "left", part = "all") %>% 
-  align(j=2:6, align = "right", part = "all") %>% 
-  set_caption(title, autonum = run_autonum(seq_id='tab', bkm='cert')) %>%
-  footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
-
-```
-
-
-```{r, ft.align='left'}
-title <- "Distinct number of degree earners (AA, AS, or ADT) "
-overall631 %>% 
-  select(years, Type, value) %>% 
-  pivot_wider(names_from = years, values_from = value) %>% 
-  flextable::flextable() %>% 
-  flextable::align(i=1, align="center", part="header") %>%
-  width(width = 1) %>% 
-  width(j=1, width = 1.2) %>% 
-  align(j=1, align= "left", part = "all") %>% 
-  align(j=2:6, align = "right", part = "all") %>% 
-  set_caption(title, autonum = run_autonum(seq_id='tab', bkm='deg')) %>%
-  footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
-```
-
-```{r, ft.align='left'}
-title <- "Distinct number of ADT earners"
-overall608 %>% 
-  select(years, Type, value) %>% 
-  pivot_wider(names_from = years, values_from = value) %>% 
-  flextable::flextable() %>% 
-  width(width = 1) %>% 
-  width(j=1, width = 1.2) %>% 
-  align(j=1, align= "left", part = "all") %>% 
-  align(j=2:6, align = "right", part = "all") %>% 
-  set_caption(title, autonum = run_autonum(seq_id='tab', bkm='adt')) %>%
-  footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
-
-```
-
-
-```{r, ft.align='left'}
-title <- "Distinct number of transfers to CSU or UC"
-overall614 %>% 
-  select(years, Type, value) %>%
-  filter(years != "2020-2021") %>% 
-  pivot_wider(names_from = years, values_from = value) %>% 
-  flextable::flextable() %>% 
-  width(width = 1) %>% 
-  width(j=1, width = 1.2) %>% 
-  align(j=1, align= "left", part = "all") %>% 
-  align(j=2:6, align = "right", part = "all") %>% 
-  set_caption(title, autonum = run_autonum(seq_id='tab', bkm='csuuc')) %>%
-  footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
-```
-## Disaggregation by Gender
-
+The table below shows the course success rates disaggregated by gender. The male students have consistently had lower course success rates compared to female students. The gap has slightly widened to nearly 5% in the most recent year.
 
 ```{r, ft.align='left'}
 title <- "Course Success Rates by Gender"
@@ -131,83 +85,7 @@ csgender %>%
   footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
 ```
 
-```{r, ft.align='left'}
-title <- "Certificate Earners by Gender"
-desc <- "Note: \"All Masked Values\" contains Non-Binary and Unknown/Non-Respondent students."
-ggrads603 %>% 
-  select(years, Gender, value) %>% 
-  drop_na() %>% 
-  pivot_wider(names_from = years, values_from = value) %>% 
-  flextable::flextable() %>% 
-  width(width = 1) %>% 
-  width(j=1, width = 1.2) %>% 
-  align(j=1, align= "left", part = "all") %>% 
-  align(j=2:6, align = "right", part = "all") %>% 
-  flextable::add_footer_lines(values = desc) %>% 
-  set_caption(title, autonum = run_autonum(seq_id='tab', bkm='certg')) %>%
-  footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
-
-```
-
-
-```{r, ft.align='left'}
-title <- "Degree Earners by Gender"
-desc <- "Note: \"All Masked Values\" contains Non-Binary and Unknown/Non-Respondent students."
-ggrads631%>% 
-  select(years, Gender, value) %>% 
-  drop_na() %>% 
-  pivot_wider(names_from = years, values_from = value) %>% 
-  flextable::flextable() %>% 
-  flextable::add_footer_lines(values = desc) %>% 
-  width(width = 1) %>% 
-  width(j=1, width = 1.2) %>% 
-  align(j=1, align= "left", part = "all") %>% 
-  align(j=2:6, align = "right", part = "all") %>% 
-  set_caption(title, autonum = run_autonum(seq_id='tab', bkm='degg')) %>%
-  footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
-
-```
-
-```{r, ft.align='left'}
-title <- "ADT Earners by Gender"
-desc <- "Note: \"All Masked Values\" contains Non-Binary and Unknown/Non-Respondent students."
-ggrads608%>% 
-  select(years, Gender, value) %>% 
-  drop_na() %>% 
-  pivot_wider(names_from = years, values_from = value) %>% 
-  flextable::flextable() %>% 
-  flextable::add_footer_lines(values = desc) %>% 
-  flextable::width(width=1.3) %>% 
-  width(width = 1) %>% 
-  width(j=1, width = 1.2) %>% 
-  align(j=1, align= "left", part = "all") %>% 
-  align(j=2:6, align = "right", part = "all") %>% 
-  set_caption(title, autonum = run_autonum(seq_id='tab', bkm='adtg')) %>%
-  footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
-
-```
-
-
-```{r, ft.align='left'}
-title <- "Distinct Number of Transfers to CSU or UC by Gender"
-desc <- "Note: \"All Masked Values\" contains Non-Binary and Unknown/Non-Respondent students."
-ggrads614 %>% 
-  select(years, Gender, value) %>% 
-  filter(Gender=="Female" | Gender=="Male" | Gender=="All Masked Values") %>%
-  filter(years != "2020-2021") %>% 
-  pivot_wider(names_from = years, values_from = value) %>% 
-  flextable::flextable() %>% 
-  flextable::add_footer_lines(values = desc) %>% 
-  width(width = 1) %>% 
-  width(j=1, width = 1.2) %>% 
-  align(j=1, align= "left", part = "all") %>% 
-  align(j=2:6, align = "right", part = "all") %>% 
-  set_caption(title, autonum = run_autonum(seq_id='tab', bkm='csuucg')) %>%
-  footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
-
-```
-
-## Disaggregation by Ethnicity
+The table below shows the course success rates disaggregated by ethnicity. American Indian/Alaska Native, Black, Latinx, and Pacific Islander or Hawaiian Native students have experienced lower course success rates compared to White, Asian, and Filipino students. Taking these disaggregated course success rates together, the college has identified male students of color a group of students who are experiencing disproportionate impact.
 
 ```{r, ft.align='left'}
 title <- "Course Success Rates by Ethnicity"
@@ -232,82 +110,83 @@ csrace %>%
 
 ```
 
+## Certificate and Degrees
+
+### Certificate
+
+The table below shows the distinct number of students who have earned a California Chancellor's Office approved certificate. In the last five years, the number of certificate earners has remained remained at just over 500. The college has met its floor goal, but has not met its aspirational goal.
 
 ```{r, ft.align='left'}
-title <- "Certificate Earners by Ethnicity"
-desc <- "Note: \"All Masked Values\" contains students who listed another ethnicity or did not respond."
-rgrads603 %>% 
-  select(years, Ethnicity, value) %>% 
-  #drop_na() %>% 
-  pivot_wider(names_from = years, values_from = value) %>% 
-  flextable::flextable() %>% 
-  flextable::width(j=1, width=2.1) %>% 
-  width(j=2:6, width = .8) %>% 
-  flextable::add_footer_lines(values = desc) %>% 
-  align(j=1, align= "left", part = "all") %>% 
-  align(j=2:6, align = "right", part = "all") %>% 
-  set_caption(title, autonum = run_autonum(seq_id='tab', bkm='certe')) %>%
-  footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
-```
-
-
-```{r, ft.align='left'}
-title <- "Degree Earners by Ethnicity"
-desc <- "Note: \"All Masked Values\" contains students who listed another ethnicity or did not respond."
-rgrads631%>% 
-  select(years, Ethnicity, value) %>% 
-  #drop_na() %>% 
-  pivot_wider(names_from = years, values_from = value) %>% 
-  flextable::flextable() %>% 
-  flextable::width(j=1, width=2.2) %>% 
-  width(j=2:6, width = .8) %>% 
-  flextable::add_footer_lines(values = desc) %>% 
-  align(j=1, align= "left", part = "all") %>% 
-  align(j=2:6, align = "right", part = "all") %>% 
-  set_caption(title, autonum = run_autonum(seq_id='tab', bkm='dege')) %>%
-  footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
-```
-
-
-```{r, ft.align='left'}
-title <- "ADT Earners by Ethnicity"
-desc <- "Note: \"All Masked Values\" contains students who listed another ethnicity or did not respond."
-rgrads608%>% 
-  select(years, Ethnicity, value) %>% 
-  #drop_na() %>% 
-  pivot_wider(names_from = years, values_from = value) %>% 
-  flextable::flextable() %>% 
-  flextable::width(j=1, width=2.3) %>% 
-  width(j=2:6, width = .8) %>% 
-  flextable::add_footer_lines(values = desc) %>% 
-  align(j=1, align= "left", part = "all") %>% 
-  align(j=2:6, align = "right", part = "all") %>% 
-  set_caption(title, autonum = run_autonum(seq_id='tab', bkm='adte')) %>%
-  footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
-
-```
-
-
-```{r, ft.align='left'}
-title <- "Distinct Number of Transfers to CSU or UC by Ethnicity"
-desc <- "Note: \"All Masked Values\" contains students who listed another ethnicity or not respond."
-rgrads614 %>% 
-  select(years, Ethnicity, value) %>% 
-  filter(years != "2020-2021") %>% 
+title <- "Distinct number of California Chancellor's Office approved certificate earners (12+ units)"
+overall603 %>% 
+  select(years, Type, value) %>% 
   pivot_wider(names_from = years, values_from = value) %>% 
   flextable::flextable() %>% 
   flextable::align(i=1, align="center", part="header") %>% 
-  flextable::width(j=1, width=2.2) %>% 
-  width(j=2:6, width = .8) %>% 
-  flextable::add_footer_lines(values = desc) %>% 
+  width(width = 1) %>% 
+  width(j=1, width = 1.2) %>% 
   align(j=1, align= "left", part = "all") %>% 
   align(j=2:6, align = "right", part = "all") %>% 
-  set_caption(title, autonum = run_autonum(seq_id='tab', bkm='csuuce')) %>%
+  set_caption(title, autonum = run_autonum(seq_id='tab', bkm='cert')) %>%
+  footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
+
+```
+### Degrees
+
+The table below shows the distinct number of students who have earned a degree. In the last five years, the number of certificate earners has steadily increased nearly to 600. The college has met not only its floor but also aspirational goal in the last five years except 2019-2020.
+
+```{r, ft.align='left'}
+title <- "Distinct number of degree earners (AA, AS, or ADT) "
+overall631 %>% 
+  select(years, Type, value) %>% 
+  pivot_wider(names_from = years, values_from = value) %>% 
+  flextable::flextable() %>% 
+  flextable::align(i=1, align="center", part="header") %>%
+  width(width = 1) %>% 
+  width(j=1, width = 1.2) %>% 
+  align(j=1, align= "left", part = "all") %>% 
+  align(j=2:6, align = "right", part = "all") %>% 
+  set_caption(title, autonum = run_autonum(seq_id='tab', bkm='deg')) %>%
+  footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
+```
+## Transfer 
+
+The table below shows the distinct number of students who have earned an associate degree of transfer (ADT). In the last five years, the number of ADT earners has steadily increased nearly to 331. The college has met not only its floor but also aspirational goal in the last five years. The amount of increase in the most recent year was so great that the floor goal, which is set at ninety percent of three-year average surpassed the aspirational goal.
+
+```{r, ft.align='left'}
+title <- "Distinct number of ADT earners"
+overall608 %>% 
+  select(years, Type, value) %>% 
+  pivot_wider(names_from = years, values_from = value) %>% 
+  flextable::flextable() %>% 
+  width(width = 1) %>% 
+  width(j=1, width = 1.2) %>% 
+  align(j=1, align= "left", part = "all") %>% 
+  align(j=2:6, align = "right", part = "all") %>% 
+  set_caption(title, autonum = run_autonum(seq_id='tab', bkm='adt')) %>%
   footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
 
 ```
 
-## Licensure Pass and Job Placement Rates
+The table below shows the distinct number of students who have transferred to CSU or UC. In the last five years, the number of students who transferred to UC or CSU has been increasing. The college has met its floor goal, but has not met its aspirational goal.
+
+```{r, ft.align='left'}
+title <- "Distinct number of transfers to CSU or UC"
+overall614 %>% 
+  select(years, Type, value) %>%
+  filter(years != "2020-2021") %>% 
+  pivot_wider(names_from = years, values_from = value) %>% 
+  flextable::flextable() %>% 
+  width(width = 1) %>% 
+  width(j=1, width = 1.2) %>% 
+  align(j=1, align= "left", part = "all") %>% 
+  align(j=2:6, align = "right", part = "all") %>% 
+  set_caption(title, autonum = run_autonum(seq_id='tab', bkm='csuuc')) %>%
+  footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header")
+```
+## Licensure Pass Rates 
+
+The table below shows licensure pass rates for programs in which students are required to pass licensure or other examinations in order to work in their field of study. Most programs have met their respective floor goals or institution set standards. In some years and for some programs, the licensure pass rates have fell below the floor goal, but they seem to be isolated events with rates bouncing back above the floor goal in the subsequent year.  
 
 ```{r licensure, ft.align='left'}
 licensure %>% 
@@ -324,7 +203,7 @@ licensure %>%
   flextable::set_formatter("2019-2020" = function(x) sprintf("%.000f%%", x*100)) %>% 
   flextable::set_formatter("2020-2021" = function(x) sprintf("%.000f%%", x*100)) %>% 
   footnote(i=4, j=8, value = as_paragraph("No campus specific data on this item."), ref_symbols = c("A"), part = "body") %>%  
-  footnote(i=5, j=8, value = as_paragraph("No one took the exam this year due to Covid"), ref_symbols = c("B"), part = "body") %>% 
+  footnote(i=5, j=8, value = as_paragraph("Noone took the exam this year due to Covid"), ref_symbols = c("B"), part = "body") %>% 
     align(j=1:2, align= "left", part = "all") %>% 
   align(j=3:9, align = "right", part = "all") %>% 
   set_caption("Licensure Pass Rates", autonum = run_autonum(seq_id='tab', bkm='cert')) %>%
@@ -333,6 +212,9 @@ licensure %>%
 
 ```
 
+## Job Placement Rates
+
+The table below shows job placement rates for career and technical education programs. Most programs have met their floor and stretch goals in the last three years. 
 
 ```{r job placement, ft.align='left'}
 jobplace %>% 
@@ -351,6 +233,134 @@ jobplace %>%
   set_caption("Job Placement Rates", autonum = run_autonum(seq_id='tab', bkm='cert')) %>%
   footnote(j=1, value = as_paragraph("Source: ACCJC Annual Reports"), ref_symbols=c(""), part = "header") %>% 
   footnote(j=1, value = as_paragraph("Note that data is only available for 2018-2019 and years after."), ref_symbols=c(""), part = "header")
+
+
+```
+
+## Term-to-Term Persistence
+
+In the recent years, San Jose City College has identified student retention as one of the improvement focal points. Improving student retention is related both to the issue of declining enrollment as discussed in the introduction and to the issue of improving student success. This section focuses on term-to-term persistence data.
+
+The table below shows the Fall-to-Spring persistence rate of all students for San Jose City College, regional peers, and all California Community Colleges (statewide) in the last five years. The five-year average persistence rate is 61%. In other words, roughly two out of five students who attend the college in the Fall term does not return in the Spring term. When benchmarked against the rates of statewide and regional peers, the college's persistence rate is lower than the statewide average by 6% and up to 14% compared to regional peers. This trend has been largely consistent over the last five years.
+
+```{r persistence_overall, ft.align='left'}
+ssm_retention_sum <- readRDS("../ssm_retention_sum.rds") 
+
+#table for all students
+ssm_retention_sum %>%
+  filter(category_id == "406", journey_status == "AllStudents") %>% 
+  select(locale_name, academic_year, perc, journey_status) %>%
+  mutate(perc = scales::percent(perc, accuracy = 1)) %>%
+  pivot_wider(id_cols = c("locale_name", "journey_status"), values_from = perc, names_from = academic_year) %>%
+  arrange(desc(`5yr_avg`)) %>%
+  flextable::flextable() %>% 
+  flextable::align(align = "right", j = 3:8, part = "all") %>%
+  flextable::color(i = ~locale_name == "San Jose City College", color = "purple") %>%
+  flextable::color(i = ~locale_name == "Statewide", color = "#002F6D") %>%
+  bold(i = ~ locale_name %in% c("San Jose City College", "Statewide")) %>% 
+  flextable::width(j=1, width = 2, unit = "in") %>% 
+  set_header_labels(values = list(
+    locale_name = "College",
+    journey_status = "Journey Type"
+  )) %>% 
+  set_caption("Fall-to-Spring Persistence Rates (All Students)", autonum = run_autonum(seq_id='tab', bkm='cert')) %>%
+  footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header") %>% 
+  footnote(j=1, value = as_paragraph("Note that data includes all students regardless of their educational journey."), ref_symbols=c(""), part = "header") %>% 
+  set_table_properties(layout='autofit') 
+
+
+
+  # add_header_lines(values = "% Persisted from Fall to Spring at the same college. Includes all students.") %>%  # add subtitle
+  # add_header_lines(values = "SJCC All Student Fall-to-Spring Persistence Rate Lower than Statewide and Regional Peers") %>%  # add title
+  # fontsize(i = 1, size = 16, part = "header") %>%   #increase text size of the title 
+  # border(i = 1:2, border.top = fp_border_default(color = "white"),
+  #        border.bottom = fp_border_default(color = "white"), part = "header") %>% 
+  # add_footer_lines(values = "Source: Student Success Metrics") %>% 
+  # align(part = "footer", align = "right") %>% 
+
+```
+
+The persistence rate is slightly higher for degree-transfer students; however, the college's rate is still lower compared to the statewide average and the regional peers. The table below shows the Fall-to-Spring persistence rate of degree-transfer students for San Jose City College, regional peers, and all California Community Colleges (statewide) in the last five years. The five-year average persistence rate for the college is 65%, four percentage points higher than that for all students. When benchmarked against the rates of statewide and regional peers, the college's persistence rate is lower than both the statewide average and those of most regional peers.
+
+```{r persistence_degTran, ft.align='left'}
+
+#table for degree transfer students
+ssm_retention_sum %>%
+  filter(category_id == "406") %>% 
+  filter(journey_status == "DegreeTransferStudents" |
+           (journey_status == "AllStudents" & locale_name == "San Jose City College")
+         ) %>% 
+  select(locale_name, academic_year, perc, journey_status) %>%
+  mutate(perc = scales::percent(perc, accuracy = 1)) %>%
+  pivot_wider(id_cols = c("locale_name", "journey_status"), values_from = perc, names_from = academic_year) %>%
+  arrange(desc(`5yr_avg`)) %>%
+  flextable::flextable() %>% 
+  flextable::align(align = "right", j = 3:8, part = "all") %>%
+  flextable::color(i = ~locale_name == "San Jose City College", color = "purple") %>%
+  flextable::color(i = ~locale_name == "Statewide", color = "#002F6D") %>%
+  bold(i = ~ locale_name %in% c("San Jose City College", "Statewide")) %>% 
+  flextable::width(j=1, width = 2, unit = "in") %>% 
+  set_header_labels(values = list(
+    locale_name = "College",
+    journey_status = "Journey Type"
+  )) %>% 
+  set_caption("Fall-to-Spring Persistence Rates (Degree/Transfer Students)", autonum = run_autonum(seq_id='tab', bkm='cert')) %>%
+  footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header") %>% 
+  footnote(j=1, value = as_paragraph("Note that data includes only studnets with a goal of earning a two-year and/or four-year degree."), ref_symbols=c(""), part = "header") %>% 
+  set_table_properties(layout='autofit') 
+
+
+  # add_header_lines(values = "% Persisted from Fall to Spring at the same college. Only students with goal of obtaining a degree or transferring.") %>%  # add subtitle
+  # add_header_lines(values = "Degree/Transfer Students Persist at Higher Rates than All Students, but at Lower Rate than Statewide and Regional Peers") %>%  # add title
+  # fontsize(i = 1, size = 16, part = "header") %>%   #increase text size of the title 
+  # border(i = 1:2, border.top = fp_border_default(color = "white"),
+  #        border.bottom = fp_border_default(color = "white"), part = "header") %>% 
+  # add_footer_lines(values = "Source: Student Success Metrics") %>% 
+  # align(part = "footer", align = "right") %>% 
+
+
+```
+
+The comparatively low term-to-term persistence is experienced by all student populations, despite some group differences. The table below shows the Fall-to-Spring persistence rate for degree-transfer students at San Jose City College for the past five years disaggregated by gender and ethnicity. The five-year data shown here indicate that while some student subgroups (e.g., Asian, White, Female) experienced slightly higher persistence rate than the SJCC overall average, compared to the statewide and the regional peers, all student subgroups have experienced lower persistence rate.
+
+The data explored here on term-to-term persistence rate and what college is and will be doing to improve it will be further explored in the quality focus essay section.
+
+```{r persistence_degTran_disagg, ft.align='left'}
+
+ssm_retention_disagg <- readRDS("../ssm_retention_disagg.rds")
+
+#table for degree transfer students
+ssm_retention_disagg %>%
+  select(academic_year, disagg, subgroup, perc) %>%
+  filter(!subgroup %in% c("Non-Binary", "Unknown/Non-Respondent", "Multiple Values Reported")) %>% 
+  mutate(perc = scales::percent(perc, accuracy = 1)) %>%
+  pivot_wider(id_cols = c("disagg", "subgroup"), values_from = perc, names_from = academic_year) %>%
+  flextable::flextable() %>% 
+  flextable::align(align = "right", j = 3:8, part = "all")%>%
+  flextable::width(j=2, width = 2, unit = "in") %>% 
+  align(part = "footer", align = "right") %>% 
+  set_header_labels(values = list(
+    locale_name = "College",
+    journey_status = "Journey Type"
+  )) %>% 
+  set_caption("Fall-to-Spring Persistence Rates disaggregated by Gender and Ethnicity", autonum = run_autonum(seq_id='tab', bkm='cert')) %>%
+  footnote(j=1, value = as_paragraph("Source: Student Success Metrics"), ref_symbols=c(""), part = "header") %>% 
+  footnote(j=1, value = as_paragraph("Note that data includes only studnets with a goal of earning a two-year and/or four-year degree. Also, groups with n < 10 are collapsed under the masked values group."), ref_symbols=c(""), part = "header") %>% 
+  set_header_labels(values = list(
+    disagg = "Disaggregation",
+    subgroup = "Subgroup"
+  )) %>% 
+  set_table_properties(layout='autofit') 
+
+
+# add_header_lines(values = "% Persisted from Fall to Spring at San Jose City College. Only students with goal of obtaining a degree or transferring.") %>%  # add subtitle
+#   add_header_lines(values = "Dispite some group differences (e.g. Asian, White, Female tend to persist at a higher rate),  college's comparatively low persistence rate is experienced by all student groups ") %>%  # add title
+#   fontsize(i = 1, size = 16, part = "header") %>%   #increase text size of the title 
+#   border(i = 1:2, border.top = fp_border_default(color = "white"),
+#          border.bottom = fp_border_default(color = "white"), part = "header") %>% 
+#   add_footer_lines(values = "Source: Student Success Metrics") %>% 
+#   add_footer_lines(values = "* Students groups with n < 10 are included under the masked values group.") %>% 
+  
 
 
 ```
